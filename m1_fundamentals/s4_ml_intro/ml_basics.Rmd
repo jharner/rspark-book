@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 An *algorithm* is a procedure specifying a set of steps to accomplish a task. 
 
-Efficient algorithms that work sequentially or in parallel are the basis of pipelines to prepare and process data. The principal data science algorithms are for:  
+Efficient algorithms that work sequentially or in parallel are the basis of pipelines to prepare, process, and analyze data. The principal data science algorithms are for:  
 
 * data munging,
 * optimization, and
@@ -29,10 +29,12 @@ Machine learning algorithms are largely used to predict, classify, or cluster.
 * *Prediction* and *classification* are examples of *supervised learning*, whereas  
 * *clustering* is an example of *unsupervise learning*.  
 
-Put another way, supervised learning is concerned with problems that have a measurable (or labeled) response variable and unsupervised learning is concerned with problems without a response variable.
+Put another way, supervised learning is concerned with problems that have a measurable (or labeled) output (response) variable and unsupervised learning is concerned with problems without a output variable.
 
 * *Statistical modeling* is done (primarily) to infer the underlying generative process.  
-* *Machine learning algorithms* are used to predict or classify with the most accuracy. They form the basis of data products.    
+* *Machine learning (ML) algorithms* are used to predict or classify with the most accuracy.
+
+ML algorithms form the basis of data products.    
 
 The culture wars:
 
@@ -47,14 +49,14 @@ The supervised learning methods are primarily concerned with models of the form:
 $$
   Y = f(X_1, X_2, \ldots, X_p) + \epsilon,
 $$
-where $f$ is an unknown fixed function, $Y$ is the output variable, $X_1, X_2, \ldots, X_p$ are the input variables, and $\epsilon$ is the error term which is independent of the $X$'s and has a mean of $0$. The output variable is also called the response or dependent variable. The input variables are also called the predictors, features, or independent variables.
+where $f$ is an unknown fixed function, $Y$ is the output variable, $X_1, X_2, \ldots, X_p$ are the input variables, and $\epsilon$ is the error term which is independent of the $X$'s and has a mean of $0$. The output variable is also called the label, response, or dependent variable. The input variables are also called the features, predictors, features, or independent variables.
 
 The simplest manifestation of this form is the linear regression model given by: 
 $$
   y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p + \epsilon.
 $$
 
-Both the input and output variables can be either quantitative (numerical) or qualitative (categorical). The response type restrict the types of models which can be considered. For example,  
+Both the input and output variables can be either quantitative (numerical) or qualitative (categorical). The response type restricts the types of models which can be considered. For example,  
 
 * if $Y$ is numerical, then we are dealing with a regression model, which can be used for prediction, and  
 * if it is binary (or more generally categorical), then we are dealing with a logistic regression (or more generally  a multinomial model), which can be used for classification.  
