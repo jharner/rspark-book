@@ -1,0 +1,70 @@
+---
+title: "Sparklyr Basics"
+author: "Jim Harner"
+date: "7/25/2018"
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
+---
+  
+```{r setup, include=FALSE}
+# load sparklyr
+if (nchar(Sys.getenv("SPARK_HOME")) < 1) {
+  Sys.setenv(SPARK_HOME = "/opt/spark")
+}
+```
+
+The `sparklyr` R frontend to Spark is based on a `dplyr` interface to Spark SQL. Once these required packages are loaded, a Spark connection is established.
+```{r}
+library(dplyr)
+library(sparklyr)
+# start the sparklyr session
+master <- "local"
+# master <- "spark://master:7077"
+sc <- spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
+                    method = c("shell"), app_name = "sparklyr",
+                    version = NULL, hadoop_version = NULL,
+                    config = spark_config(),
+                    extensions = sparklyr::registered_extensions())
+```
+The `nycflights13` package will be used to illustrate basic concepts. Its size may be an issue in which case, executing each chunk in sequence might work better than Knitting.
+
+## 6.1 Sparklyr Basics
+
+The `sparklyr` package is being developed by RStudio. It is ongoing rapid expansion. See [RStudio's sparklyr](https://spark.rstudio.com) for information.
+
+The `sparklyr` R package provides a `dplyr` backend to Spark. Using `sparklyr`, you can: 
+
+* filter and aggregate Spark DataFrames and bring them into R for analysis and visualization;  
+* develop workflows using `dplyr` and compatible R packages;  
+* write R code to access Spark's machine learning library, [MLlib](http://spark.apache.org/docs/latest/mllib-guide.html);  
+* create Spark extensions.  
+
+From `sparklyr`, connections can be made to local instances or to remote Spark clusters. In our case the connection is to a local connection bundled in the `rstudio` container. 
+
+The `sparklyr` library is loaded in the setup and a Spark connection is established. The Spark connection `sc` provides a `dplyr` interface to the Spark.
+
+### 6.1.1 dplyr
+
+The `dpyr` verbs, e.g., `mutate`, `filter`, can be used on Spark DataFrames. A more complete discussion is given in Section 6.2.
+
+We will use the `flights` data in the `nycflights13` package as an example. 
+```{r}
+library(nycflights13)
+str(flights)
+```
+The `flights` R data frame is a tibble, which allows large data to be displayed. This data frame has the date of departure, the actual departure time, etc. See the package documentation for variable definitions.
+
+The `copy_to` function copies an R `data.frame` to Spark as a Spark table. The resulting object is a `tbl_spark`, which is a `dplyr`-compatible interface to the Spark DataFrame.
+```{r}
+flights_tbl <- copy_to(sc, nycflights13::flights, "flights")
+flights_tbl
+src_tbls(sc)
+```
+By default, the `flights` Spark table is cached in memory (`memory = TRUE`), which speeds up computations, but by default the table is not partitioned (`repartition = 0L`) since we are not running an actual cluster. See the `copy_to` function in the `sparklyr` package for more details.
+
+As always the Spark connection should be disconnected at the end of a task.
+```{r}
+spark_disconnect(sc)
+```
