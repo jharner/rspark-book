@@ -1,5 +1,5 @@
-.DS_Store
-metastore_db
+*.DS_Store
+*metastore_db
 *.log
 *.html
 *.nb.html
@@ -12,7 +12,7 @@ metastore_db
 .Rproj.user
 .RData
 .Ruserdata
-derby.log
+*derby.log
 Spark_cache
 Spark_files
 *.Rproj
