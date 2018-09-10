@@ -120,7 +120,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Sparklyr Basics</h1>
 <h4 class="author"><em>Jim Harner</em></h4>
-<h4 class="date"><em>7/25/2018</em></h4>
+<h4 class="date"><em>9/9/2018</em></h4>
 
 </div>
 
@@ -136,14 +136,11 @@ $(document).ready(function () {
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(sparklyr)
+
 # start the sparklyr session
 master &lt;- &quot;local&quot;
 # master &lt;- &quot;spark://master:7077&quot;
-sc &lt;- spark_connect(master, spark_home = Sys.getenv(&quot;SPARK_HOME&quot;),
-                    method = c(&quot;shell&quot;), app_name = &quot;sparklyr&quot;,
-                    version = NULL, hadoop_version = NULL,
-                    config = spark_config(),
-                    extensions = sparklyr::registered_extensions())</code></pre>
+sc &lt;- spark_connect(master = master)</code></pre>
 <p>The <code>nycflights13</code> package will be used to illustrate basic concepts. Its size may be an issue in which case, executing each chunk in sequence might work better than Knitting.</p>
 <div id="sparklyr-basics" class="section level2">
 <h2>6.1 Sparklyr Basics</h2>

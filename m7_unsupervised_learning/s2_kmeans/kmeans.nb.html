@@ -204,60 +204,38 @@ $(document).ready(function () {
 <p>Read in the crime data for the 50 states:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfZGYgPC0gcmVhZF9jc3YoXG4gIFwiL2hvbWUvcnN0dWRpby9yc3BhcmstdHV0b3JpYWwvZGF0YS9zdGF0ZV9jcmltZS5jc3ZcIilcbmBgYCJ9 -->
-<pre class="r"><code>state_crime_df &lt;- read_csv(
-  &quot;/home/rstudio/rspark-tutorial/data/state_crime.csv&quot;)</code></pre>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>We select the variables of interest and standardize them as in Section 8.1.2.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfc3RkX2RmIDwtIHN0YXRlX2NyaW1lX2RmICU+JVxuICBzZWxlY3QoLVN0YXRlLCAtQWJiciwgLURpdmlzaW9uLCAtUmVnaW9uLCAtVW5lbXBsb3ksIC1Qb2xpY2UsIC1JblNjaG9vbCkgJT4lXG4gIGxhcHBseShmdW5jdGlvbihlKSBzY2FsZShlKSkgJT4lXG4gIGFzLmRhdGEuZnJhbWUoKVxuYGBgIn0= -->
-<pre class="r"><code>state_crime_std_df &lt;- state_crime_df %&gt;%
-  select(-State, -Abbr, -Division, -Region, -Unemploy, -Police, -InSchool) %&gt;%
-  lapply(function(e) scale(e)) %&gt;%
-  as.data.frame()</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3RhdGVfY3JpbWVfc3RkX2RmIDwtIHN0YXRlX2NyaW1lX2RmICU+JVxuICBzZWxlY3QoLVN0YXRlLCAtQWJiciwgLURpdmlzaW9uLCAtUmVnaW9uLCAtVW5lbXBsb3ksIC1Qb2xpY2UsIC1JblNjaG9vbCkgJT4lXG4gIGxhcHBseShmdW5jdGlvbihlKSBzY2FsZShlKSkgJT4lXG4gIGFzLmRhdGEuZnJhbWUoKVxuYGBgXG5gYGAifQ== -->
+<p><code>r</code>r state_crime_std_df &lt;- state_crime_df %&gt;% select(-State, -Abbr, -Division, -Region, -Unemploy, -Police, -InSchool) %&gt;% lapply(function(e) scale(e)) %&gt;% as.data.frame()</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Our objective is to compute the PCA scores on the standardized variables for the first two components. Once we perform k-means clustering we plot the points in this 2-dimensional PCA space.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfcGNhIDwtIHN0YXRlX2NyaW1lX3N0ZF9kZiAlPiVcbiAgcHJpbmNvbXAoKVxuc3VtbWFyeShzdGF0ZV9jcmltZV9wY2EpXG5gYGAifQ== -->
-<pre class="r"><code>state_crime_pca &lt;- state_crime_std_df %&gt;%
-  princomp()
-summary(state_crime_pca)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3RhdGVfY3JpbWVfcGNhIDwtIHN0YXRlX2NyaW1lX3N0ZF9kZiAlPiVcbiAgcHJpbmNvbXAoKVxuc3VtbWFyeShzdGF0ZV9jcmltZV9wY2EpXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r state_crime_pca &lt;- state_crime_std_df %&gt;% princomp() summary(state_crime_pca)</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>The PCA loadings and scores (projections into PCA space) are given by:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfcGNhJGxvYWRpbmdzXG5zdGF0ZV9jcmltZV9wY2Ffc2NvcmVzIDwtIHByZWRpY3Qoc3RhdGVfY3JpbWVfcGNhKSAlPiVcbiAgYXMuZGF0YS5mcmFtZSgpXG5gYGAifQ== -->
-<pre class="r"><code>state_crime_pca$loadings
-state_crime_pca_scores &lt;- predict(state_crime_pca) %&gt;%
-  as.data.frame()</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3RhdGVfY3JpbWVfcGNhJGxvYWRpbmdzXG5zdGF0ZV9jcmltZV9wY2Ffc2NvcmVzIDwtIHByZWRpY3Qoc3RhdGVfY3JpbWVfcGNhKSAlPiVcbiAgYXMuZGF0YS5mcmFtZSgpXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r state_crime_pca$loadings state_crime_pca_scores &lt;- predict(state_crime_pca) %&gt;% as.data.frame()</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>The clusters are now computed and identified by projecting into the first two PCA components.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfa21lYW5zIDwtIGttZWFucyhzdGF0ZV9jcmltZV9zdGRfZGYsIGNlbnRlcnMgPSA0KVxuc3RhdGVfY3JpbWVfcGNhX2NlbnRlcnMgPC0gcHJlZGljdChzdGF0ZV9jcmltZV9wY2EsIHN0YXRlX2NyaW1lX2ttZWFucyRjZW50ZXJzKSAlPiVcbiAgYXMuZGF0YS5mcmFtZSgpXG5zdGF0ZV9jcmltZV9wY2FfY2VudGVyc1xuc3RhdGVfY3JpbWVfcGNhX3Njb3JlcyAlPiUgXG4gIHNlbGVjdChDb21wLjEsIENvbXAuMikgJT4lXG4gIGdncGxvdChhZXMoQ29tcC4xLCBDb21wLjIpKSArXG4gIGdlb21fcG9pbnQoYWVzKENvbXAuMSwgQ29tcC4yLCBjb2wgPSBmYWN0b3Ioc3RhdGVfY3JpbWVfa21lYW5zJGNsdXN0ZXIpKSxcbiAgICAgICAgICAgICBzaXplID0gMiwgYWxwaGEgPSAwLjUpICtcbiAgZ2VvbV9wb2ludChkYXRhID0gc3RhdGVfY3JpbWVfcGNhX2NlbnRlcnNbLCAxOjJdLCBhZXMoQ29tcC4xLCBDb21wLjIpLFxuICAgICAgICAgICAgIHBjaCA9ICcrJywgc2l6ZSA9IDYpICtcbiAgc2NhbGVfY29sb3JfZGlzY3JldGUobmFtZSA9IFwiUHJlZGljdGVkIENsdXN0ZXJcIiwgbGFiZWxzID0gcGFzdGUoXCJDbHVzdGVyXCIsIDE6NCkpXG5gYGAifQ== -->
-<pre class="r"><code>state_crime_kmeans &lt;- kmeans(state_crime_std_df, centers = 4)
-state_crime_pca_centers &lt;- predict(state_crime_pca, state_crime_kmeans$centers) %&gt;%
-  as.data.frame()
-state_crime_pca_centers
-state_crime_pca_scores %&gt;% 
-  select(Comp.1, Comp.2) %&gt;%
-  ggplot(aes(Comp.1, Comp.2)) +
-  geom_point(aes(Comp.1, Comp.2, col = factor(state_crime_kmeans$cluster)),
-             size = 2, alpha = 0.5) +
-  geom_point(data = state_crime_pca_centers[, 1:2], aes(Comp.1, Comp.2),
-             pch = '+', size = 6) +
-  scale_color_discrete(name = &quot;Predicted Cluster&quot;, labels = paste(&quot;Cluster&quot;, 1:4))</code></pre>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -266,78 +244,46 @@ state_crime_pca_scores %&gt;%
 <p>Load <code>state_crime.csv</code> into Spark with <code>spark_read_csv</code> from the local filesystem.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfc2RmIDwtIHNwYXJrX3JlYWRfY3N2KHNjLCBcInN0YXRlX2NyaW1lX3NkZlwiLFxuICAgIHBhdGggPSAgXCJmaWxlOi8vL2hvbWUvcnN0dWRpby9yc3BhcmstdHV0b3JpYWwvZGF0YS9zdGF0ZV9jcmltZS5jc3ZcIilcbmBgYCJ9 -->
-<pre class="r"><code>state_crime_sdf &lt;- spark_read_csv(sc, &quot;state_crime_sdf&quot;,
-    path =  &quot;file:///home/rstudio/rspark-tutorial/data/state_crime.csv&quot;)</code></pre>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>The crime rates per 100,000 are extracted and scaled for each state.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfc3RkX3NkZiA8LSBzdGF0ZV9jcmltZV9zZGYgJT4lXG4gIHNlbGVjdCgtU3RhdGUsIC1BYmJyLCAtRGl2aXNpb24sIC1SZWdpb24sIC1VbmVtcGxveSwgLVBvbGljZSwgLUluU2Nob29sKSAlPiVcbiAgc3BhcmtfYXBwbHkoZnVuY3Rpb24oZSkgc2NhbGUoZSkpXG5zdGF0ZV9jcmltZV9zdGRfc2RmXG5gYGAifQ== -->
-<pre class="r"><code>state_crime_std_sdf &lt;- state_crime_sdf %&gt;%
-  select(-State, -Abbr, -Division, -Region, -Unemploy, -Police, -InSchool) %&gt;%
-  spark_apply(function(e) scale(e))
-state_crime_std_sdf</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3RhdGVfY3JpbWVfc3RkX3NkZiA8LSBzdGF0ZV9jcmltZV9zZGYgJT4lXG4gIHNlbGVjdCgtU3RhdGUsIC1BYmJyLCAtRGl2aXNpb24sIC1SZWdpb24sIC1VbmVtcGxveSwgLVBvbGljZSwgLUluU2Nob29sKSAlPiVcbiAgc3BhcmtfYXBwbHkoZnVuY3Rpb24oZSkgc2NhbGUoZSkpXG5zdGF0ZV9jcmltZV9zdGRfc2RmXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r state_crime_std_sdf &lt;- state_crime_sdf %&gt;% select(-State, -Abbr, -Division, -Region, -Unemploy, -Police, -InSchool) %&gt;% spark_apply(function(e) scale(e)) state_crime_std_sdf</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>The Spark K-means clustering is performed. The <span class="math inline">\(k\)</span>-means centers are computed in the original feature space.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfa21lYW5zX21vZGVsIDwtIHN0YXRlX2NyaW1lX3N0ZF9zZGYgJT4lXG4gIG1sX2ttZWFucyh+IE11cmRlciArIFJhcGUgKyBSb2JiZXJ5ICsgQXNzYXVsdCArIEJ1cmdsYXJ5ICsgTGFyY2VueSArIEF1dG8sXG4gICAgICAgICAgICBrID0gNEwpXG5zdGF0ZV9jcmltZV9rbWVhbnNfbW9kZWwkY2VudGVyXG5gYGAifQ== -->
-<pre class="r"><code>state_crime_kmeans_model &lt;- state_crime_std_sdf %&gt;%
-  ml_kmeans(~ Murder + Rape + Robbery + Assault + Burglary + Larceny + Auto,
-            k = 4L)
-state_crime_kmeans_model$center</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3RhdGVfY3JpbWVfa21lYW5zX21vZGVsIDwtIHN0YXRlX2NyaW1lX3N0ZF9zZGYgJT4lXG4gIG1sX2ttZWFucyh+IE11cmRlciArIFJhcGUgKyBSb2JiZXJ5ICsgQXNzYXVsdCArIEJ1cmdsYXJ5ICsgTGFyY2VueSArIEF1dG8sXG4gICAgICAgICAgICBrID0gNEwpXG5zdGF0ZV9jcmltZV9rbWVhbnNfbW9kZWwkY2VudGVyXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r state_crime_kmeans_model &lt;- state_crime_std_sdf %&gt;% ml_kmeans(~ Murder + Rape + Robbery + Assault + Burglary + Larceny + Auto, k = 4L) state_crime_kmeans_model$center</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>The predicted group memberships are computed.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfa21lYW5zX3ByZWRpY3Rfc2RmIDwtIHNkZl9wcmVkaWN0KHN0YXRlX2NyaW1lX2ttZWFuc19tb2RlbCkgJT4lXG4gIHNlbGVjdChwcmVkaWN0aW9uKVxuc3RhdGVfY3JpbWVfa21lYW5zX3ByZWRpY3RfZGYgPC0gc3RhdGVfY3JpbWVfa21lYW5zX3ByZWRpY3Rfc2RmICU+JVxuICBjb2xsZWN0KClcbmBgYCJ9 -->
-<pre class="r"><code>state_crime_kmeans_predict_sdf &lt;- sdf_predict(state_crime_kmeans_model) %&gt;%
-  select(prediction)
-state_crime_kmeans_predict_df &lt;- state_crime_kmeans_predict_sdf %&gt;%
-  collect()</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3RhdGVfY3JpbWVfa21lYW5zX3ByZWRpY3Rfc2RmIDwtIHNkZl9wcmVkaWN0KHN0YXRlX2NyaW1lX2ttZWFuc19tb2RlbCkgJT4lXG4gIHNlbGVjdChwcmVkaWN0aW9uKVxuc3RhdGVfY3JpbWVfa21lYW5zX3ByZWRpY3RfZGYgPC0gc3RhdGVfY3JpbWVfa21lYW5zX3ByZWRpY3Rfc2RmICU+JVxuICBjb2xsZWN0KClcbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r state_crime_kmeans_predict_sdf &lt;- sdf_predict(state_crime_kmeans_model) %&gt;% select(prediction) state_crime_kmeans_predict_df &lt;- state_crime_kmeans_predict_sdf %&gt;% collect()</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>We now plot the data in the 2-dim PCA space of the first two principal variables. Recall that the first two principal variables explain about 74.3% of the variation. The points are colorized according to their group membership found by <span class="math inline">\(k\)</span>-means. The centers of the four groups are also plotted in PCA space.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RhdGVfY3JpbWVfcGNhX3Byb2ogPC0gbWxfcGNhKHN0YXRlX2NyaW1lX3N0ZF9zZGYsIGsgPSAyKSAlPiVcbiAgc2RmX3Byb2plY3Qoc3RhdGVfY3JpbWVfc3RkX3NkZilcbnN0YXRlX2NyaW1lX2ttZWFuc19jZW50ZXJzIDwtIHN0YXRlX2NyaW1lX3BjYV9wcm9qICU+JVxuICBzZGZfYmluZF9jb2xzKHN0YXRlX2NyaW1lX2ttZWFuc19wcmVkaWN0X3NkZikgJT4lXG4gIGdyb3VwX2J5KHByZWRpY3Rpb24pICU+JVxuICBzdW1tYXJpc2UoXG4gICAgUEMxID0gbWVhbihQQzEsIG5hLnJtID0gVFJVRSksXG4gICAgUEMyID0gbWVhbihQQzIsIG5hLnJtID0gVFJVRSlcbiAgKSAlPiVcbiAgY29sbGVjdCgpXG5zdGF0ZV9jcmltZV9rbWVhbnNfY2VudGVyc1tvcmRlcihzdGF0ZV9jcmltZV9rbWVhbnNfY2VudGVycyRwcmVkaWN0aW9uKSxdXG5zdGF0ZV9jcmltZV9wY2FfcHJvaiAlPiVcbiAgY29sbGVjdCgpICU+JVxuICBnZ3Bsb3QoYWVzKFBDMSwgLVBDMikpICtcbiAgZ2VvbV9wb2ludChhZXMoUEMxLCAtUEMyLFxuICAgICAgICAgICAgICAgICBjb2wgPSBmYWN0b3Ioc3RhdGVfY3JpbWVfa21lYW5zX3ByZWRpY3RfZGYkcHJlZGljdGlvbiArIDEpKSxcbiAgICAgICAgICAgICBzaXplID0gMiwgYWxwaGEgPSAwLjUpICtcbiAgZ2VvbV9wb2ludChkYXRhID0gc3RhdGVfY3JpbWVfa21lYW5zX2NlbnRlcnMsXG4gICAgICAgICAgICAgYWVzKFBDMSwgLVBDMiksXG4gICAgICAgICAgICAgcGNoID0gJysnLCBzaXplID0gNSkgK1xuICBzY2FsZV9jb2xvcl9kaXNjcmV0ZShuYW1lID0gXCJQcmVkaWN0ZWQgQ2x1c3RlclwiLCBsYWJlbHMgPSBwYXN0ZShcIkNsdXN0ZXJcIiwgMTo0KSlcbmBgYCJ9 -->
-<pre class="r"><code>state_crime_pca_proj &lt;- ml_pca(state_crime_std_sdf, k = 2) %&gt;%
-  sdf_project(state_crime_std_sdf)
-state_crime_kmeans_centers &lt;- state_crime_pca_proj %&gt;%
-  sdf_bind_cols(state_crime_kmeans_predict_sdf) %&gt;%
-  group_by(prediction) %&gt;%
-  summarise(
-    PC1 = mean(PC1, na.rm = TRUE),
-    PC2 = mean(PC2, na.rm = TRUE)
-  ) %&gt;%
-  collect()
-state_crime_kmeans_centers[order(state_crime_kmeans_centers$prediction),]
-state_crime_pca_proj %&gt;%
-  collect() %&gt;%
-  ggplot(aes(PC1, -PC2)) +
-  geom_point(aes(PC1, -PC2,
-                 col = factor(state_crime_kmeans_predict_df$prediction + 1)),
-             size = 2, alpha = 0.5) +
-  geom_point(data = state_crime_kmeans_centers,
-             aes(PC1, -PC2),
-             pch = '+', size = 5) +
-  scale_color_discrete(name = &quot;Predicted Cluster&quot;, labels = paste(&quot;Cluster&quot;, 1:4))</code></pre>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>This plot agrees with the analysis in Section 8.2.2 except that we reversed the scale of PC2 and the clusters are labeled by different colors. These changes are not relevant to cluster identification.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3BhcmtfZGlzY29ubmVjdChzYylcbmBgYCJ9 -->
-<pre class="r"><code>spark_disconnect(sc)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3BhcmtfZGlzY29ubmVjdChzYylcbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r spark_disconnect(sc)</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 </div>

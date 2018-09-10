@@ -1,32 +1,25 @@
 ---
 title: "Sparklyr Basics"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/9/2018"
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
   
 ```{r setup, include=FALSE}
-# load sparklyr
-if (nchar(Sys.getenv("SPARK_HOME")) < 1) {
-  Sys.setenv(SPARK_HOME = "/opt/spark")
-}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 The `sparklyr` R frontend to Spark is based on a `dplyr` interface to Spark SQL. Once these required packages are loaded, a Spark connection is established.
 ```{r}
 library(dplyr)
 library(sparklyr)
+
 # start the sparklyr session
 master <- "local"
 # master <- "spark://master:7077"
-sc <- spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
-                    method = c("shell"), app_name = "sparklyr",
-                    version = NULL, hadoop_version = NULL,
-                    config = spark_config(),
-                    extensions = sparklyr::registered_extensions())
+sc <- spark_connect(master = master)
 ```
 The `nycflights13` package will be used to illustrate basic concepts. Its size may be an issue in which case, executing each chunk in sequence might work better than Knitting.
 

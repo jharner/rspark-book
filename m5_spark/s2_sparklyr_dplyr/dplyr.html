@@ -136,14 +136,11 @@ $(document).ready(function () {
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(sparklyr)
+
 # start the sparklyr session
 master &lt;- &quot;local&quot;
 # master &lt;- &quot;spark://master:7077&quot;
-sc &lt;- spark_connect(master, spark_home = Sys.getenv(&quot;SPARK_HOME&quot;),
-                    method = c(&quot;shell&quot;), app_name = &quot;sparklyr&quot;,
-                    version = NULL, hadoop_version = NULL,
-                    config = spark_config(),
-                    extensions = sparklyr::registered_extensions())</code></pre>
+sc &lt;- spark_connect(master = master)</code></pre>
 <p><code>sparklyr</code> requires a <code>dplyr</code> compatible back-end to Spark.</p>
 <div id="spark-dplyr" class="section level2">
 <h2>6.2 Spark dplyr</h2>

@@ -16,14 +16,11 @@ Establish the Spark connection.
 ```{r}
 library(dplyr)
 library(sparklyr)
+
 # start the sparklyr session
 master <- "local"
 # master <- "spark://master:7077"
-sc <- spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
-                    method = c("shell"), app_name = "sparklyr",
-                    version = NULL, hadoop_version = NULL,
-                    config = spark_config(),
-                    extensions = sparklyr::registered_extensions())
+sc <- spark_connect(master = master)
 ```
 `sparklyr` requires a `dplyr` compatible back-end to Spark.
 
