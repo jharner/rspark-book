@@ -1,7 +1,7 @@
 ---
 title: "JSON"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/10/2018"
 output:
   html_document: default
   html_notebook: default
@@ -94,7 +94,7 @@ toJSON(c(3.14, NA, NaN, 21, Inf, -Inf))
 ```
 Note that we can specify a `na` argument to override the defaults.
 ```{r}
-toJSON(c(3.14, NA, NaN, 21, Inf, -Inf), na="null")
+toJSON(c(3.14, NA, NaN, 21, Inf, -Inf), na = "null")
 ```
 
 #### Special vector types: dates, times, and factors
@@ -236,13 +236,13 @@ Generally speaking, tabular data structures can be implemented in two different 
 
 * A column based way. A column based structure is efficient for inserting or extracting certain columns of the data, but it is inefficient for manipulating individual rows.
 
-* A row based fashion. For row-based implementations we can easily manipulate a particular record, but to insert/extract a whole column we would need to iterate over all records in the table and read/modify the appropriate field in each of them.
+* A row based way. For row-based implementations we can easily manipulate a particular record, but to insert/extract a whole column we would need to iterate over all records in the table and read/modify the appropriate field in each of them.
 
-The data frame class in R is implemented in a column based fashion: it constitutes of a named list of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc.
+The data frame class in R is implemented in a column based fashion: it consists of a named list of equal-length vectors. Thereby the columns in the data frame naturally inherit the properties from atomic vectors discussed before, such as homogeneity, missing values, etc.
 
 Another argument for column-based implementation is that statistical methods generally operate on columns. For example, the `lm` function fits a linear regression by extracting the columns from a data frame as specified by the `formula` argument. R simply binds the specified columns together into a matrix `X` and calls out to a highly optimized FORTRAN subroutine to calculate the OLS estimates.
 
-Unfortunately R is an exception in its preference for column-based storage: most languages, systems, databases, API’s, etc, are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in JSON seems to almost exclusively row based. This discrepancy presents various complications when converting between data frames and JSON. 
+Unfortunately R is an exception in its preference for column-based storage: most languages, systems, databases, API’s, etc, are optimized for record based operations. For this reason, the conventional way to store and communicate tabular data in JSON seems to almost exclusively be row based. This discrepancy presents various complications when converting between data frames and JSON. 
 
 #### Row based data frame encoding
 

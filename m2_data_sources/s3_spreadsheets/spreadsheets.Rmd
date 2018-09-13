@@ -1,7 +1,7 @@
 ---
 title: "Spreadsheets"
 author: "Jim Harner"
-date: "7/25/28/2018"
+date: "9/10/28/2018"
 output:
   html_document: default
   html_notebook: default
@@ -19,7 +19,7 @@ Spreadsheets are widely used as a storage option. Microsoft Excel is commonly us
 
 ### Spreadsheet formats
 
-Previously Excel workbooks used a binary format, XLS, which was difficult to decode. Now Excel workbooks are stored in an XML-based format called Open Office XML (OOXML). However, it is not clear how open OOXML is.
+Previously Excel workbooks used a binary format, XLS, which was difficult to decode. Now Excel workbooks are stored in an XML-based format called Open Office XML (OOXML).
 
 The main difference between these two file extensions is that the XLS is created on the version of Excel prior to 2007 while XLSX is created on the version of Excel 2007 and onward. XLS is a binary format while that XLSX is Open XML format.
 
@@ -33,7 +33,7 @@ Spreadsheets displays a data set in a rectangular grid of cells. It has the bene
 
 The point-and-click interface of spreadsheets does not allow steps to be recorded although macros are available.
 
-The function `read_excel` in the R package `readxl` can read both Excel 97--2004 files and Excel 2007+ files with the `read_xls` and `read_xlsx` functions, respectively. The `read_excel` auto detect the format from the file extension.
+The function `read_excel` in the R package `readxl` can read both Excel 97--2007 files and Excel 2007+ files with the `read_xls` and `read_xlsx` functions, respectively. The `read_excel` auto detect the format from the file extension.
 ```{r}
 nemo_xls <- read_excel("pointnemotemp.xlsx", col_names = c("date", "temp"),
                        col_types = c("date", "numeric"))

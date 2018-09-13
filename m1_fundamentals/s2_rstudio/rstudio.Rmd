@@ -1,7 +1,7 @@
 ---
 title: "RStudio Server"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/10/2018"
 output:
   html_document: default
   html_notebook: default
@@ -19,11 +19,9 @@ As a frontend to R, it can be run on your local machine (Mac or Windows) nativel
 
 ### 1.2.1 Running RStudio Server
 
-R/RStudio is run in a Docker container, which is part of a virtual computing environment called `rspark`.
+We run RStudio Server in a Docker container within a virtual computing environment on your local machine or in the cloud. The development repository (repo) for this environment is called `rspark` and can be found on GitHub here:   [github.com/jharner/rspark](https://github.com/jharner/rspark). This virtual environment will allow you to run R, Spark, Hadoop, etc.
 
-We run RStudio Server in a virtual cluster on your local machine. The development repository (repo) for the virtual cluster is called `rspark` and can be found on GitHub here:   [github.com/jharner/rspark](https://github.com/jharner/rspark). This virtual cluster will allow you to run Spark, Hadoop, etc.
-
-`rspark` can be installed in one of several ways:
+`rspark` can be installed in one of several ways:  
 
 * running Docker directly on your computer (https://github.com/jharner/rspark);  
 * downloading images from Docker Hub to your computer (https://github.com/jharner/rspark-docker);  
@@ -45,13 +43,11 @@ Prerequisites:
 * Amazon Web Services Account  
 * Modern Browser (Safari, Chrome, or Firefox)
 
-Detailed instruction for running `rspark` an AWS are available here: [rspark on AWS](https://github.com/jharner/rspark/tree/master/AWS)
+Detailed instructions for running `rspark` an AWS are available here: [rspark on AWS](https://github.com/jharner/rspark/tree/master/AWS)
 
-Note: The pre-built image on AWS is called `rsparkbox` and typically it is a longer version of this tutorial.
+The pre-built image on AWS is called `rsparkbox` and it contains this tutorial. Once you follow the steps in the directions, connect to your `rspark` server through a web browser.
 
-Once you follow the steps in the directions, connect to your `rspark` server through a web browser:
-
-Into a browser's URL bar, enter 'http://0.0.0.0:8787' replacing '0.0.0.0' with the IP address of your instance. Log into RStudio with the credentials:
+**Note** If you are given an IP address for you instance, enter it into your browser's URL bar as 'http://0.0.0.0:8787' replacing '0.0.0.0' with the IP address of your instance. In this case you do not need an AWS account. Log into RStudio with the credentials:
 
 		username: rstudio
 		password: rstudio
@@ -104,13 +100,13 @@ Other file types of interest in this class are: `R Script`, e.g., for Hadoop fil
 
 Files support built-in LaTeX for mathematics and code chunks containing not only R, but also Bash, Python, C++, SQL, etc. You can mix these code chunks within a single document.
 
-R supports Projects which allow related files to be organized together. Projects can then be tied to version control systems such as `git`. We will be using `rspark-notes` in this course, optionally as an RStudio Project.
+R supports Projects which allow related files to be organized together. Projects can then be tied to version control systems such as `git`. We will be using `rspark-tutorial` in this tutorial, optionally as an RStudio Project.
 
 ### 1.2.3 The Console Panel
 
 The `Console` is for interactively executing R statements. Certain types of R statements generated from other sources also appear here. The `R Markdown` tab is transitory and appears when knitting takes place. R Markdown errors are also displayed in this tab.
 
-The `Terminal` tab provides access to the Linux command line running `bash`. By default, you open a session in `Terminal 1`. Your working directory is displayed to the right of the terminal name, which can be changed. The prompt is given by `rstudio@CONTAINER_ID`. Additional terminals can be launched by selecting `Terminal` and then `New Terminal` in the `Tools` menu. Each terminal can be set to a specific directory for executing commands.
+The `Terminal` tab provides access to a command line interface (CLI) to Linux using the `bash` shell. By default, you open a session in `Terminal 1`. Your working directory is displayed to the right of the terminal name, which can be changed. The prompt is given by `rstudio@CONTAINER_ID`. Additional terminals can be launched by selecting `Terminal` and then `New Terminal` in the `Tools` menu. Each terminal can be set to a specific directory for executing commands.
 
 ### 1.3.3 Environments and Files
 

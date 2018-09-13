@@ -1,18 +1,21 @@
 ---
 title: "Databases"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/10/2018"
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
-```{r setup, include = TRUE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-host.name = "postgres"
+```
+
+Load the `RPostgreSQL` package for later use.
+```{r}
 library(RPostgreSQL)
 ```
+Note the dependency on the `DBI` package.
 
 ## 2.4 Databases
 
@@ -61,7 +64,7 @@ psql -h postgres dataexpo
 ```
 The `-w` option causes a prompt for your password, but is not needed for the Dockerized version of this course. `psql` is in `/usr/bin`, which is in the `PATH` environmental variable, i.e., it is not necessary to invoke by `/usr/bin/psql`.
 
-The `-h` option specifies the host, which in this case is `postgres`. It is not needed if the Postgres is on the same machine as RStudio, but in the Dockerized version Postgres is in a separate container. 
+The `-h` option specifies the host, which in this case is `postgres`. It is not needed if the Postgres is on the same machine as RStudio, but in the Dockerized version Postgres is in a separate container called `postgres`.
 
 Databases typically are only setup by the database administrator (DBA). Once established you can populate it with tables if you have write permissions. Tables could be added to the `dataexpo` database by the following command if they are not already there. But don't since the database is populated.
 ```
@@ -109,7 +112,7 @@ The last command quits `psql`.
 To get help use:  
 
 * `\h` to list SQL commands;  
-* `\h command` to show the syntax for command;  
+* `\h command` to show the syntax for `command`;  
 * `\?` to list psql commands 
 
 You can run batch commands in `psql` by putting a SQL `--command` in quotes.
@@ -141,7 +144,7 @@ This provides safe coding in case there is a network problem. However, in order 
 
 ```{r}
 drv <- dbDriver("PostgreSQL")
-con <- dbConnect(drv, host=host.name, dbname='dataexpo')
+con <- dbConnect(drv, host = "postgres", dbname = 'dataexpo')
 dbListConnections(drv)
 # list the tables and the fields within the location_table
 dbListTables(con)
@@ -162,13 +165,13 @@ We now consider an alternative approach to select the data from the `location_ta
 measures <- dbSendQuery(con, "select * from location_table")
 dbGetStatement(measures)
 # We can then fetch directly from the PostgreSQLResult
-fetch(measures, n=10)
+fetch(measures, n = 10)
 # The default number of records to retrieve is 500 per fetch
 ```
 We can fetch records 50 at a time until the data is depleted.
 ```{r}
 while (!dbHasCompleted(measures)) {
-  chunk <- fetch(measures, n=50)
+  chunk <- fetch(measures, n = 50)
   print(nrow(chunk))
 }
 class(measures)
@@ -198,7 +201,7 @@ I am assuming you have basic knowledge or `select`. We use `dbGetQuery` in order
 
 Now plot the data frame.
 ```{r}
-plot(temp.avgs,type="l",
+plot(temp.avgs, type="l",
   xlab="Base Elevation (feet)", ylab="Average Temperature(Kelvin)",
   main=" Avg Temperature by Elevation")
 ```

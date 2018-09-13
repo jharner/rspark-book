@@ -1,7 +1,7 @@
 ---
 title: "Plain Text"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/10/2018"
 output:
   html_document: default
   html_notebook: default
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(readr)
 ```
 
-Material in this section is based on material in Paul Murrell's [Introduction to Data Technologies](https://www.stat.auckland.ac.nz/~paul/ItDT/).
+Material in this section is based partially on material in Paul Murrell's [Introduction to Data Technologies](https://www.stat.auckland.ac.nz/~paul/ItDT/).
 
 ## 2.1 Plain Text Files
 
@@ -39,37 +39,38 @@ For example, consider the Pacific Pole of Inaccessibility data from `pointnemote
  16-MAY-1994 00 /  5:  277.8
  16-JUN-1994 00 /  6:  276.1
 ```
-The first eight rows are metadata. The data of interest is in the first (date) and last (temperature) columns and is space delimited.
+The first eight rows are metadata. The data of interest is in the first column (date) and the last column (temperature) for the space-delimited file.
 
 The following are two subtypes of plain text files depending on how values are separated:  
 
 * Delimited formats:  values in a row are separated by a special character (one or more spaces, tabs, commas, etc.);    
-* Fixed-width formats:  each value in a row is allocated a fixed number of characters.    
-All information is stored as text.
+* Fixed-width formats:  each value in a row is allocated a fixed number of characters.  
+
+In both cases, all information is stored as text.
 
 ### 2.1.1 Advantages and Disadvantages of Plain Text Files
 
 The plain text format is simple and portable. However, the disadvantages for using rows and columns are that:  
 
-* representing complex data structures is difficult and often inefficient;   
+* representing complex data structures is difficult;   
 * storing everything as characters is inefficient in terms of memory. 
 
 **Hierarchical** or **multi-level** or **stratified** data are complex and cannot easily be stored as plain text. For example, consider family data which has two types of objects: parents and children. Data models that do not satisfy the **relational model** (see chapter 2, section 4) are often inefficient due to repetition of values, i.e., the data representation violates the DRY (Don't Repeat Yourself) principle. Thus, using a plain text format should only be used for relatively small flat files.
 
-The `read.table` base R function can be used to read the `pointnemotemp.txt` text file. For data science applications, it is better to use the `read_table` function (or the `read_fwf` function since the columns are in fixed positions) in the `readr` package (part of Hadley Wickham's **Tidyverse**) to read the text file. This is a very good choice if the file is large since the result is a tibble---not a `data.frame`. Although a tibble inherits from a `data.frame`, it both enhances and restricts the behavior of a `data.frame`. Only the first 10 rows are printed and the type of each column is given.
+The `read.table` base R function can be used to read the `pointnemotemp.txt` text file. For data science applications, it is better to use the `read_table` function (or the `read_fwf` function if the columns are in fixed positions) in the `readr` package (part of Hadley Wickham's **Tidyverse**) to read the text file. This is a very good choice if the file is large since the result is a tibble---not a `data.frame`. Although a tibble inherits from a `data.frame`, it both enhances and restricts the behavior of a `data.frame`. Only the first 10 rows are printed and the type of each column is given.
 
 ```{r}
-nemotemp2 <- read_table("pointnemotemp.txt", skip=8,
+nemotemp_tbl <- read_table("pointnemotemp.txt", skip=8,
                         col_types = c("c---d"),
                         col_names = c("date", "temp"))
-class(nemotemp2)
-nemotemp2
+class(nemotemp_tbl)
+nemotemp_tbl
 ```
 The `col_types` are given by `c` = character, `-` = skip, and `d` = double. We did not convert `date` to an R Date format.
 
 A regular data frame can be converted to a tibble by the `as_tibble` function in the `tibble` package, which is part of the `tidyverse`. The packages in the `tidyverse` form a coherent approach to data manipulation and analyses using R, particularly for big data.
 
-Using one or more blanks to separate fields is dangerous if there is missing data (not the case here). We can write comma-separated data to a file using `write.csv`.
+Using one or more blanks to separate fields is dangerous if there is missing data (not the case here). We can write comma-separated data to a file using `write_csv`.
 
 ### 2.1.2 CSV Files
 
@@ -78,24 +79,22 @@ The CSV (Comma-Separated Value) format is a special case of the plain text forma
 Rules for CSV files:  
 
 * Comma delimited: each field is separated by a comma;  
-* Double-quotes are special: fields containing commas enclosed by double quotes;  
+* Double-quotes are special: fields containing commas are enclosed by double quotes;  
 * Double-quote escape sequence: fields containing double-quotes must be surrounded by double-quotes and each embedded double-quote must be represented using two double-quotes;     
-* Header information: can have a single header line containing the names of the fields.  
+* Header information: an optional single header line can contain the names of the fields.  
 
 CSV files are often used for transferring data from spreadsheets. The `write_csv` function in the `readr` package is used for writing a data frame or tibble to the local file system.
 
 ```{r}
-# write.csv(nemotemp, file="nemotemp.csv", quote=F, row.names=F)
 dir <- getwd()
-write_csv(nemotemp2, file.path(dir, "nemotemp2.csv"))
+write_csv(nemotemp_tbl, file.path(dir, "nemotemp.csv"))
 ```
 
 We can then read it back in using `read_csv`, which uses `,` as a separator by default. The `read_csv` function in the `readr` package results in a tibble and is preferred over base R's `read.csv` for big data.
 
 ```{r}
-# nemotempcsv <- read.csv("nemotemp.csv", header = T)
-nemotemp2csv <- read_csv("nemotemp2.csv")
-nemotemp2csv
+nemotemp_csv <- read_csv("nemotemp.csv")
+nemotemp_csv
 ```
 Here the column types were determined by default.
 

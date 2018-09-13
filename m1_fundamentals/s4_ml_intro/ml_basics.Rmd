@@ -1,11 +1,10 @@
 ---
 title: "ML Basics"
 author: "Jim Harner"
-date: "6/25/2018"
+date: "9/10/2018"
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -19,6 +18,7 @@ An *algorithm* is a procedure specifying a set of steps to accomplish a task.
 Efficient algorithms that work sequentially or in parallel are the basis of pipelines to prepare, process, and analyze data. The principal data science algorithms are for:  
 
 * data munging,
+* modeling,
 * optimization, and
 * machine learning. 
 
@@ -29,7 +29,7 @@ Machine learning algorithms are largely used to predict, classify, or cluster.
 * *Prediction* and *classification* are examples of *supervised learning*, whereas  
 * *clustering* is an example of *unsupervise learning*.  
 
-Put another way, supervised learning is concerned with problems that have a measurable (or labeled) output (response) variable and unsupervised learning is concerned with problems without a output variable.
+Put another way, supervised learning is concerned with problems that have a measurable (or labeled) output variable and unsupervised learning is concerned with problems without a output variable.
 
 * *Statistical modeling* is done (primarily) to infer the underlying generative process.  
 * *Machine learning (ML) algorithms* are used to predict or classify with the most accuracy.
@@ -49,7 +49,7 @@ The supervised learning methods are primarily concerned with models of the form:
 $$
   Y = f(X_1, X_2, \ldots, X_p) + \epsilon,
 $$
-where $f$ is an unknown fixed function, $Y$ is the output variable, $X_1, X_2, \ldots, X_p$ are the input variables, and $\epsilon$ is the error term which is independent of the $X$'s and has a mean of $0$. The output variable is also called the label, response, or dependent variable. The input variables are also called the features, predictors, features, or independent variables.
+where $f$ is an unknown fixed function, $Y$ is the output variable, $X_1, X_2, \ldots, X_p$ are the input variables, and $\epsilon$ is the error term which is independent of the $X$'s and has a mean of $0$. The output variable is also called the label, response, or dependent variable. The input variables are also called the features, predictors, or independent variables.
 
 The simplest manifestation of this form is the linear regression model given by: 
 $$
@@ -90,7 +90,7 @@ It is possible to define measures of flexibility and interpretability for models
 
 #### Measuring model accuracy
 
-We defined accuracy theoretically in terms of an expected value. Within a regression context, this can be defined in terms of the *mean squared error* defined by:  
+We defined accuracy theoretically in terms of an expected value. Within a regression context, the sample version can be defined in terms of the *mean squared error* defined by:  
 $$
   MSE = \frac{1}{n} \sum_{i = 1}^{n} (y_i - \hat f(x_i))^2,
 $$
