@@ -10,12 +10,13 @@ output:
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-Load the `RPostgreSQL` package for later use.
+The RPostgreSQL package provides an R interface to the PostgreSQL relational database. It depends on the `DBI` package, which provides a general interface between R and database management systems.
 ```{r}
+# The container name housing PostgreSQL is `postgres`.
+host.name = "postgres"
 library(RPostgreSQL)
 ```
-Note the dependency on the `DBI` package.
+We will also be using `psql`, which is a UNIX command line interface (CLI) to PostgreSQL.
 
 ## 2.4 Databases
 

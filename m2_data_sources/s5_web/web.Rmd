@@ -11,14 +11,18 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+The `httr` package is part of the `tidyverse`. It is a wrapper for the `curl` package, which provide requests for working with the `http` protocol.
+```{r}
+library(httr)
+```
+
 ## 2.5 Web Services
 
 *Web Services* is a recently introduced phrase. The *Web* and the *HyperText Transfer Protocol (HTTP)* that underlies the communication of data on the Web have become a vital part of our information network and day-to-day environment. Thus, being able to access various forms of data using HTTP is an important facility in a general programming language. We want to be able to:  
 
 * download files,  
 * get data via HTML forms,  
-* "scrape"" HTML page content as data itself, and  
-* use SOAP (Simple Object Access Protocol) to invoke methods provided via Web Services.  
+* "scrape" HTML page content as data itself, and  
 * use REST APIs
 
 HTTP is a stateless protocol, i.e., no information is kept between message exchanges. The communication usually takes place over TCP/IP, but other transports can be used.
@@ -125,7 +129,6 @@ The text in this subsection is extracted from the `httr` quickstart guide.
 
 To make a request, first load `httr`, then call `GET()` with a `url`:
 ```{r}
-library(httr)
 r <- GET("http://httpbin.org/get")
 ```
 This gives you a response object. Printing a response object gives you some useful information: the actual `url` used, the `http` status, the file (content) type, the size, and if it's a text file, the first few lines of output.

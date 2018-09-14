@@ -22,9 +22,9 @@ This diagram is taken from [Doing Data Science](http://shop.oreilly.com/product/
 
 This tutorial initially will focus on the items along the top, i.e., raw data is collected, data is processed, and data is cleaned. Exploratory data analyses will also be covered. We then cover the box on the right---machine learning algorithms and statistical models. We also cover data visualization in the lower right box.
 
-Hadley Wickham has a more abbreviated and specific version given here: [R for Data Science](http://r4ds.had.co.nz/introduction.html#what-you-will-learn).
+Hadley Wickham has a more abbreviated and specific version in his book: [R for Data Science](http://r4ds.had.co.nz/introduction.html#what-you-will-learn). Hadley's workflow is based on functions which use tibbles---a type of data frame amenable to big, rectangular data---as inputs and outputs, much like UNIX pipes use standard input and output. This functionality is captured in a collection of packages called the tidyverse, which is also an R package of the same name. The `tidyverse` package automatically loads the most common tidyverse packages.
 
-It focuses on `tidyr` to make data tidy, `dplyr` for transforming the data, `ggplot2` for visualization, various modeling functions such as `lm`, and R markdown or Shiny for communication. We will often be using his approach in this course.  
+We focus on on certain R packages in the tidyverse, e.g., `tidyr` to clean data, `dplyr` for transforming the data, `ggplot2` for visualization, `modelr` and `broom` for modeling, and various import packages among others. We use R markdown and R notebooks for communicating results, which may contain embedded graphics based on packages such as `ggplot2`. We will often be using Hadley's approach in this course.  
 
 ### 1.1.1 Data Science Environments  
 

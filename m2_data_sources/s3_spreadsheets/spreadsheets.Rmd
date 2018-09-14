@@ -8,8 +8,11 @@ output:
   pdf_document: default
 ---
 
-```{r setup, include=TRUE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+The `readxl` package is part of the `tidyverse`. It is used for importing tabular Excel files (`.xls` and `.xlsx`) into R as tibbles.
+```{r}
 library("readxl", warn.conflicts = F)
 ```
 

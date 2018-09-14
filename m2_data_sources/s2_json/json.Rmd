@@ -10,7 +10,9 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+```
+The `jsonlite` package is part of the `tidyverse`. It is a powerful parser for statistical data. `jsonlite` makes it easy to build data pipelines and to use the web APIs.
+```{r}
 library(jsonlite)
 ```
 

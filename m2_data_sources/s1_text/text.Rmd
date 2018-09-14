@@ -10,7 +10,9 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+```
+The `readr` package is part of the `tidyverse`. It is used for importing rectangular text files into R as tibbles.
+```{r}
 library(readr)
 ```
 
