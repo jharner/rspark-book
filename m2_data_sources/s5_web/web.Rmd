@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 The `httr` package is part of the `tidyverse`. It is a wrapper for the `curl` package, which provide requests for working with the `http` protocol.
 ```{r}
 library(httr)
+library(jsonlite)
 ```
 
 ## 2.5 Web Services
@@ -127,21 +128,15 @@ The following two package vignettes describe how the package works:
 
 The text in this subsection is extracted from the `httr` quickstart guide.
 
-To make a request, first load `httr`, then call `GET()` with a `url`:
+To make a request call `GET()` with a `url`:
 ```{r}
 r <- GET("http://httpbin.org/get")
 ```
-This gives you a response object. Printing a response object gives you some useful information: the actual `url` used, the `http` status, the file (content) type, the size, and if it's a text file, the first few lines of output.
+This gives you a response object. Printing a response object gives you useful information: the actual `url` used, the `http` status, the file (content) type, the size, and if it's a text file, the first few lines of output.
 ```{r}
 r
 ```
-The R output is similar to `curl` output, but more complete. You can pull out important parts of the response with the following helper methods:
-```{r}
-status_code(r)
-headers(r)
-str(content(r))
-```
-Notice that the outputs of `headers` and `content` are named lists. `httpbin.org` accepts many types of `http` request` and returns json that describes the data that it received.
+The R output is similar to `curl` output, but more complete. You can pull out important parts of the response with helper methods (see below).
 
 You can also use the `GET()`, `HEAD()`, `POST()`, `PATCH()`, `PUT()` and `DELETE()` verbs. `GET()` is used by your browser when requesting a page, and `POST()` is usually used when submitting a form to a server. `PUT()`, `PATCH()` and `DELETE()` are used most often by web APIs.
 
@@ -155,59 +150,28 @@ The data sent back from the server consists of three parts:
 
 The most important part of the status line is the http status code which tells you whether or not the request was successful.
 
-The status code is a three digit number that summaries whether or not the request was successful (as defined by the server that you're talking to). You can access the status code along with a descriptive message using `http_status()`:
+The status code is a three digit number that summaries whether or not the request was successful (as defined by the server). You can access the status code along with a descriptive message using `http_status()` or more compactly `status_code()`.
 ```{r}
 r <- GET("http://httpbin.org/get")
-# Get an informative description:
-http_status(r)
-
-# Or just access the raw code:
-r$status_code
+status_code(r)
+# Or just access the raw code: r$status_code
 ```
 
 A successful request always returns a status of 200. Common errors are 404 (file not found) and 403 (permission denied). 
 
-There are three ways to access the body of the request, all using `content()`:
-
-* `content(r, "text")` accesses the body as a character vector:  
-
+The output of `headers` is a named list. For example, the content type is given by:
 ```{r}
-r <- GET("http://httpbin.org/get")
-content(r, "text")
-```
-`httr` will automatically decode content from the server using the encoding supplied in the content-type HTTP header.
-
-* content(r, "raw") for non-text requests accesses the body of the request as a raw vector:
-
-```{r}
-content(r, "raw")
+headers(r)$`content-type`
 ```
 
-* `httr` provides a number of default parsers for common file types:
-
+There are three ways to access the body of the request (`text`, `raw`, and `parsed`), all using `content()`. `content(r, as = "text")` returns the body as a character vector:  
 ```{r}
-# JSON automatically parsed into named list
-str(content(r, "parsed"))
+content(r, as = "text")
 ```
-
-Response headers are accessed by `headers()`:
+`httr` will automatically decode content from the server using the encoding supplied in the content-type HTTP header. The output type that is most readable is `parsed`.
 ```{r}
-headers(r)
+str(content(r, as = "parsed"))
 ```
-This is a named list, but because http headers are case insensitive, indexing this object ignores case.
-
-Cookies are accessed in a similar way:
-```{r}
-r <- GET("http://httpbin.org/cookies/set", query = list(a = 1))
-cookies(r)
-```
-Cookies are automatically persisted between requests to the same domain:
-```{r}
-r <- GET("http://httpbin.org/cookies/set", query = list(b = 1))
-cookies(r)
-```
-
-The request also consists of three pieces: a status line, headers and a body. The status line defines the http method (`GET`, `POST`, `DELETE`, etc) and the url. You can send additional data to the server in the url (with the query string), in the headers (including cookies) and in the body of `POST()`, `PUT()` and `PATCH()` requests.
 
 A common way of sending simple key-value pairs to the server is the query string: e.g. `http://httpbin.org/get?key=val`. `httr` allows you to provide these arguments as a named list with the query argument. For example, if you wanted to pass `key1=value1` and `key2=value2` to `http://httpbin.org/get` you could do:
 ```{r}
@@ -216,26 +180,14 @@ r <- GET("http://httpbin.org/get",
 )
 content(r)$args
 ```
-Any NULL elements are automatically dropped from the list, and both keys and values are escaped automatically.
-```{r}
-r <- GET("http://httpbin.org/get", 
-  query = list(key1 = "value 1", key2 = NULL))
-content(r)$args
-```
 
 Cookies are simple key-value pairs like the query string, but they persist across multiple requests in a session (because they're sent back and forth every time). To send your own cookies to the server, use `set_cookies()`:
 ```{r}
 r <- GET("http://httpbin.org/cookies", set_cookies("MeWant" = "cookies"))
 content(r)$cookies
 ```
-Note that this response includes the `a` and `b` cookies that were added by the server earlier.
 
-`POST()` can include data in the body of the request. `httr` allows you to supply this in a number of different ways. The most common way is a named list:
-```{r}
-r <- POST("http://httpbin.org/post", body = list(a = 1, b = 2, c = 3))
-r
-```
-You can use the `encode` argument to determine how this data is sent to the server:
+`POST()` can include data in the body of the request. `httr` allows you to supply this in a number of different ways. The most common way is a named list. You can use the `encode` argument to determine how this data is sent to the server:
 ```{r}
 url <- "http://httpbin.org/post"
 body <- list(a = 1, b = 2, c = 3)
@@ -243,25 +195,24 @@ body <- list(a = 1, b = 2, c = 3)
 # Form encoded
 r <- POST(url, body = body, encode = "form")
 r
-# Multipart encoded
-r <- POST(url, body = body, encode = "multipart") # the default
-r
-# JSON encoded
+```
+Multi-part encoding (`encode = "multiport"`) is the default, but it is equivalue to `form` here.
+
+JSON encoding is a readable encoding, which puts the data in the `data` key.
+```{r}
 r <- POST(url, body = body, encode = "json")
 r
 ```
-`POST` has a `VERBOSE` argument, but it will not print correctly using `knitr`.
 
-You can also send files off disk:
+You can also send files from your local disk:
 ```
 POST(url, body = upload_file("mypath.txt"))
-POST(url, body = list(x = upload_file("mypath.txt")))
 ```
-`upload_file()` will guess the mime-type from the extension---using the type argument to override/supply yourself. These uploads stream the data to the server: the data will be loaded in R in chunks then sent to the remote server. This means that you can upload files that are larger than memory.
+`upload_file()` will guess the mime-type from the extension using the type argument. These uploads stream the data to the server: the data will be loaded in R in chunks then sent to the remote server. This means that you can upload files that are larger than memory.
 
 The [api-package](https://github.com/hadley/httr/blob/master/vignettes/api-packages.Rmd) vignette describes how to write an R client for a web API. 
 
-### REST
+### The REST API
 
 This text is taken from [Learn REST: a Tutorial](http://rest.elkstein.org/2008/02/what-is-rest.html). I recommend you look at the complete tutorial.
 
@@ -273,10 +224,9 @@ RESTful applications use HTTP requests to post data (create and/or update), read
 
 If we are simply fetching data, which is the most likely activity when extracting text from the web, the simplest way is to use `fromJSON` in the `jsonlite` package.
 ```{r}
-library(jsonlite)
 hadley_orgs <- fromJSON("https://api.github.com/users/hadley/orgs")
 hadley_repos <- fromJSON("https://api.github.com/users/hadley/repos")
-gg_commits <- fromJSON("https://api.github.com/repos/hadley/ggplot2/commits")
+# gg_commits <- fromJSON("https://api.github.com/repos/hadley/ggplot2/commits")
 gg_issues <- fromJSON("https://api.github.com/repos/hadley/ggplot2/issues")
 
 # to see the structure of gg_issues (too long to print)
@@ -285,3 +235,5 @@ gg_issues <- fromJSON("https://api.github.com/repos/hadley/ggplot2/issues")
 # latest issues
 paste(format(gg_issues$user$login), ":", gg_issues$title)
 ```
+These results can use text analysis to analyze the issues.
+
