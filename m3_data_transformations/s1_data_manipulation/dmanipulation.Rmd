@@ -1,27 +1,33 @@
 ---
 title: "Data Manipulation"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/15/2018"
+
+
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
-```{r setup, include = TRUE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-library(dplyr)
-library(nycflights13)
+```
+The `dplyr` package is part of the `tidyverse`. It provides a grammar of data maniputation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources. For example, `dplyr` provides an interface to `sparklyr`, which is RStudio's R interface to Spark.
+```{r}
+library(dplyr, warn.conflicts = FALSE)
 library(sparklyr)
 sc <- spark_connect(master = "local")
+```
+This section illustrates `dplyr` often using the NYC flight departures data as a context.
+```{r}
+library(nycflights13)
 ```
 
 ## 3.1 Data manipulation with `dplyr`
 
 This section explores the main functions in `dplyr` which Hadley Wickham describes as a *grammar of data manipulation*---the counterpoint to his *grammar of graphics* in `ggplot2`.
 
-The github repo for [`dplyr`](https://github.com/hadley/dplyr) not only houses the R code, but also vignettes for various use cases. The introductory vignette is a good place to start and can by viewed by typing the following on the command line: `vignette("introduction", package = "dplyr")` or by opening the `introduction.Rmd` file in the vignettes directory of the `dplyr` repo. The material for this section is extracted from Hadley Wickham's [Introduction to dplyr Vignette](https://github.com/hadley/dplyr/blob/master/vignettes/introduction.Rmd). 
+The github repo for [`dplyr`](https://github.com/hadley/dplyr) not only houses the R code, but also vignettes for various use cases. The introductory vignette is a good place to start and can by viewed by typing the following on the command line: `vignette("dplyr", package = "dplyr")` or by opening the `dolyr.Rmd` file in the vignettes directory of the `dplyr` repo. The material for this section is based on content from Hadley Wickham's [Introduction to dplyr Vignette](https://github.com/hadley/dplyr/blob/master/vignettes/dplyr.Rmd). 
 
 `dplyr` was designed to:  
 
@@ -33,14 +39,14 @@ The github repo for [`dplyr`](https://github.com/hadley/dplyr) not only houses t
 
 The real power of `dplyr` is that it abstracts the data source, i.e., whether it is a data frame, a database, or Spark.
 
-All the `dplyr` vignettes use the `nycflights13` data frame which contains the 336,776 flights that departed from New York City in 2013. The `flights` data set is one of several data sets that can be merged.
+All the `dplyr` vignettes use the `nycflights13` data which contain the 336,776 flights that departed from New York City in 2013. The `flights`  tibble is one of several data sets in the package. 
 ```{r}
 dim(flights)
 flights # or print(flights)
 ```
-The variable names in `flights` are self explanatory, but note that `flights` does not print like a regular data frame. This is because it is a *tibble*, which is designed for data with a lot of rows and/or columns, i.e., big data. The `print` function combines features of `head` and `str`. `str` gives the inheritance path along with a summary of the data frame. For brevity we will use `class()` to give the inheritance path: 
+The variable names in `flights` are self explanatory, but note that `flights` does not print like a regular data frame. This is because it is a *tibble*, which is designed for data with a lot of rows and/or columns, i.e., big data. The `print` function combines features of `head` and `str` in providing information about the tibble. Alternatively, we can use `str()` to give information about tibles or data frames.  
 ```{r}
-class(flights)
+str(flights)
 ```
 
 ### 3.1.1 Single Table Verbs
@@ -62,8 +68,13 @@ class(flights)
 filter(flights, month == 1 & day == 1)
 # In base R this would be done as:
 # flights[flights$month == 1 & flights$day == 1, ]
+```
+Using the `|` operator is also easy.
+```{r}
 filter(flights, month == 1 | month == 2)
-# Rows can also be selected by positon using slice:
+```
+Rows can also be selected by positon using slice:
+```{r}
 slice(flights, 1:3)
 ```
 
@@ -138,7 +149,7 @@ These properties allow the user to form a workflow chain or pipeline with the ve
 
 ### 3.1.2 Grouped Operations
 
-These above verbs become very powerful when you apply them to groups of observations within a dataset. In `dplyr`, this is done by the `group_by()` function. It breaks a dataset into specified groups of rows. When you then apply the verbs above on the resulting object they'll be automatically applied "by group". 
+These above verbs become very powerful when you apply them to groups of observations within a dataset. In `dplyr`, this is done by the `group_by()` function. It breaks a dataset into specified groups of rows. When you then apply the verbs above on the resulting object they'll be automatically applied "by group." 
 
 We now split the complete dataset into individual planes and then summarise each plane by counting the number of flights ` (count = n())` and computing the average distance `(dist = mean(distance, na.rm = TRUE))` and arrival delay `(delay = mean(arr_delay, na.rm = TRUE))`
 ```{r}
@@ -203,7 +214,7 @@ daily <- group_by(flights, year, month, day)
 
 ### 3.1.3 Chaining
 
-The `dplyr` API is *functional*, i.e., the function calls don't have *side-effects*. That means you must always save intermediate results, which doesn't lead to elegant code. You either have to do it step-by-step:
+The `dplyr` API is *functional*, i.e., the function calls don't have *side-effects*. That means you must always save intermediate results, which doesn't lead to elegant code. One solution is to do it step-by-step.
 ```{r}
 a1 <- group_by(flights, year, month, day)
 a2 <- select(a1, arr_delay, dep_delay)
@@ -215,7 +226,7 @@ a4
 ```
 This is not a good idea for big data.
 
-If you want to save storage, you need to wrap the function calls inside each other:
+If you want to save storage, another way is to wrap the function calls inside each other.
 ```{r}
 filter(
   summarise(
@@ -272,7 +283,8 @@ The material for this subsection is taken from Hadley Wickham's [dplyr Database 
 The reason you'd want to use `dplyr` with a database is because either:  
 
 * your data is already in a database, or  
-* you have so much data that it does not fit in memory and you have to use a database.
+* you have so much data that it does not fit in memory and you have to use a database, or  
+* you want to speed up computations.  
 
 Currently `dplyr` supports the three most popular open source databases (`sqlite`, `mysql` and `postgresql`), and Google's `bigquery`. We will focus on `postgreSQL` since it provides much stronger support for `dplyr`.
 
@@ -282,6 +294,8 @@ The goal of `dplyr` is not to replace every SQL function with an R function; tha
 
 ```
 # my_dbh is a handle to the airlines database
+drv <- dbDriver("PostgreSQL")
+con <- DBI::dbConnect(drv, host = "postgres")
 # the airlines database is not yet built
 my_dbh <- src_postgres("airlines")
 
@@ -330,13 +344,7 @@ There are three ways to force the computation of a query:
 * `compute()` executes the query and stores the results in a temporary table in the database.  
 * `collapse()` turns the query into a table expression.
 
-`dplyr` uses the `translate_sql()` function to convert R expressions into SQL:
-```
-translate_sql(sin(x) + tan(y))
-translate_sql(x < 5 & !(y >= 5))
-translate_sql(first %in% c("John", "Roger", "Robert"))
-translate_sql(like == 7)
-```
+`dplyr` uses the `translate_sql()` function to convert R expressions into SQL.
 
 PostgreSQL is much more powerful database than SQLite. It has:  
 
@@ -490,3 +498,7 @@ You should review the coercion rules, e.g., factors are preserved only if the le
 At this time, `dplyr` does not provide any functions for working with three or more tables.
 
 See the complete set of vignettes on the `dplyr` repo for other examples.
+
+```{r}
+spark_disconnect(sc)
+```
