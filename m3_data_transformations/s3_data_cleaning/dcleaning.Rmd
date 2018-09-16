@@ -1,7 +1,7 @@
 ---
 title: "Data Cleaning"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/16/2018"
 output:
   html_document: default
   html_notebook: default
@@ -35,15 +35,19 @@ Current tools often require translation, i.e., you have to spend time *munging* 
 
 ### 3.3.1 Data Frames
 
+We first look at the structure and semantics of data before more formally specifying how we make data tidy.
+
 #### Data structure
 
-Most *statistical datasets* can be represented in data frames made up of rows and columns. The columns are almost always labeled and the rows are sometimes labeled. The following code provides data in a format commonly seen.
+Most *statistical datasets* can be represented in data frames made up of rows and columns. The columns (variables) are almost always labeled and the rows (observations) are sometimes labeled.
+
+Unfortunately, the following code provides data in a format commonly seen.
 ```{r}
 preg <- read.csv("preg.csv", stringsAsFactors = FALSE)
 preg
 ```
 
-The `preg` data  is not tidy! The `treatment` values (`a` and `b`) are the column names, i.e., the columns are not variables.
+The `preg` data  does not follow the row-column format above, i.e, this data is not tidy! The `treatment` values (`a` and `b`) are the column names, i.e., the columns are not variables.
 
 #### Data semantics
 
@@ -52,15 +56,17 @@ A *dataset* is a collection of values, usually either numbers (if *quantitative*
 * a *variable* containing all values that measure the same underlying attribute, e.g., height or temperature, across units;    
 * An *observation* containing all values measured on the same unit, e.g., a person or company, across attributes.  
 
+By convention, observations are stored in rows and variables are stored in columns. Without this convention, it would be impossible to define variable transformations and obsersation operations consistently.
+
 Three verbs are the basis for tidying data (at least in most cases):  
 
 * `gather` takes multiple columns and turns them into key-value pairs;  
 * `spread` takes the key-value pairs and spreads them into multiple columns;  
 * `separate` pulls apart columns representing multiple variables.  
 
-In popular parlance `gather` makes wide data long and `spread` makes long data wide.
+In popular parlance `gather` makes "wide" data "long," whereas `spread` makes "long" data "wide."
 
-The `gather` verb can make a tidy data frame:
+The `gather` verb can make a tidy data frame for the pregnancy data with two `dplyr` helper verbs.
 ```{r}
 preg_df <- preg %>% 
   gather(treatment, n, treatmenta:treatmentb) %>%
@@ -83,7 +89,7 @@ In a given analysis, there may be multiple levels of observation. For example, i
 * medical data collected from each person on each day (number of sneezes, redness of eyes), and  
 * meteorological data collected on each day (temperature, pollen count). 
 
-How is this data represented, e.g., the repeated measurements over days for each person? Statisticians constructing data frames in R face the same issues as those faced by database designers.
+How is this data represented? Are the repeated measurements over days for each person spread across rows, e.g., to do multivariate modeling, or are days stretched out in a single column, e.g., to use multi-level models? 
 
 #### Tidy data
 
@@ -91,9 +97,9 @@ Tidy data is a standard way of mapping the meaning of a dataset to its structure
 
 * Each variable forms a column.  
 * Each observation forms a row.  
-* Each type of observational unit forms a table.  
+* Each type of observational unit forms a table. 
 
-This is *Codd’s 3rd normal form* for relational databases, but with the constraints framed in statistical language. *Messy data* is any other other arrangement of the data. However, data analyses are done on a single data set---not connected tables in a relational databae. Thus, data analysts must denormalize or merge the datasets back into one table. 
+Thus, statisticians constructing data frames in R face the same issues as those faced by database designers. That is, tidy data is equivalent to *Codd’s 3rd normal form* for relational databases, but with the constraints framed in statistical language. *Messy data* is any other other arrangement of the data. However, data analyses are done on a single data set---not connected tables in a relational databae. Thus, data analysts must denormalize or merge the datasets back into one table. 
 
 Tidy data makes it easy for an analyst or a computer to extract needed variables or to construct new variables, e.g., `z = x / y`, because each column is a variable. Likewise, it is easy to compare groups of observations, e.g., `a` vs. `b`, because each observation is a row. Tidy data is particularly well suited for *vectorized* programming languages like R, because the layout ensures that values of different variables from the same observation are always paired. 
 
@@ -104,9 +110,9 @@ The order of variables and observations does not affect the analysis, but a stan
 
 Fixed variables should come first, followed by measured variables, each ordered so that related variables are contiguous. Rows can then be ordered by the major fixed variable, breaking ties with the second and subsequent (fixed) variables.
 
-### 3.3.2 Tidying messy datasets
+### 3.3.2 Tidying Messy Datasets
 
-This section describes the five most common problems with messy datasets, along with their remedies:   
+The five most common problems with messy datasets are:  
 
 * Column headers are values, not variable names.  
 * Multiple variables are stored in one column.  
@@ -114,9 +120,9 @@ This section describes the five most common problems with messy datasets, along 
 * Multiple types of observational units are stored in the same table.  
 * A single observational unit is stored in multiple tables.  
 
-Surprisingly, most messy datasets, including types of messiness not explicitly described above, can be tidied with a small set of tools: gathering, separating and spreading. 
+Surprisingly, most messy datasets, including types of messiness not explicitly described above, can be tidied with a small set of tools: `gather`, `separate` and `spread`. 
 
-Hadley provides a series of examples in his vignette. We will focus an a single example which illustrates gathering and spreading and the use of pipes to build a tidy workflow.
+Hadley provides a series of examples to remedy these common problems in his vignette. We will focus an a single example which illustrates gathering and spreading and the use of pipes to build a tidy workflow.
 
 The most complicated form of messy data occurs when variables are stored in both rows and columns. The code below loads daily weather data from the Global Historical Climatology Network for one weather station (`MX17004`) in Mexico for five months in 2010.
 ```{r}
@@ -124,15 +130,24 @@ weather <- as_tibble(read.csv("weather.csv", stringsAsFactors = FALSE))
 weather
 ```
 
-It has variables in individual columns (`id`, `year`, `month`), spread across columns (`d1-d31`, i.e., days) and across rows (`tmin`, `tmax`, i.e., minimum and maximum temperature). Months with fewer than 31 days have structural missing values for the last day(s) of the month.
+It has variables:  
+
+* in individual columns (`id`, `year`, `month`),  
+* spread across columns (`d1-d31`) i.e., days, and  
+* spread along rows (`tmin`, `tmax`), i.e., minimum and maximum temperatures.  
+
+Months with fewer than 31 days have structural missing values for the last day(s) of the month.
 
 To tidy this dataset we first gather the day columns while dropping the many missing values, structual or not, clean with `mutate` and `select`, arrange by the fixed variables, and spread by element (`tmax` and `tmin`).
 ```{r}
-weather %>%
+weather_tbl <- weather %>%
   gather(day, value, d1:d31, na.rm = TRUE) %>%
   mutate(day = as.integer(readr::parse_number(day))) %>%
   select(id, year, month, day, element, value) %>%
   arrange(id, year, month, day) %>%
   spread(element, value)
+weather_tbl
 ```
-This example shows the power of `tidyr` together with `dplyr` in cleaning data. Note, we could reconstruct the non-structural missing values since we know how many days are in each month.
+Note, we could reconstruct the non-structural missing values since we know how many days are in each month. 
+
+This example and the others in Hadley's vignette show the power of `tidyr` together with `dplyr` in cleaning data.
