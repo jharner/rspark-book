@@ -12,13 +12,11 @@ output:
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-The `dplyr` package is part of the `tidyverse`. It provides a grammar of data maniputation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources. For example, `dplyr` provides an interface to `sparklyr`, which is RStudio's R interface to Spark.
+The `dplyr` package is part of the `tidyverse`. It provides a grammar of data maniputation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources.
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
-library(sparklyr)
-sc <- spark_connect(master = "local")
 ```
-This section illustrates `dplyr` often using the NYC flight departures data as a context.
+This section illustrates `dplyr` using the NYC flight departures data as a context.
 ```{r}
 library(nycflights13)
 ```
@@ -273,133 +271,7 @@ group_by(flights, tailnum) %>%
 ```
 What makes this work is that the first argument is a data frame and the output is a data frame. Do you  see the potential of building very powerful workflows?
 
-
-### 3.1.4 Databases
-
-`dplyr` allows you to use the same verbs with a remote database. It takes care of generating SQL for you so that you can avoid the cognitive challenge of constantly switching between languages.
-
-The material for this subsection is taken from Hadley Wickham's [dplyr Database Vignette](https://github.com/hadley/dplyr/blob/master/vignettes/databases.Rmd).
-
-The reason you'd want to use `dplyr` with a database is because either:  
-
-* your data is already in a database, or  
-* you have so much data that it does not fit in memory and you have to use a database, or  
-* you want to speed up computations.  
-
-Currently `dplyr` supports the three most popular open source databases (`sqlite`, `mysql` and `postgresql`), and Google's `bigquery`. We will focus on `postgreSQL` since it provides much stronger support for `dplyr`.
-
-If you have a lot of data in a database, you can't just dump it into R due to memory limitations. Instead, you'll have to work with subsets or aggregates. `dplyr` generally make this task easy.
-
-The goal of `dplyr` is not to replace every SQL function with an R function; that would be difficult and error prone. Instead, `dplyr` only generates `SELECT` statements, the SQL you write most often as an analyst for data extraction.
-
-```
-# my_dbh is a handle to the airlines database
-drv <- dbDriver("PostgreSQL")
-con <- DBI::dbConnect(drv, host = "postgres")
-# the airlines database is not yet built
-my_dbh <- src_postgres("airlines")
-
-# The following statement was run initially to put flights in the database
-# flights_pg <- copy_to(my_dbh, flights, temporary=FALSE)
-
-# tbl creates a table from a data source 
-flights_pg <- tbl(my_dbh, "flights")
-flights_pg
-```
-You can use SQL:
-```
-flights_out <- tbl(my_dbh, sql("SELECT * FROM flights"))
-```
-
-You use the five verbs:
-```
-select(flights_pg, year:day, dep_delay, arr_delay)
-filter(flights_pg, dep_delay > 240)
-# The comments below are only used to shorten the output.
-# arrange(flights_pg, year, month, day)
-# mutate(flights_pg, speed = air_time / distance)
-# summarise(flights_pg, delay = mean(dep_time))
-```
-The expressions in `select()`, `filter()`, `arrange()`, `mutate()`, and `summarise()` are translated into SQL so they can be run on the database.
-
-Workflows can be constructed by the `%>%` operator:
-```
-output <-
-  filter(flights_pg, year == 2013, month == 1, day == 1) %>%
-  select( year, month, day, carrier, dep_delay, air_time, distance) %>%
-  mutate(speed = distance / air_time * 60) %>%
-  arrange(year, month, day, carrier)
-collect(output)
-```
-This sequence of operations never actually touches the database. It's not until you ask for the data that `dplyr` generates the SQL and requests the results from the database. `collect()` pulls down all the results and returns a `tbl_df()`.
-
-How the database execute the query is given by `explain()`:
-```
-explain(output)
-```
-
-There are three ways to force the computation of a query:  
-
-* `collect()` executes the query and returns the results to R.  
-* `compute()` executes the query and stores the results in a temporary table in the database.  
-* `collapse()` turns the query into a table expression.
-
-`dplyr` uses the `translate_sql()` function to convert R expressions into SQL.
-
-PostgreSQL is much more powerful database than SQLite. It has:  
-
-* a much wider range of built-in functions  
-* support for window functions, which allow grouped subsets and mutates to work.  
-
-We can perform grouped `filter` and `mutate` operations with PostgreSQL. Because you can't filter on *window functions* directly, the SQL generated from the grouped filter is quite complex; so they instead have to go in a subquery.
-```
-daily <- group_by(flights_pg, year, month, day)
-
-# Find the most and least delayed flight each day
-bestworst <- daily %>% 
-  select(flight, arr_delay) %>% 
-  filter(arr_delay == min(arr_delay) || arr_delay == max(arr_delay))
-collect(bestworst)
-explain(bestworst)
-
-# Rank each flight within a daily
-ranked <- daily %>% 
-  select(arr_delay) %>% 
-  mutate(rank = rank(desc(arr_delay)))
-collect(ranked)
-explain(ranked)
-```
-
-### 3.1.5 Spark
-
-Spark can be used as a data source using `dplyr`.
-```{r}
-# Copy R data.frame to a Spark DataFrame
-faithful_tbl <- copy_to(sc, faithful)
-faithful_tbl
-
-# List the available tables
-src_tbls(sc)
-```
-```{r}
-# filter the Spark DataFrame and use collect to return an R data.frame
-faithful.df <- faithful_tbl %>% 
-  filter(waiting < 50) %>%
-  collect()
-head(faithful.df)
-```
-
-```{r}
-spark_disconnect(sc)
-```
-This is a demonstration of getting the `faithful` data into Spark and the use of simple data manipulations on the data.
-
-The `sparklyr` package is the basis for data manipulation and machine learning based on a data frame workflow. This approach has limitations, e.g., with graph algorithms, but it covers most use cases. The `rsparkling` package with its support for `h2o` delves even deeper into machine learning, e.g., deep learning.
-
-An alternative approach, officially supported by Spark, is the `SparkR` package. In particular, R has become a first-class Spark citizen and is now built into Spark. These developments will be discussed further in Module 6.
-
-
-### 3.1.6 Combining Tables
+### 3.1.4 Combining Tables
 
 It's rare that a data analysis involves only a single table of data. In practice, you'll normally have many tables that contribute to an analysis, and you need flexible tools to combine them. 
 
@@ -412,7 +284,7 @@ In `dplyr`, there are three families of verbs that work with two tables at a tim
 * Filtering joins, which filter observations from one table based on whether or not they match an observation in the other table.  
 * Set operations, which combine the observations in the data sets as if they were set elements.  
 
-This discussion assumes that you have tidy data, where the rows are observations and the columns are variables (see Section 3.3).
+This discussion assumes that you have tidy data, where the rows are observations and the columns are variables (see Section 3.3). The discussion here will be limited to mutating joins.
 
 All two-table verbs work similarly. The first two arguments are `x` and `y`, and provide the tables to combine. The output is always a new table with the same type as `x`
 
@@ -420,10 +292,9 @@ All two-table verbs work similarly. The first two arguments are `x` and `y`, and
 
 Mutating joins allow you to combine variables from multiple tables. For example, take the `nycflights13` data. In one table we have flight information with an abbreviation for carrier, and in another we have a mapping between abbreviations and full names. You can use a join to add the carrier names to the flight data:
 ```{r}
-library("nycflights13")
 # Drop unimportant variables so it's easier to understand the join results.
-flights2 <- flights %>% select(year:day, hour, origin, dest,
-                               tailnum, carrier)
+flights2 <- flights %>%
+  select(year:day, hour, origin, dest, tailnum, carrier)
 airlines
 
 flights2 %>% 
@@ -437,21 +308,25 @@ In addition to `x` and `y`, each mutating join takes an argument `by` that contr
 * `NULL`, the default. `dplyr` will will use all variables that appear in both tables, a natural join. For example, the flights and weather tables match on their common variables: year, month, day, hour and origin.  
 ```{r}
 weather
-flights2 %>% left_join(weather)
+flights2 %>%
+  left_join(weather)
 ```
 
 * A character vector, `by = "x"`. Like a natural join, but uses only some of the common variables. For example, flights and planes have year columns, but they mean different things so we only want to join by `tailnum`.
 ```{r}
-flights2 %>% left_join(planes, by = "tailnum")
+flights2 %>%
+  left_join(planes, by = "tailnum")
 ```
 Note that the year columns in the output are disambiguated with a suffix.
 
-* A named character vector: `by = c("x" = "a")`. This will match variable `x` in table `x` to variable `a` in table `b`. The variables from use will be used in the output.
+* A named character vector: `by = c("x" = "a")`. This will match variable `x` in table `x` to variable `a` in table `y`. The variables from use will be used in the output.
 
 Each flight has an origin and destination airport, so we need to specify which one we want to join to:
 ```{r}
-flights2 %>% left_join(airports, c("dest" = "faa"))
-flights2 %>% left_join(airports, c("origin" = "faa"))
+flights2 %>%
+  left_join(airports, c("dest" = "faa"))
+flights2 %>%
+  left_join(airports, c("origin" = "faa"))
 ```
 
 #### Types of join
@@ -499,6 +374,3 @@ At this time, `dplyr` does not provide any functions for working with three or m
 
 See the complete set of vignettes on the `dplyr` repo for other examples.
 
-```{r}
-spark_disconnect(sc)
-```

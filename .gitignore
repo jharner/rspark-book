@@ -1,5 +1,6 @@
 *.DS_Store
 *metastore_db
+:memory
 *.log
 *.html
 *.nb.html
