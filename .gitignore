@@ -2,7 +2,6 @@
 *metastore_db
 :memory
 *.log
-*.html
 *.nb.html
 *.pdf
 *.doc
