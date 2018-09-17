@@ -1,11 +1,10 @@
 ---
 title: "Hadoop"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/16/2018"
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}

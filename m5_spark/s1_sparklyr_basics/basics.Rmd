@@ -15,7 +15,7 @@ The `sparklyr` R frontend to Spark is based on a `dplyr` interface to Spark SQL.
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
 library(sparklyr)
-# start the sparklyr session
+# start the sparklyr session locally or to the master container
 master <- "local"
 # master <- "spark://master:7077"
 sc <- spark_connect(master = master)

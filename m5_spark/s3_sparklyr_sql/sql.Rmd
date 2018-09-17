@@ -1,29 +1,26 @@
 ---
 title: "Spark DataFrame SQL"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/16/2018"
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Establish the Spark connection.
+Load `sparklyr` and establish the Spark connection.
 ```{r}
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 library(sparklyr)
+
 # start the sparklyr session
 master <- "local"
 # master <- "spark://master:7077"
 sc <- spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
-                    method = c("shell"), app_name = "sparklyr",
-                    version = NULL, hadoop_version = NULL,
-                    config = spark_config(),
-                    extensions = sparklyr::registered_extensions())
+                    method = c("shell"), app_name = "sparklyr")
 ```
 
 ## 6.3 Spark DataFrame SQL
@@ -43,7 +40,8 @@ In Section 6.2.1 the `dplyr` verbs were used to manipulate a Spark DataFrame. Ho
 
 A workflow was developed in Section 6.2.1 to find the flights with a departure delay greater than 1000 minutes. However, we did not have the carrier names since they were in a different table. Providing this information can be done with a `left_join`.
 ```{r}
-flights_sdf %>% left_join(airlines_sdf, by = "carrier") %>%
+flights_sdf %>%
+  left_join(airlines_sdf, by = "carrier") %>%
   select(carrier, name, flight, year:day, arr_delay, dep_delay) %>%
   filter(dep_delay > 1000) %>%
   arrange(desc(dep_delay))
@@ -96,8 +94,8 @@ As an example, we can write the `airlines_sdf` Spark DataFrame out to a Parquet 
 library(rhdfs)
 hdfs.init()
 spark_write_parquet(airlines_sdf,
-                    path = "hdfs://hadoop:9000/user/rstudio/airlines_parquet",
-                    mode = "overwrite")
+                  path = "hdfs://hadoop:9000/user/rstudio/airlines_parquet",
+                  mode = "overwrite")
 hdfs.ls("/user/rstudio")
 ```
 This writes the Spark DataFrame to the given HDFS path and names the Parquet file `airlines_parquet`.

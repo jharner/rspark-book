@@ -1,21 +1,26 @@
 ---
 title: "Sparklyr Apply"
 author: "Jim Harner"
-date: "6/25/2018"
+date: "9/16/2018"
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Load `sparklyr` and establish the Spark connection.
 ```{r}
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 library(sparklyr)
-sc <- spark_connect(master = "local")
+
+# start the sparklyr session
+master <- "local"
+# master <- "spark://master:7077"
+sc <- spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
+                    method = c("shell"), app_name = "sparklyr")
 ```
 
 ## 6.4 Sparklyr Apply

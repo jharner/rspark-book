@@ -1,20 +1,19 @@
 ---
 title: "Spark dplyr"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/16/2018"
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Establish the Spark connection.
+Load `sparklyr` and establish the Spark connection.
 ```{r}
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 library(sparklyr)
 
 # start the sparklyr session
@@ -22,7 +21,7 @@ master <- "local"
 # master <- "spark://master:7077"
 sc <- spark_connect(master = master)
 ```
-`sparklyr` requires a `dplyr` compatible back-end to Spark.
+`sparklyr` has a `dplyr` compatible back-end to Spark.
 
 ## 6.2 Spark dplyr
 

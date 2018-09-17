@@ -5,16 +5,15 @@ date: "7/25/2018"
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 user <- "rstudio"
 ```
-The `rhdfs` package is needed for the R interface to Hadoop.
+The `rhdfs` package provides an R interface to Hadoop.
 ```{r}
-library(rhdfs)
+library(rhdfs, warn.conflicts = FALSE)
 ```
 
 ## 4.3 HDFS
