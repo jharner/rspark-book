@@ -39,7 +39,7 @@ Spark supports a rich set of higher-level tools including:
 
 [SparkR](https://spark.apache.org/docs/latest/sparkr.html) is part of the officially supported Spark distribution. However, we will focus on the [sparklyr](https://spark.rstudio.com) package.
 
-## 6.1 Sparklyr Basics
+## 5.1 Sparklyr Basics
 
 The `sparklyr` package is being developed by RStudio. It is ongoing rapid expansion. See [RStudio's sparklyr](https://spark.rstudio.com) for information.
 
@@ -54,7 +54,7 @@ From `sparklyr`, connections can be made to local instances or to remote Spark c
 
 The `sparklyr` library is loaded in the setup and a Spark connection is established. The Spark connection `sc` provides a `dplyr` interface to the Spark.
 
-### 6.1.1 dplyr
+### 5.1.1 dplyr
 
 The `dpyr` verbs, e.g., `mutate`, `filter`, can be used on Spark DataFrames. A more complete discussion is given in Section 6.2.
 

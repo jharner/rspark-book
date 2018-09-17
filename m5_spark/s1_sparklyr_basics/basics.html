@@ -148,7 +148,7 @@ sc &lt;- spark_connect(master = master)</code></pre>
 </ul>
 <p><a href="https://spark.apache.org/docs/latest/sparkr.html">SparkR</a> is part of the officially supported Spark distribution. However, we will focus on the <a href="https://spark.rstudio.com">sparklyr</a> package.</p>
 <div id="sparklyr-basics" class="section level2">
-<h2>6.1 Sparklyr Basics</h2>
+<h2>5.1 Sparklyr Basics</h2>
 <p>The <code>sparklyr</code> package is being developed by RStudio. It is ongoing rapid expansion. See <a href="https://spark.rstudio.com">RStudio’s sparklyr</a> for information.</p>
 <p>The <code>sparklyr</code> R package provides a <code>dplyr</code> backend to Spark. Using <code>sparklyr</code>, you can:</p>
 <ul>
@@ -163,7 +163,7 @@ sc &lt;- spark_connect(master = master)</code></pre>
 <p>From <code>sparklyr</code>, connections can be made to local instances or to remote Spark clusters. In our case the connection is to a local connection bundled in the <code>rstudio</code> container.</p>
 <p>The <code>sparklyr</code> library is loaded in the setup and a Spark connection is established. The Spark connection <code>sc</code> provides a <code>dplyr</code> interface to the Spark.</p>
 <div id="dplyr" class="section level3">
-<h3>6.1.1 dplyr</h3>
+<h3>5.1.1 dplyr</h3>
 <p>The <code>dpyr</code> verbs, e.g., <code>mutate</code>, <code>filter</code>, can be used on Spark DataFrames. A more complete discussion is given in Section 6.2.</p>
 <p>We will use the <code>flights</code> data in the <code>nycflights13</code> package as an example. If its size becomes an issue, execute each chunk in sequence in notebook mode.</p>
 <pre class="r"><code>library(nycflights13)

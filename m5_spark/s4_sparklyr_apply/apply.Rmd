@@ -23,13 +23,13 @@ sc <- spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
                     method = c("shell"), app_name = "sparklyr")
 ```
 
-## 6.4 Sparklyr Apply
+## 5.4 Sparklyr Apply
 
 `sparklyr` provides support to run arbitrary R code at scale within your Spark through the function `spark_apply`. Thus, any of R's functionality can be distributed across an R cluster.  Apache Spark, even with Spark Packages, has a limited range of functions available.
 
 `spark_apply` applies an R function to a Spark DataFrame, typically. Spark objects are partitioned so they can be distributed across a cluster. You can use `spark_apply` with the default partitions or you can define your own partitions with the `group_by` argument. Your R function must return another Spark DataFrame. `spark_apply` will run your R function on each partition and output a single Spark DataFrame.
 
-### 6.4.1 Apply an R function to a Spark Object
+### 5.4.1 Apply an R function to a Spark Object
 
 Let's apply the identify function, `I()`, over a list of numbers we created with the `sdf_len` function.
 ```{r}
@@ -37,7 +37,7 @@ sdf_len(sc, length = 5, repartition = 1) %>%
   spark_apply(function(e) I(e))
 ```
 
-### 6.4.2 Group By
+### 5.4.2 Group By
 
 A common task is to apply your R function to specific groups in your data, e.g., computing a regression model for each group. This is done by specifying a `group_by` argument.
 
@@ -56,7 +56,7 @@ iris_tbl %>%
     group_by = "Species")
 ```
 
-### 6.4.3 Distributed Packages
+### 5.4.3 Distributed Packages
 
 With `spark_apply` you can use nearly any R package inside Spark.
 

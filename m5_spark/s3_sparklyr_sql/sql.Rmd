@@ -23,7 +23,7 @@ sc <- spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
                     method = c("shell"), app_name = "sparklyr")
 ```
 
-## 6.3 Spark DataFrame SQL
+## 5.3 Spark DataFrame SQL
 
 Currently, `sparklyr` is more limited than `sparkR` in its ability to import data directly into Spark from an external data source. However, several sources, e.g., json, can be imported. In addition, it is possible to query Spark DataFrames.
 
@@ -34,7 +34,7 @@ flights_sdf <- copy_to(sc, flights, "flights_sdf",  overwrite = TRUE)
 airlines_sdf <- sdf_copy_to(sc, airlines, "airlines_sdf", overwrite = TRUE)
 ```
 
-### 6.3.1 Joining Spark Data Tables
+### 5.3.1 Joining Spark Data Tables
 
 In Section 6.2.1 the `dplyr` verbs were used to manipulate a Spark DataFrame. However, we often have multiple related Spark tables which we need to combine prior to performing data manipulations.
 
@@ -50,7 +50,7 @@ Notice that three of the top five largest delays were associated with Envoy Air,
 
 `dplyr` has various verbs that combine two tables. If this is not adequate, then the joins, or other operations, must be done in the database prior to importing the data into Spark
 
-### 6.3.2 Querying a Spark DataFrame
+### 5.3.2 Querying a Spark DataFrame
 
 It is also possible to use Spark DataFrames as tables in a "database" using the Spark SQL interface, which forms the basis of Spark DataFrames.
 
@@ -72,7 +72,7 @@ Of course, this assumes the Spark DataFrames can be imported into R, i.e., they 
 
 The `by` argument in the `left_join` is not needed if there is a single variable common to both tables. Alternately, we could use `by = c("carrier", "carrier")`, where the names could be different if they represent the same variable.
 
-### 6.3.3 Sampling
+### 5.3.3 Sampling
 
 We can sample random rows of a Spark DataFrame using:  
 
@@ -85,7 +85,7 @@ sample_frac(flights_sdf, 0.01)
 ```
 Sampling is often done during the development and testing cycle to limit the size of the data.
 
-### 6.3.4 Writing Data
+### 5.3.4 Writing Data
 
 We can save the results of our analysis or the tables that you have generated in Spark into persistent storage. Parquet is a commonly used persistent store for various data processing systems in the Hadoop ecosystem. It has a columnar storage format which Spark SQL supports for both reading and writing, including the schema of the original data.
 

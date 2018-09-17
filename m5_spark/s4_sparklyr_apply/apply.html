@@ -135,15 +135,15 @@ master &lt;- &quot;local&quot;
 sc &lt;- spark_connect(master, spark_home = Sys.getenv(&quot;SPARK_HOME&quot;),
                     method = c(&quot;shell&quot;), app_name = &quot;sparklyr&quot;)</code></pre>
 <div id="sparklyr-apply" class="section level2">
-<h2>6.4 Sparklyr Apply</h2>
+<h2>5.4 Sparklyr Apply</h2>
 <p><code>sparklyr</code> provides support to run arbitrary R code at scale within your Spark through the function <code>spark_apply</code>. Thus, any of R’s functionality can be distributed across an R cluster. Apache Spark, even with Spark Packages, has a limited range of functions available.</p>
 <p><code>spark_apply</code> applies an R function to a Spark DataFrame, typically. Spark objects are partitioned so they can be distributed across a cluster. You can use <code>spark_apply</code> with the default partitions or you can define your own partitions with the <code>group_by</code> argument. Your R function must return another Spark DataFrame. <code>spark_apply</code> will run your R function on each partition and output a single Spark DataFrame.</p>
 <div id="apply-an-r-function-to-a-spark-object" class="section level3">
-<h3>6.4.1 Apply an R function to a Spark Object</h3>
+<h3>5.4.1 Apply an R function to a Spark Object</h3>
 <p>Let’s apply the identify function, <code>I()</code>, over a list of numbers we created with the <code>sdf_len</code> function.</p>
 <pre class="r"><code>sdf_len(sc, length = 5, repartition = 1) %&gt;%
   spark_apply(function(e) I(e))</code></pre>
-<pre><code>## # Source:   table&lt;sparklyr_tmp_66486e2bf512&gt; [?? x 1]
+<pre><code>## # Source:   table&lt;sparklyr_tmp_6c984560bbbe&gt; [?? x 1]
 ## # Database: spark_connection
 ##      id
 ##   &lt;dbl&gt;
@@ -154,13 +154,13 @@ sc &lt;- spark_connect(master, spark_home = Sys.getenv(&quot;SPARK_HOME&quot;),
 ## 5    5.</code></pre>
 </div>
 <div id="group-by" class="section level3">
-<h3>6.4.2 Group By</h3>
+<h3>5.4.2 Group By</h3>
 <p>A common task is to apply your R function to specific groups in your data, e.g., computing a regression model for each group. This is done by specifying a <code>group_by</code> argument.</p>
 <p>The following example initially counts the number of rows in the <code>iris</code> data frame for each species.</p>
 <pre class="r"><code>iris_tbl &lt;- sdf_copy_to(sc, iris)
 iris_tbl %&gt;%
   spark_apply(nrow, group_by = &quot;Species&quot;)</code></pre>
-<pre><code>## # Source:   table&lt;sparklyr_tmp_664845f8f3ef&gt; [?? x 2]
+<pre><code>## # Source:   table&lt;sparklyr_tmp_6c985b48cd27&gt; [?? x 2]
 ## # Database: spark_connection
 ##   Species    Sepal_Length
 ##   &lt;chr&gt;             &lt;int&gt;
@@ -173,7 +173,7 @@ iris_tbl %&gt;%
     function(e) summary(lm(Petal_Length ~ Petal_Width, e))$r.squared,
     names = &quot;r.squared&quot;,
     group_by = &quot;Species&quot;)</code></pre>
-<pre><code>## # Source:   table&lt;sparklyr_tmp_66486b6c21b9&gt; [?? x 2]
+<pre><code>## # Source:   table&lt;sparklyr_tmp_6c984c48a6cc&gt; [?? x 2]
 ## # Database: spark_connection
 ##   Species    r.squared
 ##   &lt;chr&gt;          &lt;dbl&gt;
@@ -182,7 +182,7 @@ iris_tbl %&gt;%
 ## 3 setosa         0.110</code></pre>
 </div>
 <div id="distributed-packages" class="section level3">
-<h3>6.4.3 Distributed Packages</h3>
+<h3>5.4.3 Distributed Packages</h3>
 <p>With <code>spark_apply</code> you can use nearly any R package inside Spark.</p>
 <p>As an example, we use the <code>broom</code> package to create a tidy data frame from the linear regression output.</p>
 <pre class="r"><code>spark_apply(
@@ -190,7 +190,7 @@ iris_tbl %&gt;%
   function(e) broom::tidy(lm(Petal_Length ~ Petal_Width, e)),
   names = c(&quot;term&quot;, &quot;estimate&quot;, &quot;std.error&quot;, &quot;statistic&quot;, &quot;p.value&quot;),
   group_by = &quot;Species&quot;)</code></pre>
-<pre><code>## # Source:   table&lt;sparklyr_tmp_66481c2736a5&gt; [?? x 6]
+<pre><code>## # Source:   table&lt;sparklyr_tmp_6c986c9cecb8&gt; [?? x 6]
 ## # Database: spark_connection
 ##   Species    term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;

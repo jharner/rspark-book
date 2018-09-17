@@ -135,14 +135,14 @@ master &lt;- &quot;local&quot;
 sc &lt;- spark_connect(master, spark_home = Sys.getenv(&quot;SPARK_HOME&quot;),
                     method = c(&quot;shell&quot;), app_name = &quot;sparklyr&quot;)</code></pre>
 <div id="spark-dataframe-sql" class="section level2">
-<h2>6.3 Spark DataFrame SQL</h2>
+<h2>5.3 Spark DataFrame SQL</h2>
 <p>Currently, <code>sparklyr</code> is more limited than <code>sparkR</code> in its ability to import data directly into Spark from an external data source. However, several sources, e.g., json, can be imported. In addition, it is possible to query Spark DataFrames.</p>
 <p>We will be using the <code>nycflights13</code> data again. The <code>flights</code> and <code>airlines</code> R data frames are copied into Spark.</p>
 <pre class="r"><code>library(nycflights13)
 flights_sdf &lt;- copy_to(sc, flights, &quot;flights_sdf&quot;,  overwrite = TRUE)
 airlines_sdf &lt;- sdf_copy_to(sc, airlines, &quot;airlines_sdf&quot;, overwrite = TRUE)</code></pre>
 <div id="joining-spark-data-tables" class="section level3">
-<h3>6.3.1 Joining Spark Data Tables</h3>
+<h3>5.3.1 Joining Spark Data Tables</h3>
 <p>In Section 6.2.1 the <code>dplyr</code> verbs were used to manipulate a Spark DataFrame. However, we often have multiple related Spark tables which we need to combine prior to performing data manipulations.</p>
 <p>A workflow was developed in Section 6.2.1 to find the flights with a departure delay greater than 1000 minutes. However, we did not have the carrier names since they were in a different table. Providing this information can be done with a <code>left_join</code>.</p>
 <pre class="r"><code>flights_sdf %&gt;%
@@ -164,7 +164,7 @@ airlines_sdf &lt;- sdf_copy_to(sc, airlines, &quot;airlines_sdf&quot;, overwrite
 <p><code>dplyr</code> has various verbs that combine two tables. If this is not adequate, then the joins, or other operations, must be done in the database prior to importing the data into Spark</p>
 </div>
 <div id="querying-a-spark-dataframe" class="section level3">
-<h3>6.3.2 Querying a Spark DataFrame</h3>
+<h3>5.3.2 Querying a Spark DataFrame</h3>
 <p>It is also possible to use Spark DataFrames as tables in a “database” using the Spark SQL interface, which forms the basis of Spark DataFrames.</p>
 <p>The <code>spark_connect</code> object implements a DBI interface for Spark, which allows you to use <code>dbGetQuery</code> to execute SQL commands. The returned result is an R data frame.</p>
 <p>We now show that the above workflow can be done in R except that R data frames are used.</p>
@@ -186,7 +186,7 @@ flights_df %&gt;%
 <p>The <code>by</code> argument in the <code>left_join</code> is not needed if there is a single variable common to both tables. Alternately, we could use <code>by = c(&quot;carrier&quot;, &quot;carrier&quot;)</code>, where the names could be different if they represent the same variable.</p>
 </div>
 <div id="sampling" class="section level3">
-<h3>6.3.3 Sampling</h3>
+<h3>5.3.3 Sampling</h3>
 <p>We can sample random rows of a Spark DataFrame using:</p>
 <ul>
 <li><code>sample_n</code> for a fixed number;<br />
@@ -217,16 +217,16 @@ flights_df %&gt;%
 ## # Database: spark_connection
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     1     1      717            720       -3.      850
-##  2  2013     1     1      811            630      101.     1047
-##  3  2013     1     1      904            906       -2.     1207
-##  4  2013     1     1     1203           1200        3.     1519
-##  5  2013     1     1     1554           1600       -6.     1701
-##  6  2013     1     1     1742           1746       -4.     2028
-##  7  2013     1     1     1805           1757        8.     2117
-##  8  2013     1     1     1825           1829       -4.     2046
-##  9  2013     1     1     1855           1859       -4.     2140
-## 10  2013     1     2      458            500       -2.      703
+##  1  2013     1     1      813            815       -2.     1103
+##  2  2013     1     1      908            910       -2.     1020
+##  3  2013     1     1     1154           1200       -6.     1253
+##  4  2013     1     1     1356           1259       57.     1538
+##  5  2013     1     1     1459           1454        5.     1750
+##  6  2013     1     1     1558           1600       -2.     1910
+##  7  2013     1     1     2030           2035       -5.     2354
+##  8  2013     1     1     2046           2035       11.     2144
+##  9  2013     1     1     2302           2200       62.     2342
+## 10  2013     1     2      609            600        9.      909
 ## # ... with more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
 ## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
@@ -234,7 +234,7 @@ flights_df %&gt;%
 <p>Sampling is often done during the development and testing cycle to limit the size of the data.</p>
 </div>
 <div id="writing-data" class="section level3">
-<h3>6.3.4 Writing Data</h3>
+<h3>5.3.4 Writing Data</h3>
 <p>We can save the results of our analysis or the tables that you have generated in Spark into persistent storage. Parquet is a commonly used persistent store for various data processing systems in the Hadoop ecosystem. It has a columnar storage format which Spark SQL supports for both reading and writing, including the schema of the original data.</p>
 <p>As an example, we can write the <code>airlines_sdf</code> Spark DataFrame out to a Parquet file using the <code>spark_write_parquet</code> function.</p>
 <pre class="r"><code>library(rhdfs)</code></pre>
@@ -249,7 +249,7 @@ spark_write_parquet(airlines_sdf,
                   mode = &quot;overwrite&quot;)
 hdfs.ls(&quot;/user/rstudio&quot;)</code></pre>
 <pre><code>##   permission   owner   group size          modtime
-## 1 drwxr-xr-x rstudio rstudio    0 2018-09-17 00:55
+## 1 drwxr-xr-x rstudio rstudio    0 2018-09-17 01:15
 ##                             file
 ## 1 /user/rstudio/airlines_parquet</code></pre>
 <p>This writes the Spark DataFrame to the given HDFS path and names the Parquet file <code>airlines_parquet</code>.</p>

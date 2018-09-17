@@ -23,7 +23,7 @@ sc <- spark_connect(master = master)
 ```
 `sparklyr` has a `dplyr` compatible back-end to Spark.
 
-## 6.2 Spark dplyr
+## 5.2 Spark dplyr
 
 `dplyr` is an R package for performing operations on structured data. The data is always a table-like structure, i.e., an R `data.frame` (or tibble), a SQL data table, or a Spark DataFrame among others. Ideally, the structure should be in tidy form, i.e., each row is an observation and each column is a variable. Tidy data matches its semantics with how it is stored.
 
@@ -40,7 +40,7 @@ As we saw in section 6.1, `dplyr` can be used to:
 
 Perhaps the most powerful feature of `dplyr` is its support for building data-science workflows in both R and Spark using the forward-pipe operator (`%>%`) from the `magrittr` package.
 
-### 6.2.1 `dplyr` Verbs
+### 5.2.1 `dplyr` Verbs
 
 `dplyr` verbs manipulate structured data in the form of tables. When the tables are Spark DataFrames, `dplyr` translates the commands to Spark SQL statements. The `dplyr`'s five verbs and their SQL equivalents are:  
 
@@ -80,7 +80,7 @@ mutate(flights_sdf, speed = distance / air_time * 60) %>%
 ```
 The average speed is 394.27 miles/hour. 
 
-### 6.2.2 Laziness
+### 5.2.2 Laziness
 
 `dplyr` evaluates lazily, i.e., it:    
 
@@ -104,7 +104,7 @@ class(mean_dep_delay)
 ```
 Here, the tibble data frame inherits from tibble, which in turn is a type of `data.frame`.
 
-### 6.2.3 Grouping and Shuffling
+### 5.2.3 Grouping and Shuffling
 
 The `group_by` function allows us to perform calculations for the groups (or levels) of a variable.
 
@@ -129,7 +129,7 @@ The `group_by` function seems innocent enough, but it may not be so. It has some
 
 Unless data is spread among the nodes of a cluster by group, which is not likely, then the data will need to be moved for analysis by shuffling it. This can be time consuming and should be avoided if possible, e.g., by partitioning according to groups in the first place.
 
-### 6.2.4 Analyses in R
+### 5.2.4 Analyses in R
 
 R has powerful statistical functions through a huge number of R packages. We can take advantage of R by converting a Spark DataFrame into an R data frame and then do modeling and plotting using the `dplyr`'s `collect` function.
 ```{r}
@@ -142,7 +142,7 @@ carrier_dep_delay_df %>%
   ggplot(aes(carrier, dep_delay)) + geom_boxplot()
 ```
 
-### 6.2.5 Window Functions
+### 5.2.5 Window Functions
 
 An aggregation function, such as `mean()`, takes n inputs and return a single value, whereas a window function returns n values. The output of a window function depends on all its input values, so window functions don’t include functions that work element-wise, like `+` or `round()`. Window functions in R include variations on aggregate functions, like `cummean()`, functions for ranking and ordering, like `rank()`, and functions for taking offsets, like `lead()` and `lag()`.
 
