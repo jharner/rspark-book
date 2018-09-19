@@ -1,7 +1,7 @@
 ---
 title: "Linear Regression"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "9/17/2018"
 output:
   html_document: default
   html_notebook: default
@@ -10,7 +10,9 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
 
+```{r}
 library(dplyr)
 library(sparklyr)
 sc <- spark_connect(master = "local")
