@@ -3,7 +3,6 @@ title: "Data Manipulation"
 author: "Jim Harner"
 date: "9/15/2018"
 
-
 output:
   html_document: default
   html_notebook: default

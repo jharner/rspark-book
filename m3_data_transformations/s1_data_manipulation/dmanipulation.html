@@ -465,16 +465,16 @@ select(flights, -(year:day))</code></pre>
 <pre><code>## # A tibble: 10 x 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     6    28      555            600       -5.      650
-##  2  2013     9    11     1519           1524       -5.     1742
-##  3  2013    12    16      519            515        4.      800
-##  4  2013    12    21     1403           1359        4.     1654
-##  5  2013     8    23     1649           1410      159.     1926
-##  6  2013    11    15     1253           1300       -7.     1353
-##  7  2013    11    21      852            900       -8.     1133
-##  8  2013     1    22     1426           1425        1.     1620
-##  9  2013     8     4     2035           1935       60.     2355
-## 10  2013    10     6     1855           1900       -5.     2013
+##  1  2013     9    17      815            815        0.     1005
+##  2  2013     4     6      627            630       -3.      820
+##  3  2013     3     7     1939           1930        9.     2227
+##  4  2013     1    13     1951           1915       36.     2303
+##  5  2013     3    31     1041           1051      -10.     1136
+##  6  2013     5    12     2123           2040       43.     2251
+##  7  2013     3     5     1652           1645        7.     1808
+##  8  2013     9    26     1203           1200        3.     1339
+##  9  2013     8    13      955            900       55.     1109
+## 10  2013     8    26     1151           1155       -4.     1308
 ## # ... with 12 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;,
 ## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
 ## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
@@ -483,16 +483,16 @@ select(flights, -(year:day))</code></pre>
 <pre><code>## # A tibble: 3,368 x 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     8    14      954           1000       -6.     1443
-##  2  2013     9    29     1200           1200        0.     1340
-##  3  2013     7    15     1949           1955       -6.     2113
-##  4  2013     9    21      919            920       -1.     1219
-##  5  2013     4     3     1954           2000       -6.     2226
-##  6  2013    10     1      714            715       -1.      949
-##  7  2013     8    14      626            630       -4.      808
-##  8  2013     7    23     1719           1710        9.     2121
-##  9  2013     6    15      631            638       -7.      831
-## 10  2013    10    25     2058           2059       -1.       56
+##  1  2013     7     3      957           1000       -3.     1254
+##  2  2013     2    26     1034           1015       19.     1255
+##  3  2013     2    11     1402           1218      104.     1611
+##  4  2013     2    18      900            900        0.     1205
+##  5  2013     1    15     1855           1904       -9.     2104
+##  6  2013     3     8       NA           1100       NA        NA
+##  7  2013     3    24     1126           1030       56.     1306
+##  8  2013     8    23      628            630       -2.      836
+##  9  2013     1    29     1733           1735       -2.     1906
+## 10  2013     1    21     1155           1200       -5.     1425
 ## # ... with 3,358 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
 ## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,

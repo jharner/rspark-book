@@ -3,7 +3,6 @@ title: "dplyr Backends"
 author: "Jim Harner"
 date: "9/15/2018"
 
-
 output:
   html_document: default
   html_notebook: default
@@ -29,7 +28,7 @@ A powerful feature of `dplyr` is its ability to operate on various backends, inc
 
 ### 3.2.1 Databases
 
-`dplyr` allows you to use the same verbs with a remote database. It takes care of generating SQL for you so that you can avoid learning it.
+`dplyr` allows you to use the same verbs in a remote database as you would in R. It takes care of generating SQL for you so that you can avoid learning it.
 
 The material for this subsection is taken from Hadley Wickham's [dplyr Database Vignette](https://github.com/hadley/dplyr/blob/master/vignettes/databases.Rmd).
 
