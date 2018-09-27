@@ -36,9 +36,9 @@ airlines_sdf <- sdf_copy_to(sc, airlines, "airlines_sdf", overwrite = TRUE)
 
 ### 5.3.1 Joining Spark Data Tables
 
-In Section 6.2.1 the `dplyr` verbs were used to manipulate a Spark DataFrame. However, we often have multiple related Spark tables which we need to combine prior to performing data manipulations.
+In Section 5.2.1 the `dplyr` verbs were used to manipulate a Spark DataFrame. However, we often have multiple related Spark tables which we need to combine prior to performing data manipulations.
 
-A workflow was developed in Section 6.2.1 to find the flights with a departure delay greater than 1000 minutes. However, we did not have the carrier names since they were in a different table. Providing this information can be done with a `left_join`.
+A workflow was developed in Section 5.2.1 to find the flights with a departure delay greater than 1000 minutes. However, we did not have the carrier names since they were in a different table. Providing this information can be done with a `left_join`.
 ```{r}
 flights_sdf %>%
   left_join(airlines_sdf, by = "carrier") %>%

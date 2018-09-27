@@ -1,5 +1,5 @@
 ---
-title: "Wine Quality Logistic Regression"
+title: "Wine Quality Regularized Logistic Regression"
 author: "Jim Harner"
 date: "7/25/2018"
 output:

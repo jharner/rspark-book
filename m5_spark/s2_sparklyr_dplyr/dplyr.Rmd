@@ -31,7 +31,7 @@ Besides providing functions for manipulating data frames in R, `dplyr` forms an 
 
 * selecting, filtering, and aggregating;  
 * sampling (by window functions);  
-* performing joins;
+* performing joins;  
 
 As we saw in section 6.1, `dplyr` can be used to:  
 

@@ -1,5 +1,5 @@
 ---
-title: "Linear Regression"
+title: "Linear Regression Example"
 author: "Jim Harner"
 date: "7/25/2018"
 output:
