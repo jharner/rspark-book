@@ -28,7 +28,7 @@ We focus on on certain R packages in the tidyverse, e.g., `tidyr` to clean data,
 
 ### 1.1.1 Data Science Environments  
 
-Data science requires a number of computing environments to analyze and visualize large, complex data derived from a variety of sources. For the most part, data science is built on open-source software, an approach we use here. The principal software environments used are R and Spark. I use the word environment here to mean extensibility, primarily through packages. However, R and Spark are more appropriately called  ecosystems since each has a large numbers of supporting components, such as the database PostgreSQL. 
+Data science requires a number of computing environments to analyze and visualize large, complex data derived from a variety of sources. For the most part, data science is built on open-source software, an approach we use here. The principal software environments used are R and Spark. I use the word "environment" here to mean extensibility, primarily through packages. However, R and Spark are more appropriately called  ecosystems since each has a large numbers of supporting components, such as the database PostgreSQL. 
 
 We choose R (rather than Python) as a high-level programming language, partly because it is a highly-developed statistical programming environment, but primarily since it is a functional language. This makes R adept at building data workflows using R's pipe operator, `%>%` and ML pipelines.
 

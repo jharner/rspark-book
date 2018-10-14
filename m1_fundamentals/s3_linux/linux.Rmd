@@ -182,7 +182,7 @@ git pull origin master
 ```
 Since you local repo has been changed, you will need to specify the `build` option the first time you execure `start.sh`.
 
-#### Running containers from the command line.
+#### Running containers from the command line
 
 You can enter containers from the local command line using `ssh` (secure shell). For example, to `ssh` into the `rstudio` container, run the following in your local (host) terminal:
 ```
