@@ -120,13 +120,19 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Data Manipulation</h1>
 <h4 class="author"><em>Jim Harner</em></h4>
-<h4 class="date"><em>9/15/2018</em></h4>
+<h4 class="date"><em>1/1/2019</em></h4>
 
 </div>
 
 
 <p>The <code>dplyr</code> package is part of the <code>tidyverse</code>. It provides a grammar of data maniputation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources.</p>
-<pre class="r"><code>library(dplyr, warn.conflicts = FALSE)</code></pre>
+<pre class="r"><code>library(dplyr, warn.conflicts = FALSE)
+library(lubridate)</code></pre>
+<pre><code>## 
+## Attaching package: 'lubridate'</code></pre>
+<pre><code>## The following object is masked from 'package:base':
+## 
+##     date</code></pre>
 <p>This section illustrates <code>dplyr</code> using the NYC flight departures data as a context.</p>
 <pre class="r"><code>library(nycflights13)</code></pre>
 <div id="data-manipulation-with-dplyr" class="section level2">
@@ -186,6 +192,14 @@ $(document).ready(function () {
 ##  $ hour          : num  5 5 5 5 6 5 6 6 6 6 ...
 ##  $ minute        : num  15 29 40 45 0 58 0 0 0 0 ...
 ##  $ time_hour     : POSIXct, format: &quot;2013-01-01 05:00:00&quot; &quot;2013-01-01 05:00:00&quot; ...</code></pre>
+<p>The <code>time_hour</code> variable in the <code>flights</code> data is defined by the POSIXct format, which is identical to the format used for <code>time_hour</code> in the <code>weather</code> data of Section 3.1.4. The <code>time_hour</code> variable can be computed using the <code>make_datetime</code> function from the <code>ludridate</code> package with <code>year</code>, <code>month</code>, <code>day</code>, and <code>hour</code> as arguments. The flights table could be joined to the weather table using <code>time_hour</code> and <code>origin</code>, which at least in principle allows us to model <code>dep_delay</code> in terms of the weather variables.</p>
+<p>We could also define a <code>time_min</code> variable as follows:</p>
+<pre class="r"><code>make_datetime(year = flights$year, month = flights$month, day = flights$day,
+              hour = flights$hour, min = flights$minute)[1:5]</code></pre>
+<pre><code>## [1] &quot;2013-01-01 05:15:00 UTC&quot; &quot;2013-01-01 05:29:00 UTC&quot;
+## [3] &quot;2013-01-01 05:40:00 UTC&quot; &quot;2013-01-01 05:45:00 UTC&quot;
+## [5] &quot;2013-01-01 06:00:00 UTC&quot;</code></pre>
+<p>This would allow us to model <code>dep_delay</code> at a finer level of granularity, but unfortunately the weather variables are only measured to the nearest hour.</p>
 <div id="single-table-verbs" class="section level3">
 <h3>3.1.1 Single Table Verbs</h3>
 <p><code>dplyr</code> provides a suite of verbs for data manipulation:</p>
@@ -465,16 +479,16 @@ select(flights, -(year:day))</code></pre>
 <pre><code>## # A tibble: 10 x 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     9    17      815            815        0.     1005
-##  2  2013     4     6      627            630       -3.      820
-##  3  2013     3     7     1939           1930        9.     2227
-##  4  2013     1    13     1951           1915       36.     2303
-##  5  2013     3    31     1041           1051      -10.     1136
-##  6  2013     5    12     2123           2040       43.     2251
-##  7  2013     3     5     1652           1645        7.     1808
-##  8  2013     9    26     1203           1200        3.     1339
-##  9  2013     8    13      955            900       55.     1109
-## 10  2013     8    26     1151           1155       -4.     1308
+##  1  2013    12    26     1451           1429       22.     1756
+##  2  2013     4    10       NA           2245       NA        NA
+##  3  2013     6    25      925            925        0.     1211
+##  4  2013     3    28     1503           1510       -7.     1706
+##  5  2013     4    20     1925           1915       10.     2138
+##  6  2013     1    27     1724           1725       -1.     2013
+##  7  2013    12    30      735            740       -5.      939
+##  8  2013    12     8     1209           1205        4.     1335
+##  9  2013    12    19     1832           1830        2.     2146
+## 10  2013     6     3     1458           1455        3.     1641
 ## # ... with 12 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;,
 ## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
 ## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
@@ -483,16 +497,16 @@ select(flights, -(year:day))</code></pre>
 <pre><code>## # A tibble: 3,368 x 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     7     3      957           1000       -3.     1254
-##  2  2013     2    26     1034           1015       19.     1255
-##  3  2013     2    11     1402           1218      104.     1611
-##  4  2013     2    18      900            900        0.     1205
-##  5  2013     1    15     1855           1904       -9.     2104
-##  6  2013     3     8       NA           1100       NA        NA
-##  7  2013     3    24     1126           1030       56.     1306
-##  8  2013     8    23      628            630       -2.      836
-##  9  2013     1    29     1733           1735       -2.     1906
-## 10  2013     1    21     1155           1200       -5.     1425
+##  1  2013     8     3      819            820       -1.     1020
+##  2  2013    12     8     1725           1730       -5.     1933
+##  3  2013    12    21     2030           2030        0.     2313
+##  4  2013     5    16     1308           1308        0.     1421
+##  5  2013    11    10     1108           1100        8.     1209
+##  6  2013     9    19     1418           1345       33.     1538
+##  7  2013     3     5     1129           1135       -6.     1441
+##  8  2013     6     7     1536           1540       -4.     1734
+##  9  2013    11    11     1925           1930       -5.     2149
+## 10  2013    10     2     1858           1900       -2.     2121
 ## # ... with 3,358 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
 ## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
@@ -792,22 +806,23 @@ airlines</code></pre>
 <ul>
 <li><code>NULL</code>, the default. <code>dplyr</code> will will use all variables that appear in both tables, a natural join. For example, the flights and weather tables match on their common variables: year, month, day, hour and origin.</li>
 </ul>
-<pre class="r"><code>weather</code></pre>
-<pre><code>## # A tibble: 26,130 x 15
-##    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
-##    &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-##  1 EWR    2013.    1.     1     0  37.0  21.9  54.0     230.      10.4 
-##  2 EWR    2013.    1.     1     1  37.0  21.9  54.0     230.      13.8 
-##  3 EWR    2013.    1.     1     2  37.9  21.9  52.1     230.      12.7 
-##  4 EWR    2013.    1.     1     3  37.9  23.0  54.5     230.      13.8 
-##  5 EWR    2013.    1.     1     4  37.9  24.1  57.0     240.      15.0 
-##  6 EWR    2013.    1.     1     6  39.0  26.1  59.4     270.      10.4 
-##  7 EWR    2013.    1.     1     7  39.0  27.0  61.6     250.       8.06
-##  8 EWR    2013.    1.     1     8  39.0  28.0  64.4     240.      11.5 
-##  9 EWR    2013.    1.     1     9  39.9  28.0  62.2     250.      12.7 
-## 10 EWR    2013.    1.     1    10  39.0  28.0  64.4     260.      12.7 
-## # ... with 26,120 more rows, and 5 more variables: wind_gust &lt;dbl&gt;,
-## #   precip &lt;dbl&gt;, pressure &lt;dbl&gt;, visib &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<pre class="r"><code>str(weather)</code></pre>
+<pre><code>## Classes 'tbl_df', 'tbl' and 'data.frame':    26130 obs. of  15 variables:
+##  $ origin    : chr  &quot;EWR&quot; &quot;EWR&quot; &quot;EWR&quot; &quot;EWR&quot; ...
+##  $ year      : num  2013 2013 2013 2013 2013 ...
+##  $ month     : num  1 1 1 1 1 1 1 1 1 1 ...
+##  $ day       : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ hour      : int  0 1 2 3 4 6 7 8 9 10 ...
+##  $ temp      : num  37 37 37.9 37.9 37.9 ...
+##  $ dewp      : num  21.9 21.9 21.9 23 24.1 ...
+##  $ humid     : num  54 54 52.1 54.5 57 ...
+##  $ wind_dir  : num  230 230 230 230 240 270 250 240 250 260 ...
+##  $ wind_speed: num  10.4 13.8 12.7 13.8 15 ...
+##  $ wind_gust : num  11.9 15.9 14.6 15.9 17.2 ...
+##  $ precip    : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ pressure  : num  1014 1013 1013 1013 1013 ...
+##  $ visib     : num  10 10 10 10 10 10 10 10 10 10 ...
+##  $ time_hour : POSIXct, format: &quot;2013-01-01 00:00:00&quot; &quot;2013-01-01 01:00:00&quot; ...</code></pre>
 <pre class="r"><code>flights2 %&gt;%
   left_join(weather)</code></pre>
 <pre><code>## Joining, by = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;, &quot;hour&quot;, &quot;origin&quot;)</code></pre>

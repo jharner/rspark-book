@@ -1,7 +1,7 @@
 ---
 title: "Data Manipulation"
 author: "Jim Harner"
-date: "9/15/2018"
+date: "1/1/2019"
 
 output:
   html_document: default
@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 The `dplyr` package is part of the `tidyverse`. It provides a grammar of data maniputation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources.
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
+library(lubridate)
 ```
 This section illustrates `dplyr` using the NYC flight departures data as a context.
 ```{r}
@@ -45,6 +46,15 @@ The variable names in `flights` are self explanatory, but note that `flights` do
 ```{r}
 str(flights)
 ```
+
+The `time_hour` variable in the `flights` data is defined by the POSIXct format, which is identical to the format used for `time_hour` in the `weather` data of Section 3.1.4. The `time_hour` variable can be computed using the `make_datetime` function from the `ludridate` package with `year`, `month`, `day`, and `hour` as arguments. The flights table could be joined to the weather table using `time_hour` and `origin`, which at least in principle allows us to model `dep_delay` in terms of the weather variables.
+
+We could also define a `time_min` variable as follows:
+```{r}
+make_datetime(year = flights$year, month = flights$month, day = flights$day,
+              hour = flights$hour, min = flights$minute)[1:5]
+```
+This would allow us to model `dep_delay` at a finer level of granularity, but unfortunately the weather variables are only measured to the nearest hour.
 
 ### 3.1.1 Single Table Verbs
 
@@ -306,7 +316,7 @@ In addition to `x` and `y`, each mutating join takes an argument `by` that contr
 
 * `NULL`, the default. `dplyr` will will use all variables that appear in both tables, a natural join. For example, the flights and weather tables match on their common variables: year, month, day, hour and origin.  
 ```{r}
-weather
+str(weather)
 flights2 %>%
   left_join(weather)
 ```
