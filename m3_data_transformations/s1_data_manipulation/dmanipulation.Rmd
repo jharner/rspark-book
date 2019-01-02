@@ -25,7 +25,7 @@ library(nycflights13)
 
 This section explores the main functions in `dplyr` which Hadley Wickham describes as a *grammar of data manipulation*---the counterpoint to his *grammar of graphics* in `ggplot2`.
 
-The github repo for [`dplyr`](https://github.com/hadley/dplyr) not only houses the R code, but also vignettes for various use cases. The introductory vignette is a good place to start and can by viewed by typing the following on the command line: `vignette("dplyr", package = "dplyr")` or by opening the `dolyr.Rmd` file in the vignettes directory of the `dplyr` repo. The material for this section is based on content from Hadley Wickham's [Introduction to dplyr Vignette](https://github.com/hadley/dplyr/blob/master/vignettes/dplyr.Rmd). 
+The github repo for [`dplyr`](https://github.com/hadley/dplyr) not only houses the R code, but also vignettes for various use cases. The introductory vignette is a good place to start and can by viewed by typing the following on the command line: `vignette("dplyr", package = "dplyr")` or by opening the `dplyr.Rmd` file in the vignettes directory of the `dplyr` repo. The material for this section is based on content from Hadley Wickham's [Introduction to dplyr Vignette](https://github.com/hadley/dplyr/blob/master/vignettes/dplyr.Rmd). 
 
 `dplyr` was designed to:  
 
@@ -47,7 +47,7 @@ The variable names in `flights` are self explanatory, but note that `flights` do
 str(flights)
 ```
 
-The `time_hour` variable in the `flights` data is defined by the POSIXct format, which is identical to the format used for `time_hour` in the `weather` data of Section 3.1.4. The `time_hour` variable can be computed using the `make_datetime` function from the `ludridate` package with `year`, `month`, `day`, and `hour` as arguments. The flights table could be joined to the weather table using `time_hour` and `origin`, which at least in principle allows us to model `dep_delay` in terms of the weather variables.
+The `time_hour` variable in the `flights` data is encoded using the POSIXct format, which is identical to the format used for `time_hour` in the `weather` data of Section 3.1.4. The `time_hour` variable can be computed using the `make_datetime` function from the `ludridate` package with `year`, `month`, `day`, and `hour` as arguments. The flights table could be joined to the weather table using `time_hour` and `origin` as keys, which at least in principle allows us to model `dep_delay` in terms of the weather variables.
 
 We could also define a `time_min` variable as follows:
 ```{r}
@@ -68,6 +68,8 @@ This would allow us to model `dep_delay` at a finer level of granularity, but un
 * `summarise`: collapses a data frame to a single row;  
 * `sample_n`: take a random sample of rows.  
 
+#### Filter and Slice
+
 `filter()` allows the selection of rows using Boolean operations, e.g., `&` or `|`.
 
 ```{r}
@@ -85,12 +87,16 @@ Rows can also be selected by positon using slice:
 slice(flights, 1:3)
 ```
 
+#### Arrange
+
 `arrange()` orders a data frame by a set of column names (or more complicated expressions). If you provide more than one column name, each additional column will be used to break ties in the values of preceding columns:
 ```{r}
 arrange(flights, dep_delay)
 # Or with `arr_delay` descending:
 arrange(flights, desc(dep_delay))
 ```
+
+#### Select and Rename
 
 `select()` allows you to focus  on the variables of interest:
 ```{r}
@@ -109,12 +115,16 @@ It is possible to rename variables with `select`, but `rename` is a better choic
 rename(flights, tail_num = tailnum)
 ```
 
+#### Distinct
+
 `distinct()` finds unique values in a table:
 ```{r}
 distinct(flights, tailnum)
 distinct(flights, origin, dest)
 ```
 This is similar to `base::unique()` but is faster.
+
+#### Mutate and Transmute
 
 `mutate()` transforms variables, i.e., adds new columns that are functions of existing columns.
 ```{r}
@@ -131,6 +141,14 @@ mutate(flights,
 ```
 Note: The new variables are not actually part of `flights` as can be seen by printing `flights`, but the new tibble can be used as part of a workflow. Alternately, a new tibble, e.g., `flights_gain` could be created by: `flights_gain <- mutate(...)`.
 
+Now let's add a time_min variables to the flights data using the four time variables.
+```{r}
+mutate(flights, 
+       time_min = make_datetime(year, month, day,
+                                sched_dep_time %/% 100,
+                                sched_dep_time %% 100))$time_min[1:5]
+```
+
 If you only want to keep the new variables, use `transmute()`:
 ```{r}
 transmute(flights,
@@ -138,6 +156,16 @@ transmute(flights,
           gain_per_hour = gain / (air_time / 60)
 )
 ```
+
+Now let's add a time_min variables to the flights data using the four time variables. The modulo operator is used in which the quotient (hour) and remainder (min) are extracted from `sched_dep_time`.
+```{r}
+mutate(flights, 
+       time_min = make_datetime(year, month, day,
+                                sched_dep_time %/% 100,
+                                sched_dep_time %% 100))$time_min[1:5]
+```
+
+#### Sample
 
 `sample_n()` and `sample_frac()` are used to take a random sample of rows for a fixed number and a fixed fraction, respectively.
 ```{r}
