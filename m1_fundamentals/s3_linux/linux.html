@@ -120,7 +120,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Linux</h1>
 <h4 class="author"><em>Jim Harner</em></h4>
-<h4 class="date"><em>9/10/2018</em></h4>
+<h4 class="date"><em>1/1/2019</em></h4>
 
 </div>
 
@@ -130,7 +130,7 @@ $(document).ready(function () {
 <p>Data science requires underlying tools and the most basic of these is the operating system (OS). Linux is most commonly used since it is open source and has advanced features, e.g., its kernel and file system, which make handling big data feasible.</p>
 <div id="linux-features" class="section level3">
 <h3>1.3.1 Linux Features</h3>
-<p>Linux manages the communication between your software and your hardware resources. This course uses Docker containers based on Linux. For a more complete reference see: <a href="https://www.linux.com/what-is-linux">What is Linux?</a>.</p>
+<p>Linux manages the communication between your software and your hardware resources. This tutorial uses Docker containers based on Linux. For a more complete reference see: <a href="https://www.linux.com/what-is-linux">What is Linux?</a>.</p>
 <p>Linux OS has a number of components, including:</p>
 <ul>
 <li>the kernel for managing the CPU, memory, devices, etc.;<br />
@@ -168,6 +168,8 @@ ls</code></pre>
 ## /home/rstudio
 ## 
 ## the list of the files and subdirectories in your login (/home/rstudio) directory
+## buda515final18Key
+## buda515modules
 ## kitematic
 ## R
 ## rspark-tutorial
@@ -179,23 +181,28 @@ ls</code></pre>
 
 echo -e &quot;\nlist the files in your home directory from your working directory&quot;
 ls -al $HOME</code></pre>
-<pre><code>## total 772
-## drwxr-xr-x 3 rstudio rstudio   4096 Oct 11 19:21 .
-## drwxr-xr-x 6 rstudio rstudio   4096 Oct  7 19:24 ..
-## -rw-r--r-- 1 rstudio rstudio 757708 Oct 11 19:20 linux.html
-## -rw-r--r-- 1 rstudio rstudio  16526 Oct  7 19:24 linux.Rmd
-## drwxr-xr-x 2 rstudio rstudio   4096 Oct 11 19:21 temp
+<pre><code>## total 1588
+## drwxr-xr-x 2 rstudio rstudio   4096 Jan  2 03:12 .
+## drwxr-xr-x 6 rstudio rstudio   4096 Jan  1 02:23 ..
+## -rw-r--r-- 1 rstudio rstudio 758741 Jan  2 03:09 linux.html
+## -rw-r--r-- 1 rstudio rstudio 832970 Jan  2 03:12 linux.nb.html
+## -rw-r--r-- 1 rstudio rstudio  16980 Jan  2 03:09 linux.Rmd
 ## 
 ## list the files in your home directory from your working directory
-## total 40
-## drwxr-xr-x  1 rstudio rstudio 4096 Oct  7 19:33 .
-## drwxr-xr-x  1 root    root    4096 Jun  1 05:11 ..
-## drwxr-xr-x  3 rstudio rstudio 4096 Oct  7 19:33 .config
+## total 60
+## drwxr-xr-x  1 rstudio rstudio 4096 Jan  1 02:23 .
+## drwxr-xr-x  1 root    root    4096 Jun  1  2018 ..
+## -rw-------  1 rstudio rstudio 1016 Nov 22 03:20 .bash_history
+## drwxr-xr-x  2 rstudio rstudio 4096 Nov 22 02:31 .beeline
+## drwxr-xr-x  3 rstudio rstudio 4096 Dec 14 15:08 buda515final18Key
+## drwxr-xr-x 13 rstudio rstudio 4096 Dec 13 01:31 buda515modules
+## drwxr-xr-x  3 rstudio rstudio 4096 Nov 22 02:06 .config
+## drwx------  2 rstudio rstudio 4096 Nov 22 08:23 .git-credential-cache
 ## -rw-r--r--  1 rstudio rstudio   58 Sep 25  2017 .gitignore
-## drwxr-xr-x  2 root    root    4096 Jun  1 05:11 kitematic
-## drwxr-xr-x  3 rstudio rstudio 4096 Oct  7 19:22 R
-## drwxr-xr-x 12 rstudio rstudio 4096 Oct 14 02:47 rspark-tutorial
-## drwxr-xr-x  1 rstudio rstudio 4096 Oct 14 02:43 .rstudio
+## drwxr-xr-x  2 root    root    4096 Jun  1  2018 kitematic
+## drwxr-xr-x  3 rstudio rstudio 4096 Nov 22 02:06 R
+## drwxr-xr-x 12 rstudio rstudio 4096 Jan  1 21:53 rspark-tutorial
+## drwxr-xr-x  1 rstudio rstudio 4096 Jan  1 07:35 .rstudio
 ## drwxr-xr-x  1 rstudio rstudio 4096 Apr 11  2018 sparklyr-tests
 ## drwxr-xr-x  1 rstudio rstudio 4096 Apr 11  2018 sparkr-tests</code></pre>
 <p>The option <code>-a</code> causes <code>ls</code> to list all files and directories, including those that are normally hidden, whereas <code>-l</code> invokes the long format (<code>l</code>), which gives the permissions and other information about the owner, group, size, modification date, time, etc. The file and directory names are given in the last column of the output.</p>
@@ -213,22 +220,23 @@ ls -al $HOME</code></pre>
 <p>Note that if you want privacy you should use <code>700</code> for permissions. Let’s make a temporary directory in the working directory and then change its permissions. The command <code>mkdir</code> makes a directory, in this case <code>temp</code>.</p>
 <pre class="bash"><code>mkdir temp
 ls -al</code></pre>
-<pre><code>## mkdir: cannot create directory ‘temp’: File exists
-## total 772
-## drwxr-xr-x 3 rstudio rstudio   4096 Oct 11 19:21 .
-## drwxr-xr-x 6 rstudio rstudio   4096 Oct  7 19:24 ..
-## -rw-r--r-- 1 rstudio rstudio 757708 Oct 11 19:20 linux.html
-## -rw-r--r-- 1 rstudio rstudio  16526 Oct  7 19:24 linux.Rmd
-## drwxr-xr-x 2 rstudio rstudio   4096 Oct 11 19:21 temp</code></pre>
+<pre><code>## total 1592
+## drwxr-xr-x 3 rstudio rstudio   4096 Jan  2 03:12 .
+## drwxr-xr-x 6 rstudio rstudio   4096 Jan  1 02:23 ..
+## -rw-r--r-- 1 rstudio rstudio 758741 Jan  2 03:09 linux.html
+## -rw-r--r-- 1 rstudio rstudio 832970 Jan  2 03:12 linux.nb.html
+## -rw-r--r-- 1 rstudio rstudio  16980 Jan  2 03:09 linux.Rmd
+## drwxr-xr-x 2 rstudio rstudio   4096 Jan  2 03:12 temp</code></pre>
 <p>We use <code>chmod</code> (change mode) to change the permissions of <code>temp</code> from the default <code>755</code> to <code>700</code>.</p>
 <pre class="bash"><code>chmod 700 temp
 ls -al</code></pre>
-<pre><code>## total 772
-## drwxr-xr-x 3 rstudio rstudio   4096 Oct 11 19:21 .
-## drwxr-xr-x 6 rstudio rstudio   4096 Oct  7 19:24 ..
-## -rw-r--r-- 1 rstudio rstudio 757708 Oct 11 19:20 linux.html
-## -rw-r--r-- 1 rstudio rstudio  16526 Oct  7 19:24 linux.Rmd
-## drwx------ 2 rstudio rstudio   4096 Oct 11 19:21 temp</code></pre>
+<pre><code>## total 1592
+## drwxr-xr-x 3 rstudio rstudio   4096 Jan  2 03:12 .
+## drwxr-xr-x 6 rstudio rstudio   4096 Jan  1 02:23 ..
+## -rw-r--r-- 1 rstudio rstudio 758741 Jan  2 03:09 linux.html
+## -rw-r--r-- 1 rstudio rstudio 832970 Jan  2 03:12 linux.nb.html
+## -rw-r--r-- 1 rstudio rstudio  16980 Jan  2 03:09 linux.Rmd
+## drwx------ 2 rstudio rstudio   4096 Jan  2 03:12 temp</code></pre>
 <p>We then remove the directory, which must be empty, by <code>rmdir</code>.</p>
 <pre class="bash"><code>rmdir temp</code></pre>
 <p>To remove a file, use <code>rm</code> followed by the file name. To remove a directory containing files and other directories, use <code>rm -R</code> followed by the directory name. The <code>-R</code> option recursively removes files and directories, and thus should be used with extreme caution!</p>
@@ -255,6 +263,7 @@ ls -al</code></pre>
 </div>
 <div id="running-rspark-from-docker-hub" class="section level4">
 <h4>Running <code>rspark</code> from Docker Hub</h4>
+<p>For a more complete description of the Docker Hub installation process, see the <code>README</code> file from the <code>rspark-docker</code> repo: <a href="https://github.com/jharner/rspark-docker" class="uri">https://github.com/jharner/rspark-docker</a></p>
 <p>Before beginning, launch Terminal.app on the Mac or git bash on Windows (start typing bash from the Start menu to find it). Once running, you should be in your home directory, e.g, type <code>pwd</code> to verify. Stay there or <code>cd</code> to wherever you want <code>rspark</code> installed.</p>
 <p><code>rspark</code> can be installed by pulling the Docker images from Docker Hub. Run the following command in the terminal:</p>
 <pre><code>git clone https://github.com/jharner/rspark-docker.git</code></pre>
@@ -290,8 +299,8 @@ Password: rstudio</p>
 <pre><code>git pull origin master</code></pre>
 <p>Since you local repo has been changed, you will need to specify the <code>build</code> option the first time you execure <code>start.sh</code>.</p>
 </div>
-<div id="running-containers-from-the-command-line." class="section level4">
-<h4>Running containers from the command line.</h4>
+<div id="running-containers-from-the-command-line" class="section level4">
+<h4>Running containers from the command line</h4>
 <p>You can enter containers from the local command line using <code>ssh</code> (secure shell). For example, to <code>ssh</code> into the <code>rstudio</code> container, run the following in your local (host) terminal:</p>
 <pre><code>docker exec -ti rspark-docker_rstudio_1 bash
 cd home/rstudio</code></pre>
@@ -311,18 +320,18 @@ cd home/rstudio</code></pre>
 </div>
 <div id="vagrant-virtualbox-virtualization" class="section level3">
 <h3>1.3.4 Vagrant/ VirtualBox Virtualization</h3>
-<p>If you cannot install <code>rspark</code> using Docker, then try Vagrant/ VirtualBox. Vagrant is heavier than Docker and the download is longer, but it works well.</p>
+<p>If you cannot install <code>rspark</code> using Docker, then try Vagrant/ VirtualBox. Vagrant is heavier than Docker and the download is longer, but it works well. For a more complete description of the installation process see the <code>README</code> file from the <code>rspark-vagrant</code> repo: <a href="https://github.com/jharner/rspark-vagrant" class="uri">https://github.com/jharner/rspark-vagrant</a></p>
 <p>First your must install VirtualBox and Vagrant for macOS or Windows:</p>
 <p><a href="https://www.virtualbox.org/wiki/Downloads" class="uri">https://www.virtualbox.org/wiki/Downloads</a><br />
 <a href="https://www.vagrantup.com/downloads.html" class="uri">https://www.vagrantup.com/downloads.html</a></p>
 <p>Windows users will need to install <a href="https://git-for-windows.github.io">git for Windows</a> for bash access (as above) and get the 64-bit version of Vagrant. However, you do not need Hyper-V, which may not be available for your Windows version.</p>
 <p>The installation is similar to the what we did with Docker. We assume you are in your home directory, but you can <code>cd</code> to any directory. The following should only be done the first time:</p>
 <pre><code>git clone https://github.com/jharner/rspark-vagrant.git</code></pre>
-<p>If <code>rspark-vagrant</code> gets updated (I will notify you if this is the case.), execute:</p>
+<p>If <code>rspark-vagrant</code> gets updated, execute:</p>
 <pre><code>git pull origin master</code></pre>
 <p>You are now ready to start your session.</p>
 <pre><code>cd rspark-vagrant
-./start.sh build</code></pre>
+./start.sh</code></pre>
 <p>The last command runs the <code>start.sh</code> shell script. It will take awhile the first time or after a pull. Eventually, you will reach a line somewhat like: “hive_1 | SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]” As before, you will <em>not</em> return to the terminal prompt, but the containers are nevertheless running. <em>IMPORTANT: leave the program running in the terminal, i.e., do NOT use Control-C and do not quit the terminal</em>.</p>
 <p>Now open a browser and type the url as: <code>localhost:8787</code> and sign into RStudio:</p>
 <p>Username: rstudio<br />

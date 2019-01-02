@@ -120,7 +120,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">RStudio Server</h1>
 <h4 class="author"><em>Jim Harner</em></h4>
-<h4 class="date"><em>9/10/2018</em></h4>
+<h4 class="date"><em>1/1/2019</em></h4>
 
 </div>
 
@@ -129,8 +129,8 @@ $(document).ready(function () {
 <h2>1.2 RStudio Server</h2>
 <p>RStudio is a powerful integrated development environment (IDE) primarily used for developing code for R projects, including R packages. RStudio supports the integration of R, Python, bash, and SQL code chunks into Rmarkdown documents (and notebooks), among other languages.</p>
 <p>As a frontend to R, it can be run on your local machine (Mac or Windows) natively, but this is difficult for doing data science, which requires a vast number of add-on components. As a result, we use RStudio Server, which is run on Linux and accessed with a web-based client.</p>
-<div id="running-rstudio-server" class="section level3">
-<h3>1.2.1 Running RStudio Server</h3>
+<div id="running-rstudio-server-in-a-docker-container" class="section level3">
+<h3>1.2.1 Running RStudio Server in a Docker container</h3>
 <p>We run RStudio Server in a Docker container within a virtual computing environment on your local machine or in the cloud. The development repository (repo) for this environment is called <code>rspark</code> and can be found on GitHub here: <a href="https://github.com/jharner/rspark">github.com/jharner/rspark</a>. This virtual environment will allow you to run R, Spark, Hadoop, etc.</p>
 <p><code>rspark</code> can be installed in one of several ways:</p>
 <ul>
@@ -199,8 +199,11 @@ $(document).ready(function () {
 <p>NOTE: If your instance is terminated, all start-up steps must be redone to start a new instance.</p>
 </div>
 </div>
-<div id="the-source-panel" class="section level3">
-<h3>1.2.2 The Source Panel</h3>
+<div id="principal-rstudio-components" class="section level3">
+<h3>1.2.3 Principal RStudio Components</h3>
+<p>As an IDE, RStudio has many panels and menus for software coding. Although RStudio is best learned by using it, brief summaries follow.</p>
+<div id="the-source-panel" class="section level4">
+<h4>The Source Panel</h4>
 <p>Once you log into RStudio Server you will see four panels, which can be customized by choosing <code>Global Options ...</code> from the <code>Tools</code> menu. You can then rearrange what appears in the panels to suit your needs. I would recommend that you leave <code>Source</code> in the upper left panel and the <code>Console</code> (and <code>Terminal</code>) to the lower left panel. It is useful to have “History, Plots, Packages, Help, and Viewer” in the upper right panel so that output is beside the source code.</p>
 <p>You can use R interactively from the <code>Console</code>, but most of your work will consist of developing source files in the Source panel. For the most part you will be creating R Markdown files and/or R Notebooks, but in some cases you will develop R scripts. New files can be created by selecting <code>New File</code> from the <code>File</code> menu and then selecting the type of file desired, typically either <code>R Markdown</code> or <code>R Notebook</code>. We usually specify <code>html_document</code> and <code>html_notebook</code> as outputs.</p>
 <p>The notebook feature is very powerful (the most powerful I have seen) for interactively debugging code. It creates output for each chunk in a very informative way. LaTeX equations are displayed as typed.</p>
@@ -208,23 +211,24 @@ $(document).ready(function () {
 <p>Files support built-in LaTeX for mathematics and code chunks containing not only R, but also Bash, Python, C++, SQL, etc. You can mix these code chunks within a single document.</p>
 <p>R supports Projects which allow related files to be organized together. Projects can then be tied to version control systems such as <code>git</code>. We will be using <code>rspark-tutorial</code> in this tutorial, optionally as an RStudio Project.</p>
 </div>
-<div id="the-console-panel" class="section level3">
-<h3>1.2.3 The Console Panel</h3>
+<div id="the-console-panel" class="section level4">
+<h4>The Console Panel</h4>
 <p>The <code>Console</code> is for interactively executing R statements. Certain types of R statements generated from other sources also appear here. The <code>R Markdown</code> tab is transitory and appears when knitting takes place. R Markdown errors are also displayed in this tab.</p>
 <p>The <code>Terminal</code> tab provides access to a command line interface (CLI) to Linux using the <code>bash</code> shell. By default, you open a session in <code>Terminal 1</code>. Your working directory is displayed to the right of the terminal name, which can be changed. The prompt is given by <code>rstudio@CONTAINER_ID</code>. Additional terminals can be launched by selecting <code>Terminal</code> and then <code>New Terminal</code> in the <code>Tools</code> menu. Each terminal can be set to a specific directory for executing commands.</p>
 </div>
-<div id="environments-and-files" class="section level3">
-<h3>1.3.3 Environments and Files</h3>
-<p>R has a workspace in which all assigned data structures or functions are kept. These structures or functions show up in the <code>Environment</code> tab. The files and directories are available in the <code>Files</code> tab. Spark data structures appear in the <code>Connections</code> tab.</p>
+<div id="environments-and-files" class="section level4">
+<h4>Environments and Files</h4>
+<p>R has a workspace in which all assigned data structures or functions are kept. These structures or functions show up in the <code>Environment</code> tab. Files and directories are available in the <code>Files</code> tab. Spark data structures appear in the <code>Connections</code> tab.</p>
 </div>
-<div id="viewers" class="section level3">
-<h3>1.2.4 Viewers</h3>
+<div id="viewers" class="section level4">
+<h4>Viewers</h4>
 <p>The <code>html</code> output is displayed in the <code>Viewer</code> and is also saved in the working directory. <code>Word</code> and <code>pdf</code> outputs are saved as files in the working directory and <code>pdf</code> files are also displayed in a <code>Viewer</code>. Plots are saved in the <code>Plots</code> viewer, although they are usually embedded in output documents.</p>
 </div>
-<div id="packages" class="section level3">
-<h3>1.2.5 Packages</h3>
+<div id="packages" class="section level4">
+<h4>Packages</h4>
 <p>R has a very robust package system currently consisting of over 13,000 official packages and many more being develop on GitHub that do almost everything of interest concerning nearly any type of data. For a complete listing see: <a href="https://rdrr.io">rdrr.io</a>. The <code>Package</code> tab gives you access to the currently installed packages. Loaded packages have a check beside them. Clicking on the package name brings up its documentation in the Help tab. Each function or data frame can be clicked to get detailed information about their usage.</p>
 <p>Clicking <code>Install</code> under <code>Packages</code> brings up a dialog for installing packages. It is also possible to <code>Update</code> currently installed packages.</p>
+</div>
 </div>
 </div>
 
