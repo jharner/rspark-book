@@ -469,14 +469,6 @@ select(flights, -(year:day))</code></pre>
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
 ## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, gain &lt;dbl&gt;, gain_per_hour &lt;dbl&gt;</code></pre>
 <p>Note: The new variables are not actually part of <code>flights</code> as can be seen by printing <code>flights</code>, but the new tibble can be used as part of a workflow. Alternately, a new tibble, e.g., <code>flights_gain</code> could be created by: <code>flights_gain &lt;- mutate(...)</code>.</p>
-<p>Now let’s add a time_min variables to the flights data using the four time variables.</p>
-<pre class="r"><code>mutate(flights, 
-       time_min = make_datetime(year, month, day,
-                                sched_dep_time %/% 100,
-                                sched_dep_time %% 100))$time_min[1:5]</code></pre>
-<pre><code>## [1] &quot;2013-01-01 05:15:00 UTC&quot; &quot;2013-01-01 05:29:00 UTC&quot;
-## [3] &quot;2013-01-01 05:40:00 UTC&quot; &quot;2013-01-01 05:45:00 UTC&quot;
-## [5] &quot;2013-01-01 06:00:00 UTC&quot;</code></pre>
 <p>If you only want to keep the new variables, use <code>transmute()</code>:</p>
 <pre class="r"><code>transmute(flights,
           gain = arr_delay - dep_delay,
@@ -512,16 +504,16 @@ select(flights, -(year:day))</code></pre>
 <pre><code>## # A tibble: 10 x 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013    11    13     1902           1907       -5.     2039
-##  2  2013     8     8      810            815       -5.      937
-##  3  2013    12    12     2034           2005       29.     2304
-##  4  2013    12    15     1319           1315        4.     1519
-##  5  2013     1     3     1823           1819        4.     2045
-##  6  2013     7     9       NA           2220       NA        NA
-##  7  2013     9     6      752            800       -8.      848
-##  8  2013    10     2     2053           2030       23.     2221
-##  9  2013     6    15     2029           2030       -1.     2327
-## 10  2013     1    15     1109           1114       -5.     1344
+##  1  2013     1    30     1911           1900       11.     2103
+##  2  2013     7    25     1050           1055       -5.     1344
+##  3  2013     8    18     1044           1055      -11.     1213
+##  4  2013     5     5     1622           1600       22.     1746
+##  5  2013     5    13     1645           1650       -5.     1807
+##  6  2013     9    21     1905           1845       20.     2059
+##  7  2013    11    15      909            900        9.     1045
+##  8  2013     3     6      824            723       61.     1053
+##  9  2013     9    13     1305           1226       39.     1501
+## 10  2013    12     8     1620           1629       -9.     1917
 ## # ... with 12 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;,
 ## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
 ## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
@@ -530,16 +522,16 @@ select(flights, -(year:day))</code></pre>
 <pre><code>## # A tibble: 3,368 x 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     3    20     1259           1303       -4.     1541
-##  2  2013    11     7      631            629        2.      933
-##  3  2013    10     8     1701           1712      -11.     1936
-##  4  2013    10    14      814            815       -1.     1052
-##  5  2013     2    19     1917           1920       -3.     2034
-##  6  2013     6     8     1519           1320      119.     1807
-##  7  2013     6    11     2050           2100      -10.     2222
-##  8  2013    11    12     1603           1605       -2.     1752
-##  9  2013     2     9       NA            900       NA        NA
-## 10  2013     9    16     1419           1423       -4.     1654
+##  1  2013    12     5     1658           1700       -2.     1814
+##  2  2013     1    26       NA            810       NA        NA
+##  3  2013    12    17     1825           1647       98.     2033
+##  4  2013     3    30     1207           1215       -8.     1406
+##  5  2013     6    11     1349           1359      -10.     1540
+##  6  2013     3     4     1215           1200       15.     1342
+##  7  2013     8     8     1553           1530       23.     2003
+##  8  2013     8    17      611            611        0.      957
+##  9  2013     9    11     1810           1755       15.     2055
+## 10  2013     6    20      926            929       -3.     1039
 ## # ... with 3,358 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
 ## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
@@ -559,7 +551,7 @@ select(flights, -(year:day))</code></pre>
 <div id="grouped-operations" class="section level3">
 <h3>3.1.2 Grouped Operations</h3>
 <p>These above verbs become very powerful when you apply them to groups of observations within a dataset. In <code>dplyr</code>, this is done by the <code>group_by()</code> function. It breaks a dataset into specified groups of rows. When you then apply the verbs above on the resulting object they’ll be automatically applied “by group.”</p>
-<p>We now split the complete dataset into individual planes and then summarise each plane by counting the number of flights <code>(count = n())</code> and computing the average distance <code>(dist = mean(distance, na.rm = TRUE))</code> and arrival delay <code>(delay = mean(arr_delay, na.rm = TRUE))</code></p>
+<p>We now split the complete dataset into individual planes and then summarise each plane by counting the number of flights and computing the average distance and arrival delay.</p>
 <pre class="r"><code>by_tailnum &lt;- group_by(flights, tailnum)
 delay &lt;- summarise(by_tailnum,
   count = n(),
@@ -952,26 +944,12 @@ airlines</code></pre>
 ## 1    1.   10. a    
 ## 2    3.   10. a</code></pre>
 <p><code>inner_join(x, y)</code> only includes observations that match in both <code>x</code> and <code>y</code>.</p>
-<pre class="r"><code>df1 %&gt;% inner_join(df2) %&gt;% knitr::kable()</code></pre>
+<pre class="r"><code>df1 %&gt;% inner_join(df2) # %&gt;% knitr::kable()</code></pre>
 <pre><code>## Joining, by = &quot;x&quot;</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="right">x</th>
-<th align="right">y</th>
-<th align="right">a</th>
-<th align="left">b</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">10</td>
-<td align="left">a</td>
-</tr>
-</tbody>
-</table>
+<pre><code>## # A tibble: 1 x 4
+##       x     y     a b    
+##   &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;
+## 1    1.     2   10. a</code></pre>
 <p><code>left_join(x, y)</code> includes all observations in <code>x</code>, regardless of whether they match or not. This is the most commonly used join because it ensures that you don’t lose observations from your primary table.</p>
 <pre class="r"><code>df1 %&gt;% left_join(df2)</code></pre>
 <pre><code>## Joining, by = &quot;x&quot;</code></pre>

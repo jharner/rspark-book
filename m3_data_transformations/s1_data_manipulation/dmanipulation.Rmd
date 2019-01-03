@@ -141,14 +141,6 @@ mutate(flights,
 ```
 Note: The new variables are not actually part of `flights` as can be seen by printing `flights`, but the new tibble can be used as part of a workflow. Alternately, a new tibble, e.g., `flights_gain` could be created by: `flights_gain <- mutate(...)`.
 
-Now let's add a time_min variables to the flights data using the four time variables.
-```{r}
-mutate(flights, 
-       time_min = make_datetime(year, month, day,
-                                sched_dep_time %/% 100,
-                                sched_dep_time %% 100))$time_min[1:5]
-```
-
 If you only want to keep the new variables, use `transmute()`:
 ```{r}
 transmute(flights,
@@ -186,7 +178,7 @@ These properties allow the user to form a workflow chain or pipeline with the ve
 
 These above verbs become very powerful when you apply them to groups of observations within a dataset. In `dplyr`, this is done by the `group_by()` function. It breaks a dataset into specified groups of rows. When you then apply the verbs above on the resulting object they'll be automatically applied "by group." 
 
-We now split the complete dataset into individual planes and then summarise each plane by counting the number of flights ` (count = n())` and computing the average distance `(dist = mean(distance, na.rm = TRUE))` and arrival delay `(delay = mean(arr_delay, na.rm = TRUE))`
+We now split the complete dataset into individual planes and then summarise each plane by counting the number of flights and computing the average distance and arrival delay.
 ```{r}
 by_tailnum <- group_by(flights, tailnum)
 delay <- summarise(by_tailnum,
@@ -375,7 +367,7 @@ There are four types of mutating join, which differ in their behavior when a mat
 ```
 `inner_join(x, y)` only includes observations that match in both `x` and `y`.
 ```{r}
-df1 %>% inner_join(df2) %>% knitr::kable()
+df1 %>% inner_join(df2) # %>% knitr::kable()
 ```
 
 `left_join(x, y)` includes all observations in `x`, regardless of whether they match or not. This is the most commonly used join because it ensures that you don't lose observations from your primary table.
