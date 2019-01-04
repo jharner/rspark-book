@@ -120,7 +120,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">HDFS</h1>
 <h4 class="author"><em>Jim Harner</em></h4>
-<h4 class="date"><em>7/25/2018</em></h4>
+<h4 class="date"><em>1/1/2019</em></h4>
 
 </div>
 
@@ -271,9 +271,12 @@ echo &quot;&quot;  # or $?</code></pre>
 <p>We can list the files and directories with a <code>-ls</code> option, make a directory with the <code>-mkdir</code> option, etc. These can be run as bash commands.</p>
 <pre class="bash"><code>hdfs dfs -mkdir temp
 hdfs dfs -ls</code></pre>
-<pre><code>## Found 2 items
-## drwxr-xr-x   - rstudio rstudio          0 2018-07-26 22:24 airlines_parquet
-## drwxr-xr-x   - rstudio rstudio          0 2018-09-17 00:18 temp</code></pre>
+<pre><code>## Found 5 items
+## drwxr-xr-x   - rstudio rstudio          0 2018-09-18 04:38 data
+## drwxr-xr-x   - rstudio rstudio          0 2018-11-22 03:16 ex1
+## drwxr-xr-x   - rstudio rstudio          0 2018-11-22 03:21 ex2
+## drwxr-xr-x   - rstudio rstudio          0 2019-01-04 02:47 temp
+## drwxr-xr-x   - rstudio rstudio          0 2018-11-22 03:13 wcjava</code></pre>
 <p>Import a file into hdfs and list.</p>
 <pre class="bash"><code># set the local working directory to s2_hdfs
 cd /home/rstudio/rspark-notes/c4_hadoop/s2_hdfs
@@ -282,13 +285,16 @@ hdfs dfs -ls temp/
 hdfs dfs -du</code></pre>
 <pre><code>## bash: line 1: cd: /home/rstudio/rspark-notes/c4_hadoop/s2_hdfs: No such file or directory
 ## Found 1 items
-## -rw-r--r--   3 rstudio rstudio      34809 2018-09-17 00:18 temp/cdat.csv
-## 956    airlines_parquet
-## 34809  temp</code></pre>
+## -rw-r--r--   3 rstudio rstudio      34809 2019-01-04 02:47 temp/cdat.csv
+## 4425   data
+## 6642   ex1
+## 5233   ex2
+## 34809  temp
+## 8077   wcjava</code></pre>
 <p>Remove the file and directory</p>
 <pre class="bash"><code>hdfs dfs -rm -f temp/cdat.csv
 hdfs dfs -rmdir temp</code></pre>
-<pre><code>## 18/09/17 00:18:25 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
+<pre><code>## 19/01/04 02:47:22 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
 ## Deleted temp/cdat.csv</code></pre>
 <p>These commands illustrate how data can be loaded from the local filesystem into hdfs. In the next chapter we will illustrate how to load data into hdfs from within R. However, in a production system data would typically be loaded into hdfs using Sqoop as an interface to a database or Flume for real-time data.</p>
 <p>HDFS has a permissions model for files and directories that is much like the POSIX model.</p>
@@ -300,18 +306,18 @@ hdfs.init()</code></pre>
 <pre class="r"><code>hdfs.mkdir(&quot;temp&quot;)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>hdfs.ls(&quot;/user/rstudio&quot;)</code></pre>
-<pre><code>##   permission   owner   group size          modtime
-## 1 drwxr-xr-x rstudio rstudio    0 2018-07-26 22:24
-## 2 drwxr-xr-x rstudio rstudio    0 2018-09-17 00:18
-##                             file
-## 1 /user/rstudio/airlines_parquet
-## 2             /user/rstudio/temp</code></pre>
+<pre><code>##   permission   owner   group size          modtime                 file
+## 1 drwxr-xr-x rstudio rstudio    0 2018-09-18 04:38   /user/rstudio/data
+## 2 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:16    /user/rstudio/ex1
+## 3 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:21    /user/rstudio/ex2
+## 4 drwxr-xr-x rstudio rstudio    0 2019-01-04 02:47   /user/rstudio/temp
+## 5 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:13 /user/rstudio/wcjava</code></pre>
 <p>Import a file and list:</p>
 <pre class="r"><code>hdfs.put(&quot;cdat.csv&quot;, &quot;temp&quot;)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>hdfs.ls(&quot;temp&quot;)</code></pre>
 <pre><code>##   permission   owner   group  size          modtime
-## 1 -rw-r--r-- rstudio rstudio 34809 2018-09-17 00:18
+## 1 -rw-r--r-- rstudio rstudio 34809 2019-01-04 02:47
 ##                          file
 ## 1 /user/rstudio/temp/cdat.csv</code></pre>
 <p>Note: this does not work in interactive mode. Notice <code>hdfs.ls</code> has relative addressing.</p>
