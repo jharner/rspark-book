@@ -120,7 +120,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Spark DataFrame SQL</h1>
 <h4 class="author"><em>Jim Harner</em></h4>
-<h4 class="date"><em>9/16/2018</em></h4>
+<h4 class="date"><em>1/1/2019</em></h4>
 
 </div>
 
@@ -139,12 +139,12 @@ sc &lt;- spark_connect(master, spark_home = Sys.getenv(&quot;SPARK_HOME&quot;),
 <p>Currently, <code>sparklyr</code> is more limited than <code>sparkR</code> in its ability to import data directly into Spark from an external data source. However, several sources, e.g., json, can be imported. In addition, it is possible to query Spark DataFrames.</p>
 <p>We will be using the <code>nycflights13</code> data again. The <code>flights</code> and <code>airlines</code> R data frames are copied into Spark.</p>
 <pre class="r"><code>library(nycflights13)
-flights_sdf &lt;- copy_to(sc, flights, &quot;flights_sdf&quot;,  overwrite = TRUE)
-airlines_sdf &lt;- sdf_copy_to(sc, airlines, &quot;airlines_sdf&quot;, overwrite = TRUE)</code></pre>
+flights_sdf &lt;- sdf_copy_to(sc, flights, &quot;flights&quot;,  overwrite = TRUE)
+airlines_sdf &lt;- sdf_copy_to(sc, airlines, &quot;airlines&quot;, overwrite = TRUE)</code></pre>
 <div id="joining-spark-data-tables" class="section level3">
 <h3>5.3.1 Joining Spark Data Tables</h3>
-<p>In Section 6.2.1 the <code>dplyr</code> verbs were used to manipulate a Spark DataFrame. However, we often have multiple related Spark tables which we need to combine prior to performing data manipulations.</p>
-<p>A workflow was developed in Section 6.2.1 to find the flights with a departure delay greater than 1000 minutes. However, we did not have the carrier names since they were in a different table. Providing this information can be done with a <code>left_join</code>.</p>
+<p>In Section 5.2.1 the <code>dplyr</code> verbs were used to manipulate a Spark DataFrame. However, we often have multiple related Spark tables which we need to combine prior to performing data manipulations.</p>
+<p>A workflow was developed in Section 5.2.1 to find the flights with a departure delay greater than 1000 minutes. However, we did not have the carrier names since they were in a different table. Providing this information can be done with a <code>left_join</code>.</p>
 <pre class="r"><code>flights_sdf %&gt;%
   left_join(airlines_sdf, by = &quot;carrier&quot;) %&gt;%
   select(carrier, name, flight, year:day, arr_delay, dep_delay) %&gt;%
@@ -168,20 +168,14 @@ airlines_sdf &lt;- sdf_copy_to(sc, airlines, &quot;airlines_sdf&quot;, overwrite
 <p>It is also possible to use Spark DataFrames as tables in a “database” using the Spark SQL interface, which forms the basis of Spark DataFrames.</p>
 <p>The <code>spark_connect</code> object implements a DBI interface for Spark, which allows you to use <code>dbGetQuery</code> to execute SQL commands. The returned result is an R data frame.</p>
 <p>We now show that the above workflow can be done in R except that R data frames are used.</p>
-<pre class="r"><code>library(DBI)
-flights_df &lt;- dbGetQuery(sc, &quot;SELECT * FROM flights_sdf&quot;)
-airlines_df &lt;- dbGetQuery(sc, &quot;SELECT * FROM airlines_sdf&quot;)
+<pre><code>library(DBI)
+flights_df &lt;- dbGetQuery(sc, &quot;SELECT * FROM flights&quot;)
+airlines_df &lt;- dbGetQuery(sc, &quot;SELECT * FROM airlines&quot;)
 flights_df %&gt;%
   left_join(airlines_df, by = &quot;carrier&quot;) %&gt;%
   select(carrier, name, flight, year:day, arr_delay, dep_delay) %&gt;%
   filter(dep_delay &gt; 1000) %&gt;%
   arrange(desc(dep_delay))</code></pre>
-<pre><code>##   carrier                   name flight year month day arr_delay dep_delay
-## 1      HA Hawaiian Airlines Inc.     51 2013     1   9      1272      1301
-## 2      MQ              Envoy Air   3535 2013     6  15      1127      1137
-## 3      MQ              Envoy Air   3695 2013     1  10      1109      1126
-## 4      AA American Airlines Inc.    177 2013     9  20      1007      1014
-## 5      MQ              Envoy Air   3075 2013     7  22       989      1005</code></pre>
 <p>Of course, this assumes the Spark DataFrames can be imported into R, i.e., they must fit into local memory.</p>
 <p>The <code>by</code> argument in the <code>left_join</code> is not needed if there is a single variable common to both tables. Alternately, we could use <code>by = c(&quot;carrier&quot;, &quot;carrier&quot;)</code>, where the names could be different if they represent the same variable.</p>
 </div>
@@ -217,16 +211,16 @@ flights_df %&gt;%
 ## # Database: spark_connection
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     1     1     1507           1510       -3.     1748
-##  2  2013     1     1     1513           1505        8.     1714
-##  3  2013     1     1     1726           1730       -4.     2054
-##  4  2013     1     1     1925           1900       25.     2259
-##  5  2013     1     1     2307           2245       22.       32
-##  6  2013     1     2      559            601       -2.      809
-##  7  2013     1     2      630            610       20.      948
-##  8  2013     1     2      655            700       -5.     1031
-##  9  2013     1     2      727            645       42.     1024
-## 10  2013     1     2      743            745       -2.      858
+##  1  2013     1     1     1525           1530       -5.     1934
+##  2  2013     1     1     1730           1729        1.     2039
+##  3  2013     1     1     1808           1815       -7.     2111
+##  4  2013     1     1     1814           1700       74.     2051
+##  5  2013     1     1     1817           1820       -3.     2008
+##  6  2013     1     1     1826           1810       16.     2132
+##  7  2013     1     1     2012           2016       -4.     2154
+##  8  2013     1     2      741            740        1.     1005
+##  9  2013     1     2     1000           1000        0.     1319
+## 10  2013     1     2     1748           1720       28.     1927
 ## # ... with more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
 ## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
@@ -249,9 +243,17 @@ spark_write_parquet(airlines_sdf,
                   mode = &quot;overwrite&quot;)
 hdfs.ls(&quot;/user/rstudio&quot;)</code></pre>
 <pre><code>##   permission   owner   group size          modtime
-## 1 drwxr-xr-x rstudio rstudio    0 2018-09-25 18:22
+## 1 drwxr-xr-x rstudio rstudio    0 2019-01-04 17:37
+## 2 drwxr-xr-x rstudio rstudio    0 2018-09-18 04:38
+## 3 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:16
+## 4 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:21
+## 5 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:13
 ##                             file
-## 1 /user/rstudio/airlines_parquet</code></pre>
+## 1 /user/rstudio/airlines_parquet
+## 2             /user/rstudio/data
+## 3              /user/rstudio/ex1
+## 4              /user/rstudio/ex2
+## 5           /user/rstudio/wcjava</code></pre>
 <p>This writes the Spark DataFrame to the given HDFS path and names the Parquet file <code>airlines_parquet</code>.</p>
 <p>You can use the <code>spark_read_parquet</code> function to read the same table back into a subsequent Spark session:</p>
 <pre class="r"><code>spark_read_parquet(sc, &quot;airlines2_sdf&quot;,
