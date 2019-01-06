@@ -1,7 +1,7 @@
 ---
 title: "Regularization Basics"
 author: "Jim Harner"
-date: "6/25/2018"
+date: "1/5/2019"
 output:
   html_document: default
   html_notebook: default
@@ -23,7 +23,7 @@ library(sparklyr)
 sc <- spark_connect(master = "local")
 ```
 
-## 7.2 Regularization Basics
+## 6.2 Regularization Basics
 
 The analysis below suggests how difficult it is to choose a model. It is best to partition the data into 3 sets:
 
@@ -35,7 +35,7 @@ If only the training and test data sets are available, tuning parameters can be 
 
 The strategy is to filter the models by the training and validation data sets so only a few are assessed in the test data set. 
 
-### 7.2.1 Spark Algorithms
+### 6.2.1 Spark Algorithms
 
 The Spark algorithms for machine learning have been evolving quickly.
 
@@ -53,7 +53,7 @@ The new API is Spark DataFrame based:
 
 [DataFrame Optimization](https://spark.apache.org/docs/latest/ml-advanced.html)
 
-### 7.2.2 Regression
+### 6.2.2 Regression
 
 The loss function, i.e., RSS for regression, can be generalized, e.g., by regularization. We now consider fitting all $p$ predictors by constraining, (regularizing) the coefficients, i.e., shrinking the coefficients towards 0. This can often greatly reduce the coefficient variances without appreciably increasing the bias.
 
@@ -91,7 +91,7 @@ where $\lambda \ge 0$ is the tuning parameter. The interpretation is similar to 
 
 The minimization problem at the beginning of this section is for the elastic net. In the case the elastic net penalty $\alpha$ must be specified by the modeler.
 
-### 7.2.3 Slump Example (glmnet)
+### 6.2.3 Slump Example (glmnet)
 
 Load `slump.csv` into Spark with `spark_read_csv` from the local filesystem.
 ```{r}
@@ -104,7 +104,7 @@ slump_partition <- tbl(sc, "slump_sdf") %>%
 slump_train_sdf <- slump_partition$training
 slump_test_sdf <- slump_partition$test
 ```
-We do this in order to have the same data partitions as in Section 10.2.
+We do this in order to have the same data partitions as in Section 6.3.
 
 We now `collect` the training and test Spark DataFrames into R as regular data frames.
 ```{r}
@@ -134,17 +134,17 @@ plot(slump_glm_lasso, xvar = "lambda", labels = TRUE)
 ```
 
 ```{r}
-slump_glm_lasso_cv <- cv.glmnet(x = slump.x, y = slump.y, type.measure = "mse", alpha = 1,
-                                nfolds = 10)
+slump_glm_lasso_cv <- cv.glmnet(x = slump.x, y = slump.y, type.measure = "mse",
+                                alpha = 1, nfolds = 10)
 slump_glm_lasso_cv$lambda.min
 ```
-Our choice of $\lambda$ based on 10-fold cross-validation is less than what we choose in Section 10.2.
+Our choice of $\lambda$ based on 10-fold cross-validation is less than what we choose in Section 6.3.
 
 The coefficient estimates, based on 10-fold cross-validation, are:
 ```{r}
 coef(slump_glm_lasso_cv, s = "lambda.min")
 ```
-Notice that `cement`, `fly_ash`, and `water` (and possibly coarse_aggr`) converge more slowly to 0, which agrees with our results in Sections 7.1 and 10.2.
+Notice that `cement`, `fly_ash`, and `water` (and possibly coarse_aggr`) converge more slowly to 0, which agrees with our results in Sections 6.1 and 6.3.
 
 We now look at the elastic net with `alpha = 0.5`.
 ```{r}
@@ -153,14 +153,14 @@ plot(slump_glm_enet, xvar = "lambda", labels = TRUE)
 ```
 
 ```{r}
-slump_glm_enet_cv <- cv.glmnet(x = slump.x, y = slump.y, type.measure = "mse", alpha = 0.5,
-                               nfolds = 10)
+slump_glm_enet_cv <- cv.glmnet(x = slump.x, y = slump.y, type.measure = "mse",
+                               alpha = 0.5, nfolds = 10)
 slump_glm_enet_cv$lambda.min
 coef(slump_glm_enet_cv, s = "lambda.min")
 ```
 The results are similar.
 
-It would be possible to build a parameter grid extending the idea in Section 7.1. We could assess performance metrics over this grid and then test. For now you can experiment with different values of $\alpha$ and $\lambda$ or minimize $\lambda$ for various $\alpha$ directly with `glmnet`.
+It would be possible to build a parameter grid extending the idea in Section 6.1. We could assess performance metrics over this grid and then test. For now you can experiment with different values of $\alpha$ and $\lambda$ or minimize $\lambda$ for various $\alpha$ directly with `glmnet`.
 
 ```{r}
 spark_disconnect(sc)

@@ -20,7 +20,7 @@ library(sparklyr)
 sc <- spark_connect(master = "local")
 ```
 
-## 7.3 Concrete Slump Test Regression
+## 6.3 Concrete Slump Test Regression
 
 Load `slump.csv` into Spark with `spark_read_csv` from the local filesystem.
 ```{r}
@@ -39,28 +39,43 @@ slump_test_sdf <- slump_partition$test
 
 The full model is now run.
 ```{r}
-slump_lr_full_fit <- slump_partition$training %>%
+slump_lr_full_model <- slump_partition$training %>%
   ml_linear_regression(compressive_strength ~ cement + slag + fly_ash + water
                        + sp + coarse_aggr + fine_aggr)
-summary(slump_lr_full_fit)
+summary(slump_lr_full_model)
 ```
 Notice that the model summary does not provide much useful information. We can p-values by by getting a `tidy` summary.
 ```{r}
-tidy(slump_lr_full_fit)
+tidy(slump_lr_full_model)
 ```
 
-Performance metrics for regression are generally obtained first be getting predictions and then using an evaluator to get a specific metric.
+The performance metrics on the training data can be extracted from the `ml_model` object:
 ```{r}
-slump_lr_full_predict <- ml_predict(slump_lr_full_fit)
-slump_lr_full_predict
-ml_regression_evaluator(slump_lr_full_predict, label_col = "compressive_strength",
-                        prediction_col = "prediction", metric_name = "rmse")
+data.frame(lambda = 0, 
+           r2 = slump_lr_full_model$summary$r2,
+           rmse = slump_lr_full_model$summary$root_mean_squared_error,
+           mae = slump_lr_full_model$summary$mean_absolute_error)
 ```
-This would be awkward if want to evaluate a series of models for several metrics.
+However, we actually want these metrics on the test data set.
 
-The model for the lasso with varying values of the regularization parameter $\lambda$.
+Performance metrics for regression are now obtained by getting predictions using the test data based on the full model and then using the `ml_regression_evaluator` to get specific metrics.
 ```{r}
-slump_perf_metrics <- function(l) {
+slump_lr_full_predict <- ml_predict(slump_lr_full_model, slump_test_sdf)
+slump_lr_metrics <-
+  data.frame(lambda = 0,
+             rmse = ml_regression_evaluator(slump_lr_full_predict,
+                                            label_col = "compressive_strength",
+                                            metric_name = "rmse"),
+             mae = ml_regression_evaluator(slump_lr_full_predict,
+                                           label_col = "compressive_strength",
+                                           metric_name = "mae"))
+slump_lr_coef <- as.data.frame(slump_lr_full_model$coefficients)
+```
+This is done initially for $\lambda = 0$.
+
+The model function for the lasso with varying values of the regularization parameter $\lambda$ is defined by:
+```{r}
+slump_lr_model <- function(l) {
   slump_train_sdf %>%
     ml_linear_regression(compressive_strength ~ cement + slag + fly_ash +
                          water + sp + coarse_aggr + fine_aggr,
@@ -68,44 +83,39 @@ slump_perf_metrics <- function(l) {
 }
 ```
 
-First, we Initialize the performance data frames for $\lambda = 0$. Notice that we can get the performance metrics as the components of summary list, which in turn if an element of the fitted list.
+We now calculate the `rmse` and `mae` for each of the models.
 ```{r}
-regParm <- c(0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14)
-slump_lr_errors <- data.frame(lambda = 0, 
-                        r2 = slump_lr_full_fit$summary$r2,
-                        rmse = slump_lr_full_fit$summary$root_mean_squared_error,
-                        mae = slump_lr_full_fit$summary$mean_absolute_error)
-slump_lr_coef <- as.data.frame(slump_lr_full_fit$coefficients)
-```
-
-We now calculate `r2`, `rmse`, and `mae` for each of the models.
-```{r}
+regParm <- c(0.005, 0.01, 0.02, 0.04, 0.06, 0.08, 0.1)
 for(l in regParm) {
-  slump_lr_fit <- slump_perf_metrics(l)
-  slump_lr_errors <- 
+  slump_lr_fit <- slump_lr_model(l) 
+  slump_lr_predict <- ml_predict(slump_lr_fit, slump_test_sdf)
+  slump_lr_metrics <- 
     data.frame(lambda = l,
-               r2 = slump_lr_fit$summary$r2,
-               rmse = slump_lr_fit$summary$root_mean_squared_error,
-               mae = slump_lr_fit$summary$mean_absolute_error) %>%
-    rbind(slump_lr_errors, .)
+               rmse = ml_regression_evaluator(slump_lr_predict,
+                                              label_col = "compressive_strength",
+                                              metric_name = "rmse"),
+               mae = ml_regression_evaluator(slump_lr_predict,
+                                             label_col = "compressive_strength",
+                                             metric_name = "mae")) %>%
+    rbind(slump_lr_metrics, .)
   slump_lr_coef <- 
-    as.data.frame(slump_lr_fit$coefficients) %>%
+    as.data.frame(slump_lr_model(l)$coefficients) %>%
     cbind(slump_lr_coef, .)
 }
-slump_lr_errors
+slump_lr_metrics
 ```
 
 Finally, we plot the performance measures.
 ```{r}
 library(ggplot2)
-slump_lr_errors %>%
+slump_lr_metrics %>%
   ggplot(aes(x = lambda)) +
   geom_point(aes(y = rmse, color = 'rmse')) +
   geom_line(aes(y = rmse, color = 'rmse')) +
   geom_point(aes(y = mae, color = 'mae')) +
   geom_line(aes(y = mae, color = 'mae')) + 
-  ggtitle("Performance Metric for the Slump Regulated Models") +
-  xlab("Lambda") + ylab("Error Measure")
+  ggtitle("Performance Metric for the Slump Regularized Models") +
+  xlab("Lambda") + ylab("Performance Measure")
 ```
 
 Based on the performance metrics, it is clear we want `lambda` to be small. However, we also want parsimony.
