@@ -1,11 +1,11 @@
 ---
 title: "Tree Models"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "1/5/2019"
 output:
-  html_document: default
-  html_notebook: default
   pdf_document: default
+  html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}

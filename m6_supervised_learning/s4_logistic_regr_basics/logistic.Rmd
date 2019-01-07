@@ -1,11 +1,11 @@
 ---
 title: "Logistic Regression"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "1/5/2019"
 output:
-  html_document: default
-  html_notebook: default
   pdf_document: default
+  html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE
 
 library(dplyr)
 library(tidyr)
+library(readr)
 library(modelr)
 library(ggplot2)
 
@@ -21,11 +22,11 @@ library(sparklyr)
 sc <- spark_connect(master = "local")
 ```
 
-## 7.4 Logistic Regression
+## 6.4 Logistic Regression
 
 In many situations the outcome variable is one of $k$ levels or groups. In this section we explore the case in which $k = 2$. 
 
-### 7.4.1 Basics
+### 6.4.1 Basics
 
 Define the possible groups as $G = \{G_1,\, G_2\}$. We define a outcome variable as $Y = 1$ if $G_1$ occurs and 0 otherwise, i.e., outcomes $y_i,\, i = 1, 2, \ldots, n$ are binary values of 0 and 1. We are interested in $P(Y = 1\, |\, \mathbf{x})$ where $\mathbf{x}$ are observed features.
 
@@ -64,7 +65,7 @@ the logit of the probability that outcome $i$ is $G_1$ is being modeled as a lin
 
 The parameter $\beta_0$ is the *base rate*, or the unconditional probability of “1” knowing nothing more about the feature vector $\mathbf{x}$.
 
-If you had no information about your specific situation except the base rate, the average prediction would be given by just $\alpha$:
+If you had no information about your specific situation except the base rate, the average prediction would be given by just $\beta_0$:
 $$
 P(y_i = 1) = \frac{1}{1 + e^{-\beta_0}}.
 $$
@@ -99,7 +100,9 @@ If you take derivatives with respect to $\beta_0$ and $\beta$ and set the result
 
 Which optimization algorithm do we use? Newton's method and stochastic gradient descent both converge to a global maximum if they converge. This will occur if the variables are not linearly dependent, i.e., *Hessian matrix* is positive definite.
 
-This method follows from Newton's method from calculus, i.e., that a function can be approximated by the first few terms of its Taylor series.
+#### Newton's Method
+
+Newton's method follows from calculus, i.e., a function can be approximated by the first few terms of its Taylor series.
 
 Given a step size $\gamma$, we must compute the local gradient $\nabla \Theta$, which corresponds to the first derivative, and the Hessian matrix $H$, which corresponds to the second derivative. Each step of the algorithm looks like:
 $$
@@ -134,11 +137,13 @@ Terms:
 
 We use different evaluation metrics for different kinds of models, and in different contexts. For logistic regression we typically:  
 
-1. estimate probabilities and then rank-order the items related to the probabilities in decreasing order of likelihood. If you wanted to know how good your model was at discovering *relative rank*, you’d look to one of:     
+1. estimate probabilities and then rank-order the items relative to their probabilities in decreasing order of likelihood. If you wanted to know how good your model was at discovering *relative rank*, you’d look to one of:   
+
 * **Area under the receiver operating curve (AUC)**: A *receiver operating characteristic curve*, or *ROC* curve, is defined as a plot of the true positive rate against the false positive rate for a binary classification problem as you change a threshold. The area under that curve, referred to as the *AUC*, is a way to measure the success of a classifier or to compare two classifiers.    
 * **Area under the cumulative lift curve**: The area under the *cumulative lift curve*, which is frequently used in direct marketing and captures how many times it is better to use a model versus not using the model (i.e., just selecting at random).  
 
-2. for the purposes of classification. In order to use this for classification purposes, for any given unlabeled item, you would get its predicted probability. Then to minimize the misclassification rate, if the predicted probability is $> 0.5$ that the label is 1, you would label the item a 1, and otherwise 0. You have several options for how you’d then evaluate the quality of the model:  
+2.  compute the predicted probability for any given unlabeled item to use this for classification. Then to minimize the misclassification rate, if the predicted probability is $> 0.5$ that the label is 1, you would label the item a 1, and otherwise 0. You have several options for how you’d then evaluate the quality of the model:  
+
 * **Lift**: How much more people are responding because of a model.   
 * **Accuracy**: How often the correct outcome is being predicted.  
 * **Precision**: This is the (number of true positives)/(number of true positives + number of false positives).     
@@ -149,9 +154,9 @@ $$
 $$
 Generalizations of $f1$ are based on changing weights for precision and recall.   
 
-It’s hard to compare lift curves, but you can compare AUC (area under the receiver operator curve)---they are "base rate invariant." That is, if you bring the response rate from 1% to 2%, that’s 100% lift; but if you bring it from 4% to 7%, that’s less lift but more effect. AUC does a better job in such a situation when you want to compare.
+It’s hard to compare lift curves, but you can compare AUC (area under the receiver operator curve)---they are "base rate invariant." That is, if you bring the response rate from 1% to 2%, that’s 100% lift; but if you bring it from 4% to 7%, that’s less lift but more effect. AUC does a better job in such a situation when you want to make comparisons.
 
-### 7.4.2 Binomial Wine Quality Example
+### 6.4.2 Binomial Wine Quality Example
 
 We illustrate logistic regression modeling using the Wine Quality Data Set from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/wine+quality). The two datasets: the red and white variants of the Portuguese "Vinho Verde" wine, but we will restrict analysis to the red wine dataset.
 
@@ -159,9 +164,8 @@ The features (or predictors) are all numeric, whereas the labels (or the predict
 
 We can use `read.csv()` to read the `winequality-red.csv` file into local memory.
 ```{r}
-wine_red_df <-read.csv(
-  "/home/rstudio/rspark-tutorial/data/wine/winequality-red.csv",
-  header = TRUE, sep = ";") %>%
+wine_red_df <-read_csv2(
+  "/home/rstudio/rspark-tutorial/data/wine/winequality-red.csv") %>%
   mutate(quality_bin = ifelse(quality > 5.0, 1, 0)) %>%
   resample_partition(p = c(training = 0.7, test = 0.3))
 wine_red_train_df <- wine_red_df$training$data
@@ -241,8 +245,6 @@ ml_binary_classification_evaluator(wine_red_logistic_predict, label_col = "quali
                                    raw_prediction_col = "probability_1_0",
                                    metric_name ="areaUnderPR")
 ```
-
-We will use the AUC metric when we do regularized logistic regression in Chapter 10.
 
 Now let's switch to the generalized linear model for examining feature importance.
 ```{r}
