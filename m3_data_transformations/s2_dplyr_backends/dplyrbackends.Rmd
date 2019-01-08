@@ -2,16 +2,16 @@
 title: "dplyr Backends"
 author: "Jim Harner"
 date: "1/1/2019"
-
 output:
-  html_document: default
+  pdf_document: default
   html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-The `dplyr` provides a grammar of data maniputation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources. For example, `dplyr` provides an interface to `sparklyr`, which is RStudio's R interface to Spark.
+The `dplyr` provides a grammar of data manipulation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources. For example, `dplyr` provides an interface to `sparklyr`, which is RStudio's R interface to Spark.
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
 library(RPostgreSQL)

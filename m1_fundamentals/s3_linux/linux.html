@@ -182,27 +182,28 @@ ls</code></pre>
 echo -e &quot;\nlist the files in your home directory from your working directory&quot;
 ls -al $HOME</code></pre>
 <pre><code>## total 1588
-## drwxr-xr-x 2 rstudio rstudio   4096 Jan  2 03:12 .
+## drwxr-xr-x 2 rstudio rstudio   4096 Jan  7 05:59 .
 ## drwxr-xr-x 6 rstudio rstudio   4096 Jan  1 02:23 ..
-## -rw-r--r-- 1 rstudio rstudio 758741 Jan  2 03:09 linux.html
-## -rw-r--r-- 1 rstudio rstudio 832970 Jan  2 03:12 linux.nb.html
-## -rw-r--r-- 1 rstudio rstudio  16980 Jan  2 03:09 linux.Rmd
+## -rw-r--r-- 1 rstudio rstudio 758741 Jan  2 03:12 linux.html
+## -rw-r--r-- 1 rstudio rstudio 832975 Jan  7 05:59 linux.nb.html
+## -rw-r--r-- 1 rstudio rstudio  16981 Jan  7 05:59 linux.Rmd
 ## 
 ## list the files in your home directory from your working directory
-## total 60
-## drwxr-xr-x  1 rstudio rstudio 4096 Jan  1 02:23 .
+## total 64
+## drwxr-xr-x  1 rstudio rstudio 4096 Jan  2 03:37 .
 ## drwxr-xr-x  1 root    root    4096 Jun  1  2018 ..
-## -rw-------  1 rstudio rstudio 1016 Nov 22 03:20 .bash_history
+## -rw-------  1 rstudio rstudio 1104 Jan  2 08:54 .bash_history
 ## drwxr-xr-x  2 rstudio rstudio 4096 Nov 22 02:31 .beeline
 ## drwxr-xr-x  3 rstudio rstudio 4096 Dec 14 15:08 buda515final18Key
 ## drwxr-xr-x 13 rstudio rstudio 4096 Dec 13 01:31 buda515modules
 ## drwxr-xr-x  3 rstudio rstudio 4096 Nov 22 02:06 .config
-## drwx------  2 rstudio rstudio 4096 Nov 22 08:23 .git-credential-cache
+## -rw-r--r--  1 rstudio rstudio   47 Jan  2 03:37 .gitconfig
+## drwx------  2 rstudio rstudio 4096 Jan  7 05:54 .git-credential-cache
 ## -rw-r--r--  1 rstudio rstudio   58 Sep 25  2017 .gitignore
 ## drwxr-xr-x  2 root    root    4096 Jun  1  2018 kitematic
 ## drwxr-xr-x  3 rstudio rstudio 4096 Nov 22 02:06 R
-## drwxr-xr-x 12 rstudio rstudio 4096 Jan  1 21:53 rspark-tutorial
-## drwxr-xr-x  1 rstudio rstudio 4096 Jan  1 07:35 .rstudio
+## drwxr-xr-x 12 rstudio rstudio 4096 Jan  7 04:04 rspark-tutorial
+## drwxr-xr-x  1 rstudio rstudio 4096 Jan  7 04:04 .rstudio
 ## drwxr-xr-x  1 rstudio rstudio 4096 Apr 11  2018 sparklyr-tests
 ## drwxr-xr-x  1 rstudio rstudio 4096 Apr 11  2018 sparkr-tests</code></pre>
 <p>The option <code>-a</code> causes <code>ls</code> to list all files and directories, including those that are normally hidden, whereas <code>-l</code> invokes the long format (<code>l</code>), which gives the permissions and other information about the owner, group, size, modification date, time, etc. The file and directory names are given in the last column of the output.</p>
@@ -221,22 +222,22 @@ ls -al $HOME</code></pre>
 <pre class="bash"><code>mkdir temp
 ls -al</code></pre>
 <pre><code>## total 1592
-## drwxr-xr-x 3 rstudio rstudio   4096 Jan  2 03:12 .
+## drwxr-xr-x 3 rstudio rstudio   4096 Jan  7 05:59 .
 ## drwxr-xr-x 6 rstudio rstudio   4096 Jan  1 02:23 ..
-## -rw-r--r-- 1 rstudio rstudio 758741 Jan  2 03:09 linux.html
-## -rw-r--r-- 1 rstudio rstudio 832970 Jan  2 03:12 linux.nb.html
-## -rw-r--r-- 1 rstudio rstudio  16980 Jan  2 03:09 linux.Rmd
-## drwxr-xr-x 2 rstudio rstudio   4096 Jan  2 03:12 temp</code></pre>
+## -rw-r--r-- 1 rstudio rstudio 758741 Jan  2 03:12 linux.html
+## -rw-r--r-- 1 rstudio rstudio 832975 Jan  7 05:59 linux.nb.html
+## -rw-r--r-- 1 rstudio rstudio  16981 Jan  7 05:59 linux.Rmd
+## drwxr-xr-x 2 rstudio rstudio   4096 Jan  7 05:59 temp</code></pre>
 <p>We use <code>chmod</code> (change mode) to change the permissions of <code>temp</code> from the default <code>755</code> to <code>700</code>.</p>
 <pre class="bash"><code>chmod 700 temp
 ls -al</code></pre>
 <pre><code>## total 1592
-## drwxr-xr-x 3 rstudio rstudio   4096 Jan  2 03:12 .
+## drwxr-xr-x 3 rstudio rstudio   4096 Jan  7 05:59 .
 ## drwxr-xr-x 6 rstudio rstudio   4096 Jan  1 02:23 ..
-## -rw-r--r-- 1 rstudio rstudio 758741 Jan  2 03:09 linux.html
-## -rw-r--r-- 1 rstudio rstudio 832970 Jan  2 03:12 linux.nb.html
-## -rw-r--r-- 1 rstudio rstudio  16980 Jan  2 03:09 linux.Rmd
-## drwx------ 2 rstudio rstudio   4096 Jan  2 03:12 temp</code></pre>
+## -rw-r--r-- 1 rstudio rstudio 758741 Jan  2 03:12 linux.html
+## -rw-r--r-- 1 rstudio rstudio 832975 Jan  7 05:59 linux.nb.html
+## -rw-r--r-- 1 rstudio rstudio  16981 Jan  7 05:59 linux.Rmd
+## drwx------ 2 rstudio rstudio   4096 Jan  7 05:59 temp</code></pre>
 <p>We then remove the directory, which must be empty, by <code>rmdir</code>.</p>
 <pre class="bash"><code>rmdir temp</code></pre>
 <p>To remove a file, use <code>rm</code> followed by the file name. To remove a directory containing files and other directories, use <code>rm -R</code> followed by the directory name. The <code>-R</code> option recursively removes files and directories, and thus should be used with extreme caution!</p>
@@ -257,7 +258,7 @@ ls -al</code></pre>
 <h4>Installing Docker for Windows</h4>
 <p>Windows is not UNIX based and requires additional software. The basic requirement we need here is access to the <code>bash</code> shell. The easiest solution is a bash emulator.</p>
 <p>For bash access install <a href="https://git-for-windows.github.io">git for Windows</a>. This will give you an emulated bash shell which we need for running Docker and/ or Vagrant and of course <code>git</code> for version control.</p>
-<p>Docker requires a hypervisor (Hyper-V in the case of Windows) to run and it is not installed by default on Windows 10. Hyper-V can be installed on Windows 10 Enterprise, Professional, and Education, but not on Windows 10 Home, Mobile, and earlier verions of Windows. If you meet the system requirements, follow the instruction for installing <a href="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v">Hyper-V here</a>.</p>
+<p>Docker requires a hypervisor (Hyper-V in the case of Windows) to run and it is not installed by default on Windows 10. Hyper-V can be installed on Windows 10 Enterprise, Professional, and Education, but not on Windows 10 Home, Mobile, and earlier versions of Windows. If you meet the system requirements, follow the instruction for installing <a href="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v">Hyper-V here</a>.</p>
 <p>Once Hyper-V is installed, get <a href="https://www.docker.com/docker-windows">Docker for the Windows</a> and follow the directions for installation.</p>
 <p>The following installations assume you have a <code>bash</code> shell available. Ideally, you should be on a high-speed network.</p>
 </div>
@@ -297,7 +298,7 @@ Password: rstudio</p>
 <p>i.e., you do not need the <code>build</code> option.</p>
 <p>To update your local repo of <code>rspark</code>, type:</p>
 <pre><code>git pull origin master</code></pre>
-<p>Since you local repo has been changed, you will need to specify the <code>build</code> option the first time you execure <code>start.sh</code>.</p>
+<p>Since you local repo has been changed, you will need to specify the <code>build</code> option the first time you execute <code>start.sh</code>.</p>
 </div>
 <div id="running-containers-from-the-command-line" class="section level4">
 <h4>Running containers from the command line</h4>
@@ -315,7 +316,7 @@ cd home/rstudio</code></pre>
 <pre><code>docker rm $(docker ps -a -q)</code></pre>
 <p>Likewise, images can be deleted by:</p>
 <pre><code>docker rmi -f $(docker images -q)</code></pre>
-<p>If you are having problems with your containers, you can stop and then delete the contanmers and images (in this order). Once you delete the containers, images, and perhaps the volumes, then you must download new images from Docker Hub or rebuild the images from GitHub.</p>
+<p>If you are having problems with your containers, you can stop and then delete the containers and images (in this order). Once you delete the containers, images, and perhaps the volumes, then you must download new images from Docker Hub or rebuild the images from GitHub.</p>
 </div>
 </div>
 <div id="vagrant-virtualbox-virtualization" class="section level3">

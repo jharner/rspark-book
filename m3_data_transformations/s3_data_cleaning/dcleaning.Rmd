@@ -3,8 +3,9 @@ title: "Data Cleaning"
 author: "Jim Harner"
 date: "1/1/2019"
 output:
-  html_document: default
+  pdf_document: default
   html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include = FALSE}
@@ -55,7 +56,7 @@ A *dataset* is a collection of values, usually either numbers (if *quantitative*
 * a *variable* containing all values that measure the same underlying attribute, e.g., height or temperature, across units;    
 * An *observation* containing all values measured on the same unit, e.g., a person or company, across attributes.  
 
-By convention, observations are stored in rows and variables are stored in columns. Without this convention, it would be impossible to define variable transformations and obsersation operations consistently.
+By convention, observations are stored in rows and variables are stored in columns. Without this convention, it would be impossible to define variable transformations and observation operations consistently.
 
 Three verbs are the basis for tidying data (at least in most cases):  
 
@@ -98,13 +99,13 @@ Tidy data is a standard way of mapping the meaning of a dataset to its structure
 * Each observation forms a row.  
 * Each type of observational unit forms a table. 
 
-Thus, statisticians constructing data frames in R face the same issues as those faced by database designers. That is, tidy data is equivalent to *Codd’s 3rd normal form* for relational databases, but with the constraints framed in statistical language. *Messy data* is any other other arrangement of the data. However, data analyses are done on a single data set---not connected tables in a relational databae. Thus, data analysts must denormalize or merge the datasets back into one table. 
+Thus, statisticians constructing data frames in R face the same issues as those faced by database designers. That is, tidy data is equivalent to *Codd’s 3rd normal form* for relational databases, but with the constraints framed in statistical language. *Messy data* is any other other arrangement of the data. However, data analyses are done on a single data set---not connected tables in a relational database. Thus, data analysts must denormalize or merge the datasets back into one table. 
 
 Tidy data makes it easy for an analyst or a computer to extract needed variables or to construct new variables, e.g., `z = x / y`, because each column is a variable. Likewise, it is easy to compare groups of observations, e.g., `a` vs. `b`, because each observation is a row. Tidy data is particularly well suited for *vectorized* programming languages like R, because the layout ensures that values of different variables from the same observation are always paired. 
 
 The order of variables and observations does not affect the analysis, but a standardized way of representing data improves readability. One way of organizing variables is by their role in the analysis, i.e., variables are:
 
-* *fixed* by the design of the experiemnt, or  
+* *fixed* by the design of the experiment, or  
 * *measured* during the course of the experiment?  
 
 Fixed variables should come first, followed by measured variables, each ordered so that related variables are contiguous. Rows can then be ordered by the major fixed variable, breaking ties with the second and subsequent (fixed) variables.
@@ -137,7 +138,7 @@ It has variables:
 
 Months with fewer than 31 days have structural missing values for the last day(s) of the month.
 
-To tidy this dataset we first gather the day columns while dropping the many missing values, structual or not, clean with `mutate` and `select`, arrange by the fixed variables, and spread by element (`tmax` and `tmin`).
+To tidy this dataset we first gather the day columns while dropping the many missing values, structural or not, clean with `mutate` and `select`, arrange by the fixed variables, and spread by element (`tmax` and `tmin`).
 ```{r}
 weather_tbl <- weather %>%
   gather(day, value, d1:d31, na.rm = TRUE) %>%

@@ -143,7 +143,7 @@ sc &lt;- spark_connect(master, spark_home = Sys.getenv(&quot;SPARK_HOME&quot;),
 <p>Let’s apply the identify function, <code>I()</code>, over a list of numbers we created with the <code>sdf_len</code> function.</p>
 <pre class="r"><code>sdf_len(sc, length = 5, repartition = 1) %&gt;%
   spark_apply(function(e) I(e))</code></pre>
-<pre><code>## # Source:   table&lt;sparklyr_tmp_2f074f3db46&gt; [?? x 1]
+<pre><code>## # Source:   table&lt;sparklyr_tmp_23d774bc0fc1&gt; [?? x 1]
 ## # Database: spark_connection
 ##      id
 ##   &lt;dbl&gt;
@@ -160,7 +160,7 @@ sc &lt;- spark_connect(master, spark_home = Sys.getenv(&quot;SPARK_HOME&quot;),
 <pre class="r"><code>iris_tbl &lt;- sdf_copy_to(sc, iris)
 iris_tbl %&gt;%
   spark_apply(nrow, group_by = &quot;Species&quot;)</code></pre>
-<pre><code>## # Source:   table&lt;sparklyr_tmp_2f02286b791&gt; [?? x 2]
+<pre><code>## # Source:   table&lt;sparklyr_tmp_23d746ac7f4e&gt; [?? x 2]
 ## # Database: spark_connection
 ##   Species    Sepal_Length
 ##   &lt;chr&gt;             &lt;int&gt;
@@ -173,7 +173,7 @@ iris_tbl %&gt;%
     function(e) summary(lm(Petal_Length ~ Petal_Width, e))$r.squared,
     names = &quot;r.squared&quot;,
     group_by = &quot;Species&quot;)</code></pre>
-<pre><code>## # Source:   table&lt;sparklyr_tmp_2f0630b975f&gt; [?? x 2]
+<pre><code>## # Source:   table&lt;sparklyr_tmp_23d7c57d4b&gt; [?? x 2]
 ## # Database: spark_connection
 ##   Species    r.squared
 ##   &lt;chr&gt;          &lt;dbl&gt;
@@ -190,7 +190,7 @@ iris_tbl %&gt;%
   function(e) broom::tidy(lm(Petal_Length ~ Petal_Width, e)),
   names = c(&quot;term&quot;, &quot;estimate&quot;, &quot;std.error&quot;, &quot;statistic&quot;, &quot;p.value&quot;),
   group_by = &quot;Species&quot;)</code></pre>
-<pre><code>## # Source:   table&lt;sparklyr_tmp_2f041df2e0e&gt; [?? x 6]
+<pre><code>## # Source:   table&lt;sparklyr_tmp_23d753b5e844&gt; [?? x 6]
 ## # Database: spark_connection
 ##   Species    term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;

@@ -3,8 +3,9 @@ title: "Linux"
 author: "Jim Harner"
 date: "1/1/2019"
 output:
-  html_document: default
+  pdf_document: default
   html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -112,7 +113,7 @@ Windows is not UNIX based and requires additional software. The basic requiremen
 
 For bash access install [git for Windows](https://git-for-windows.github.io). This will give you an emulated bash shell which we need for running Docker and/ or Vagrant and of course `git` for version control.  
 
-Docker requires a hypervisor (Hyper-V in the case of Windows) to run and it is not installed by default on Windows 10. Hyper-V can be installed on Windows 10 Enterprise, Professional, and Education, but not on Windows 10 Home, Mobile, and earlier verions of Windows. If you meet the system requirements, follow the instruction for installing [Hyper-V here](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v).  
+Docker requires a hypervisor (Hyper-V in the case of Windows) to run and it is not installed by default on Windows 10. Hyper-V can be installed on Windows 10 Enterprise, Professional, and Education, but not on Windows 10 Home, Mobile, and earlier versions of Windows. If you meet the system requirements, follow the instruction for installing [Hyper-V here](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v).  
 
 Once Hyper-V is installed, get [Docker for the Windows](https://www.docker.com/docker-windows) and follow the directions for installation.  
 
@@ -182,7 +183,7 @@ To update your local repo of `rspark`, type:
 ```
 git pull origin master
 ```
-Since you local repo has been changed, you will need to specify the `build` option the first time you execure `start.sh`.
+Since you local repo has been changed, you will need to specify the `build` option the first time you execute `start.sh`.
 
 #### Running containers from the command line
 
@@ -213,7 +214,7 @@ Likewise, images can be deleted by:
 ```
 docker rmi -f $(docker images -q)
 ```
-If you are having problems with your containers, you can stop and then delete the contanmers and images (in this order). Once you delete the containers, images, and perhaps the volumes, then you must download new images from Docker Hub or rebuild the images from GitHub. 
+If you are having problems with your containers, you can stop and then delete the containers and images (in this order). Once you delete the containers, images, and perhaps the volumes, then you must download new images from Docker Hub or rebuild the images from GitHub. 
 
 ### 1.3.4 Vagrant/ VirtualBox Virtualization
 

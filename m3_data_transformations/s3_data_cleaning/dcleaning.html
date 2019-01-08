@@ -163,7 +163,7 @@ preg</code></pre>
 </li>
 <li>An <em>observation</em> containing all values measured on the same unit, e.g., a person or company, across attributes.</li>
 </ul>
-<p>By convention, observations are stored in rows and variables are stored in columns. Without this convention, it would be impossible to define variable transformations and obsersation operations consistently.</p>
+<p>By convention, observations are stored in rows and variables are stored in columns. Without this convention, it would be impossible to define variable transformations and observation operations consistently.</p>
 <p>Three verbs are the basis for tidying data (at least in most cases):</p>
 <ul>
 <li><code>gather</code> takes multiple columns and turns them into key-value pairs;<br />
@@ -214,11 +214,11 @@ preg_df</code></pre>
 </li>
 <li>Each type of observational unit forms a table.</li>
 </ul>
-<p>Thus, statisticians constructing data frames in R face the same issues as those faced by database designers. That is, tidy data is equivalent to <em>Codd’s 3rd normal form</em> for relational databases, but with the constraints framed in statistical language. <em>Messy data</em> is any other other arrangement of the data. However, data analyses are done on a single data set—not connected tables in a relational databae. Thus, data analysts must denormalize or merge the datasets back into one table.</p>
+<p>Thus, statisticians constructing data frames in R face the same issues as those faced by database designers. That is, tidy data is equivalent to <em>Codd’s 3rd normal form</em> for relational databases, but with the constraints framed in statistical language. <em>Messy data</em> is any other other arrangement of the data. However, data analyses are done on a single data set—not connected tables in a relational database. Thus, data analysts must denormalize or merge the datasets back into one table.</p>
 <p>Tidy data makes it easy for an analyst or a computer to extract needed variables or to construct new variables, e.g., <code>z = x / y</code>, because each column is a variable. Likewise, it is easy to compare groups of observations, e.g., <code>a</code> vs. <code>b</code>, because each observation is a row. Tidy data is particularly well suited for <em>vectorized</em> programming languages like R, because the layout ensures that values of different variables from the same observation are always paired.</p>
 <p>The order of variables and observations does not affect the analysis, but a standardized way of representing data improves readability. One way of organizing variables is by their role in the analysis, i.e., variables are:</p>
 <ul>
-<li><em>fixed</em> by the design of the experiemnt, or<br />
+<li><em>fixed</em> by the design of the experiment, or<br />
 </li>
 <li><em>measured</em> during the course of the experiment?</li>
 </ul>
@@ -271,7 +271,7 @@ weather</code></pre>
 <li>spread along rows (<code>tmin</code>, <code>tmax</code>), i.e., minimum and maximum temperatures.</li>
 </ul>
 <p>Months with fewer than 31 days have structural missing values for the last day(s) of the month.</p>
-<p>To tidy this dataset we first gather the day columns while dropping the many missing values, structual or not, clean with <code>mutate</code> and <code>select</code>, arrange by the fixed variables, and spread by element (<code>tmax</code> and <code>tmin</code>).</p>
+<p>To tidy this dataset we first gather the day columns while dropping the many missing values, structural or not, clean with <code>mutate</code> and <code>select</code>, arrange by the fixed variables, and spread by element (<code>tmax</code> and <code>tmin</code>).</p>
 <pre class="r"><code>weather_tbl &lt;- weather %&gt;%
   gather(day, value, d1:d31, na.rm = TRUE) %&gt;%
   mutate(day = as.integer(readr::parse_number(day))) %&gt;%

@@ -211,16 +211,16 @@ flights_df %&gt;%
 ## # Database: spark_connection
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     1     1     1525           1530       -5.     1934
-##  2  2013     1     1     1730           1729        1.     2039
-##  3  2013     1     1     1808           1815       -7.     2111
-##  4  2013     1     1     1814           1700       74.     2051
-##  5  2013     1     1     1817           1820       -3.     2008
-##  6  2013     1     1     1826           1810       16.     2132
-##  7  2013     1     1     2012           2016       -4.     2154
-##  8  2013     1     2      741            740        1.     1005
-##  9  2013     1     2     1000           1000        0.     1319
-## 10  2013     1     2     1748           1720       28.     1927
+##  1  2013     1     1      635            635        0.     1028
+##  2  2013     1     1      930            905       25.     1218
+##  3  2013     1     1     1133           1130        3.     1448
+##  4  2013     1     1     1231           1238       -7.     1449
+##  5  2013     1     1     1246           1225       21.     1424
+##  6  2013     1     1     1505           1310      115.     1638
+##  7  2013     1     1     1539           1545       -6.     1853
+##  8  2013     1     1     1548           1420       88.     1751
+##  9  2013     1     1     1825           1829       -4.     2046
+## 10  2013     1     1     1926           1910       16.     2258
 ## # ... with more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
 ## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
@@ -243,7 +243,7 @@ spark_write_parquet(airlines_sdf,
                   mode = &quot;overwrite&quot;)
 hdfs.ls(&quot;/user/rstudio&quot;)</code></pre>
 <pre><code>##   permission   owner   group size          modtime
-## 1 drwxr-xr-x rstudio rstudio    0 2019-01-04 17:37
+## 1 drwxr-xr-x rstudio rstudio    0 2019-01-07 06:50
 ## 2 drwxr-xr-x rstudio rstudio    0 2018-09-18 04:38
 ## 3 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:16
 ## 4 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:21

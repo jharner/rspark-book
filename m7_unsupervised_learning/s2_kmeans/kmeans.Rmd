@@ -1,11 +1,11 @@
 ---
 title: "Kmeans Clustering"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "1/5/2019"
 output:
-  html_document: default
-  html_notebook: default
   pdf_document: default
+  html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -19,9 +19,9 @@ library(sparklyr)
 sc <- spark_connect(master = "local")
 ```
 
-## 8.2 K-means Clustering
+## 7.2 K-means Clustering
 
-### 8.2.1 K-means Basics
+### 7.2.1 K-means Basics
 
 Linear regression and logistic regression are *supervised* learning methods. By that we mean that the the values of the outcome variable, e.g., the labels, are known, at least for the training set. $k$-means is an *unsupervised* learning methods. By that we mean that the values of the outcome variable are unknown or that there is no outcome variable, e.g., the labels are unknown.
 
@@ -84,7 +84,7 @@ state_crime_pca_scores %>%
   scale_color_discrete(name = "Predicted Cluster", labels = paste("Cluster", 1:4))
 ```
 
-### 8.2.3 Spark K-means on the State Crime Data
+### 7.2.3 Spark K-means on the State Crime Data
 
 Load `state_crime.csv` into Spark with `spark_read_csv` from the local filesystem.
 ```{r}

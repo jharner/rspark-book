@@ -1,10 +1,11 @@
 ---
 title: "ML Basics"
 author: "Jim Harner"
-date: "9/10/2018"
+date: "1/1/2019"
 output:
-  html_document: default
+  pdf_document: default
   html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}

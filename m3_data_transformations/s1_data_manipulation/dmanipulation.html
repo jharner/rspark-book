@@ -125,7 +125,7 @@ $(document).ready(function () {
 </div>
 
 
-<p>The <code>dplyr</code> package is part of the <code>tidyverse</code>. It provides a grammar of data maniputation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources.</p>
+<p>The <code>dplyr</code> package is part of the <code>tidyverse</code>. It provides a grammar of data manipulation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources.</p>
 <pre class="r"><code>library(dplyr, warn.conflicts = FALSE)
 library(lubridate)</code></pre>
 <pre><code>## 
@@ -261,7 +261,7 @@ filter(flights, month == 1 &amp; day == 1)</code></pre>
 ## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
 ## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
-<p>Rows can also be selected by positon using slice:</p>
+<p>Rows can also be selected by position using slice:</p>
 <pre class="r"><code>slice(flights, 1:3)</code></pre>
 <pre><code>## # A tibble: 3 x 19
 ##    year month   day dep_time sched_dep_time dep_delay arr_time
@@ -504,16 +504,16 @@ select(flights, -(year:day))</code></pre>
 <pre><code>## # A tibble: 10 x 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     1    30     1911           1900       11.     2103
-##  2  2013     7    25     1050           1055       -5.     1344
-##  3  2013     8    18     1044           1055      -11.     1213
-##  4  2013     5     5     1622           1600       22.     1746
-##  5  2013     5    13     1645           1650       -5.     1807
-##  6  2013     9    21     1905           1845       20.     2059
-##  7  2013    11    15      909            900        9.     1045
-##  8  2013     3     6      824            723       61.     1053
-##  9  2013     9    13     1305           1226       39.     1501
-## 10  2013    12     8     1620           1629       -9.     1917
+##  1  2013    12    27     2106           2115       -9.     2255
+##  2  2013     6    23     1634           1625        9.     1804
+##  3  2013     7    12      734            735       -1.     1004
+##  4  2013     1    13      757            800       -3.     1050
+##  5  2013     8    17     1857           1829       28.     2000
+##  6  2013     2     7       NA           2100       NA        NA
+##  7  2013     6    30       NA           1715       NA        NA
+##  8  2013    12     5      602            600        2.      851
+##  9  2013     7    18     1416           1417       -1.     1546
+## 10  2013     9    28     1226           1229       -3.     1341
 ## # ... with 12 more variables: sched_arr_time &lt;int&gt;, arr_delay &lt;dbl&gt;,
 ## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
 ## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;,
@@ -522,16 +522,16 @@ select(flights, -(year:day))</code></pre>
 <pre><code>## # A tibble: 3,368 x 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013    12     5     1658           1700       -2.     1814
-##  2  2013     1    26       NA            810       NA        NA
-##  3  2013    12    17     1825           1647       98.     2033
-##  4  2013     3    30     1207           1215       -8.     1406
-##  5  2013     6    11     1349           1359      -10.     1540
-##  6  2013     3     4     1215           1200       15.     1342
-##  7  2013     8     8     1553           1530       23.     2003
-##  8  2013     8    17      611            611        0.      957
-##  9  2013     9    11     1810           1755       15.     2055
-## 10  2013     6    20      926            929       -3.     1039
+##  1  2013    11    18      734            714       20.     1006
+##  2  2013     8    22     1741           1706       35.     2125
+##  3  2013     6    23     1946           1955       -9.     2153
+##  4  2013    12    10     2034           2030        4.     2216
+##  5  2013    10     1     1149           1159      -10.     1245
+##  6  2013    10    28     1751           1800       -9.     1913
+##  7  2013     3    21      617            630      -13.      903
+##  8  2013     9    19      816            820       -4.     1057
+##  9  2013     5    16     1250           1300      -10.     1347
+## 10  2013     1    17     1502           1357       65.     1554
 ## # ... with 3,358 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
 ## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,

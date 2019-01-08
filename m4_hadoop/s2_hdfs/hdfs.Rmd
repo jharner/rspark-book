@@ -3,8 +3,9 @@ title: "HDFS"
 author: "Jim Harner"
 date: "1/1/2019"
 output:
-  html_document: default
+  pdf_document: default
   html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -16,13 +17,13 @@ The `rhdfs` package provides an R interface to Hadoop.
 library(rhdfs, warn.conflicts = FALSE)
 ```
 
-## 4.3 HDFS
+## 4.2 HDFS
 
 When data sets exceed the storage capacity of a single physical machine, we can spread them across a number of machines. Filesystems that manage the storage across a network of machines are called *distributed filesystems*. Since they are network based, the complications of network programming arise, e.g., experiencing node failures without data loss. Thus, distributed filesystems are more complex than regular disk filesystems.
 
 HDFS is Hadoop’s main filesystem, but Hadoop has a general-purpose filesystem abstraction. Thus, Hadoop integrates with other storage systems, e.g., the local filesystem and Amazon S3.
 
-### 4.3.1 HDFS Design
+### 4.2.1 HDFS Design
 
 HDFS is a filesystem designed for storing very large files with streaming data access patterns, running on clusters of commodity hardware.  
 
@@ -50,7 +51,7 @@ An HDFS cluster has two types of nodes operating in a master-worker pattern:
 
 The namenode manages the filesystem namespace. Datanodes store and retrieve blocks when they are told to (by clients or the namenode), and they report back to the namenode periodically with lists of blocks that they are storing. A client accesses the filesystem on behalf of the user by communicating with the namenode and datanodes. 
 
-### 4.3.2 HDFS Input/Output
+### 4.2.2 HDFS Input/Output
 
 As a user you must interact with both the *local filesystem* and *hdfs*. Locally, you use standard Linux commands, e.g., `cd`, `rm`, etc. Many regular filesystems commands have similar functionality in hdfs, but the syntax is different and certain limitations exist since hdfs is *stateless*, e.g., there is no `cd` command. 
 
@@ -97,7 +98,7 @@ HDFS has a permissions model for files and directories that is much like the POS
 
 The `rhdfs` package in RHadoop provides basic connectivity to the Hadoop Distributed File System. R programmers can browse, read, write, and modify files stored in HDFS from within R. The results are best seen by stepping through the code line-by-line using: `Run -> Run Selected Line(s)`.
 
-These R statements are essentially identical to the bash commands above. First, load the `rhdfs` library and initilize hdfs.
+These R statements are essentially identical to the bash commands above. First, load the `rhdfs` library and initialize hdfs.
 ```{r}
 library(rhdfs)
 hdfs.init()
@@ -120,7 +121,7 @@ hdfs.rm("temp/cdat.csv")
 hdfs.rm("temp")
 ```
 
-### 4.3.3 YARN
+### 4.2.3 YARN
 
 YARN (Yet Another Resource Negotiator) is Hadoop’s cluster resource management system. YARN provides APIs for requesting and working with cluster resources.
 

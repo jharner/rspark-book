@@ -233,7 +233,7 @@ curl http://httpbin.org/user-agent</code></pre>
 <p>This gives you a response object. Printing a response object gives you useful information: the actual <code>url</code> used, the <code>http</code> status, the file (content) type, the size, and if it’s a text file, the first few lines of output.</p>
 <pre class="r"><code>r</code></pre>
 <pre><code>## Response [http://httpbin.org/get]
-##   Date: 2019-01-02 03:29
+##   Date: 2019-01-07 06:08
 ##   Status: 200
 ##   Content-Type: application/json
 ##   Size: 324 B
@@ -309,7 +309,7 @@ body &lt;- list(a = 1, b = 2, c = 3)
 r &lt;- POST(url, body = body, encode = &quot;form&quot;)
 r</code></pre>
 <pre><code>## Response [http://httpbin.org/post]
-##   Date: 2019-01-02 03:29
+##   Date: 2019-01-07 06:08
 ##   Status: 200
 ##   Content-Type: application/json
 ##   Size: 521 B
@@ -329,7 +329,7 @@ r</code></pre>
 <pre class="r"><code>r &lt;- POST(url, body = body, encode = &quot;json&quot;)
 r</code></pre>
 <pre><code>## Response [http://httpbin.org/post]
-##   Date: 2019-01-02 03:29
+##   Date: 2019-01-07 06:08
 ##   Status: 200
 ##   Content-Type: application/json
 ##   Size: 521 B
@@ -367,36 +367,36 @@ gg_issues &lt;- fromJSON(&quot;https://api.github.com/repos/hadley/ggplot2/issue
 
 # latest issues
 paste(format(gg_issues$user$login), &quot;:&quot;, gg_issues$title)</code></pre>
-<pre><code>##  [1] &quot;yutannihilation : Add lineend and linejoin params to geom_rect() and geom_tile()&quot;                        
-##  [2] &quot;yutannihilation : Fix a bug about strip.placement in facet_wrap()&quot;                                       
-##  [3] &quot;yutannihilation : [PoC] Can we really use tibble internally?&quot;                                            
-##  [4] &quot;yutannihilation : Allow stat_bin() to compute over single-unique-value data&quot;                             
-##  [5] &quot;heavywatal      : Error from facet_wrap(strip.position = \&quot;bottom\&quot;) + theme_void()&quot;                     
-##  [6] &quot;clauswilke      : Refactor geom_contour()?&quot;                                                              
-##  [7] &quot;rajkstats       : Error : Computation failed in `stat_bin()`: `binwidth` must be positive &quot;              
-##  [8] &quot;W-L             : coord_map(): moving y axis to the right does not move all axis elements&quot;               
-##  [9] &quot;ptoche          : WIP: extension of stat-ellipse&quot;                                                        
-## [10] &quot;dpseidel        : Fix tick misalignment and revert transformation inheritance in sec.axis (#2978)&quot;       
-## [11] &quot;ptoche          : theme(x, y) versus theme(x) + theme(y)&quot;                                                
-## [12] &quot;yutannihilation : WIP: Convert formula to function in sec_axis()&quot;                                        
-## [13] &quot;DanielReedOcean : geom_tile borders missing notch at top left corners&quot;                                   
-## [14] &quot;ptoche          : sec_axis: minor doc + implementation suggestions &quot;                                     
-## [15] &quot;clauswilke      : WIP: make nudge_x and nudge_y aesthetics of geom_text()&quot;                               
-## [16] &quot;caayala         : scale_shape_identity doesn't work with guide = 'legend'&quot;                               
-## [17] &quot;yutannihilation : Allow to use sparse discrete values in geom_raster()&quot;                                  
-## [18] &quot;yutannihilation : Consistency of handling a wrong length of parameter&quot;                                   
-## [19] &quot;sebneus         : geom_raster plots differently than geom_tile&quot;                                          
-## [20] &quot;slowkow         : text is misplaced with position_dodge()&quot;                                               
-## [21] &quot;wongjingping    : Allow ggsave to create directory if path doesn't exist&quot;                                
-## [22] &quot;llrs            : Updating a theme to remove panel.grid.major.x&quot;                                         
-## [23] &quot;IndrajeetPatil  : feature request: `layer_data` returns a tibble&quot;                                        
-## [24] &quot;danielsjf       : Invalid filename error with ggsave after saving in a folder with a percentage sign (%)&quot;
-## [25] &quot;PaulLantos      : geom_sf layers do not align&quot;                                                           
-## [26] &quot;blueskypie      : possible bug in resolution() causes wrong height and width in geom_jitter()&quot;           
-## [27] &quot;jarauh          : Documentation of geom_bar: aesthetics \&quot;weight\&quot; is not mentioned&quot;                     
-## [28] &quot;clauswilke      : coord_sf() doesn't adjust line size for graticule lines&quot;                               
-## [29] &quot;anthonytw       : Secondary axis doesn't show axis ticks or labels with coord_trans&quot;                     
-## [30] &quot;lionel-         : Should we compact facet grid specs?&quot;</code></pre>
+<pre><code>##  [1] &quot;m-macaskill     : Allow control over stroke size for geom_dotplot&quot;                                       
+##  [2] &quot;yutannihilation : Should all deprecation notices use warning()?&quot;                                         
+##  [3] &quot;billdenney      : Deprecate `limx` and `limy` in `coord_trans()`&quot;                                        
+##  [4] &quot;cderv           : cut_width should be able to take ... for cut.default&quot;                                  
+##  [5] &quot;katossky        : type argument in scale_fill_continuous but not in scale_color_continuous&quot;              
+##  [6] &quot;yutannihilation : Add lineend and linejoin params to geom_rect() and geom_tile()&quot;                        
+##  [7] &quot;yutannihilation : Fix a bug about strip.placement in facet_wrap()&quot;                                       
+##  [8] &quot;yutannihilation : [PoC] Can we really use tibble internally?&quot;                                            
+##  [9] &quot;yutannihilation : Allow stat_bin() to compute over single-unique-value data&quot;                             
+## [10] &quot;heavywatal      : Error from facet_wrap(strip.position = \&quot;bottom\&quot;) + theme_void()&quot;                     
+## [11] &quot;clauswilke      : Refactor geom_contour()?&quot;                                                              
+## [12] &quot;rajkstats       : Error : Computation failed in `stat_bin()`: `binwidth` must be positive &quot;              
+## [13] &quot;W-L             : coord_map(): moving y axis to the right does not move all axis elements&quot;               
+## [14] &quot;ptoche          : WIP: extension of stat-ellipse&quot;                                                        
+## [15] &quot;dpseidel        : Fix tick misalignment and revert transformation inheritance in sec.axis (#2978)&quot;       
+## [16] &quot;ptoche          : theme(x, y) versus theme(x) + theme(y)&quot;                                                
+## [17] &quot;yutannihilation : WIP: Convert formula to function in sec_axis()&quot;                                        
+## [18] &quot;DanielReedOcean : geom_tile borders missing notch at top left corners&quot;                                   
+## [19] &quot;ptoche          : sec_axis: minor doc + implementation suggestions &quot;                                     
+## [20] &quot;clauswilke      : WIP: make nudge_x and nudge_y aesthetics of geom_text()&quot;                               
+## [21] &quot;caayala         : scale_shape_identity doesn't work with guide = 'legend'&quot;                               
+## [22] &quot;yutannihilation : Allow to use sparse discrete values in geom_raster()&quot;                                  
+## [23] &quot;yutannihilation : Consistency of handling a wrong length of parameter&quot;                                   
+## [24] &quot;sebneus         : geom_raster plots differently than geom_tile&quot;                                          
+## [25] &quot;slowkow         : text is misplaced with position_dodge()&quot;                                               
+## [26] &quot;wongjingping    : Allow ggsave to create directory if path doesn't exist&quot;                                
+## [27] &quot;llrs            : Updating a theme to remove panel.grid.major.x&quot;                                         
+## [28] &quot;IndrajeetPatil  : feature request: `layer_data` returns a tibble&quot;                                        
+## [29] &quot;danielsjf       : Invalid filename error with ggsave after saving in a folder with a percentage sign (%)&quot;
+## [30] &quot;PaulLantos      : geom_sf layers do not align&quot;</code></pre>
 <p>These results can use text analysis to analyze the issues.</p>
 </div>
 </div>

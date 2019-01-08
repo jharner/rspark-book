@@ -2,16 +2,16 @@
 title: "Data Manipulation"
 author: "Jim Harner"
 date: "1/1/2019"
-
 output:
-  html_document: default
+  pdf_document: default
   html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-The `dplyr` package is part of the `tidyverse`. It provides a grammar of data maniputation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources.
+The `dplyr` package is part of the `tidyverse`. It provides a grammar of data manipulation using a set of verbs for transforming tibbles (or data frames) in R or across various backend data sources.
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
 library(lubridate)
@@ -82,7 +82,7 @@ Using the `|` operator is also easy.
 ```{r}
 filter(flights, month == 1 | month == 2)
 ```
-Rows can also be selected by positon using slice:
+Rows can also be selected by position using slice:
 ```{r}
 slice(flights, 1:3)
 ```

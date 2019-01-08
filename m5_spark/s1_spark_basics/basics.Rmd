@@ -3,8 +3,9 @@ title: "Spark Basics"
 author: "Jim Harner"
 date: "1/1/2019"
 output:
-  html_document: default
+  pdf_document: default
   html_notebook: default
+  html_document: default
 ---
   
 ```{r setup, include=FALSE}
@@ -33,7 +34,7 @@ Spark supports a rich set of higher-level tools including:
 
 * *Spark SQL* for running SQL-like queries on Spark data using the JDBC API or the Spark SQL CLI. Spark SQL allows users to extract data from different formats, (e.g., JSON, Parquet, or Hive), transform it, and load it for *ad-hoc* querying, i.e., ETL.  
 
-* *MLlib* for machine learning, including classification, regression, clustering, collaborative filtering, dimensionality reduction, and the underlying optimization alogorithms. MLlib uses the DataFrame API and thus takes advantage of the Sprak SQL engine.
+* *MLlib* for machine learning, including classification, regression, clustering, collaborative filtering, dimensionality reduction, and the underlying optimization algorithms. MLlib uses the DataFrame API and thus takes advantage of the Spark SQL engine.
 
 * *Structured Streaming* for real-time data processing. Spark streaming uses a fault-tolerant stream processing engine built on the Spark SQL engine. Thus, you can express your streaming computation the same way you would express a batch computation on static data. Using the DataFrame API, the Spark SQL engine will take care of running it incrementally and continuously and updating the final result as streaming data continues to arrive. 
 

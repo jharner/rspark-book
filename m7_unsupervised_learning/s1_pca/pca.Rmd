@@ -1,11 +1,11 @@
 ---
 title: "Principal Component Analysis"
 author: "Jim Harner"
-date: "7/25/2018"
+date: "1/5/2019"
 output:
-  html_document: default
-  html_notebook: default
   pdf_document: default
+  html_notebook: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -17,9 +17,9 @@ library(sparklyr)
 sc <- spark_connect(master = "local")
 ```
 
-## 8.1 Principal Component Analysis (PCA)
+## 7.1 Principal Component Analysis (PCA)
 
-### 8.1.1 PCA Basics
+### 7.1.1 PCA Basics
 
 Principal Component Analysis (PCA) is used to determine the structure of a multivariate data set composed of numerical variables. Specifically, the most important purposes of PCA are:   
 1. to reduce the dimensionality of variable space;    
@@ -183,7 +183,7 @@ $d_{it}^2$ approximately follow a gamma distribution with a shape parameter
 which must be estimated from the data (i.e., the shape parameter is not
 $(p-t)/2$).
 
-### 8.1.2 PCA on the State Crime Data
+### 7.1.2 PCA on the State Crime Data
 
 Read in the crime data for the 50 states:
 ```{r}
@@ -216,7 +216,7 @@ The centers and scores can also be extracted for the first four principal variab
 head(as.data.frame(state_crime_pca$scores))
 ```
 
-### 8.1.3 Spark PCA on the State Crime Data
+### 7.1.3 Spark PCA on the State Crime Data
 
 Load `state_crime.csv` into Spark with `spark_read_csv` from the local filesystem.
 ```{r}

@@ -120,16 +120,16 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Logistic Regression</h1>
 <h4 class="author"><em>Jim Harner</em></h4>
-<h4 class="date"><em>7/25/2018</em></h4>
+<h4 class="date"><em>1/5/2019</em></h4>
 
 </div>
 
 
 <div id="logistic-regression" class="section level2">
-<h2>7.4 Logistic Regression</h2>
+<h2>6.4 Logistic Regression</h2>
 <p>In many situations the outcome variable is one of <span class="math inline">\(k\)</span> levels or groups. In this section we explore the case in which <span class="math inline">\(k = 2\)</span>.</p>
 <div id="basics" class="section level3">
-<h3>7.4.1 Basics</h3>
+<h3>6.4.1 Basics</h3>
 <p>Define the possible groups as <span class="math inline">\(G = \{G_1,\, G_2\}\)</span>. We define a outcome variable as <span class="math inline">\(Y = 1\)</span> if <span class="math inline">\(G_1\)</span> occurs and 0 otherwise, i.e., outcomes <span class="math inline">\(y_i,\, i = 1, 2, \ldots, n\)</span> are binary values of 0 and 1. We are interested in <span class="math inline">\(P(Y = 1\, |\, \mathbf{x})\)</span> where <span class="math inline">\(\mathbf{x}\)</span> are observed features.</p>
 <p>Thus, we want a function that takes the data and transforms it into a single value bounded inside the closed interval <span class="math inline">\([0,\, 1]\)</span> . The inverse-logit function is commonly used:<br />
 <span class="math display">\[
@@ -151,7 +151,7 @@ P(Y_i = 0\, |\, \mathbf{x}_i) = 1 - \mbox{logit}^{-1}(\beta_0 + \beta^t\mathbf{x
 \mbox{logit}(P(Y_i = 1\, |\, \mathbf{x}_i)) = log(\frac{P(y_i = 1\, |\, \mathbf{x}_i)}{1 - P(y_i = 1\, |\, \mathbf{x}_i)}) = \beta_0 + \beta^t \mathbf{x}_i.
 \]</span> the logit of the probability that outcome <span class="math inline">\(i\)</span> is <span class="math inline">\(G_1\)</span> is being modeled as a linear function of the features This model is called the <em>logistic regression model</em>.</p>
 <p>The parameter <span class="math inline">\(\beta_0\)</span> is the <em>base rate</em>, or the unconditional probability of “1” knowing nothing more about the feature vector <span class="math inline">\(\mathbf{x}\)</span>.</p>
-<p>If you had no information about your specific situation except the base rate, the average prediction would be given by just <span class="math inline">\(\alpha\)</span>: <span class="math display">\[
+<p>If you had no information about your specific situation except the base rate, the average prediction would be given by just <span class="math inline">\(\beta_0\)</span>: <span class="math display">\[
 P(y_i = 1) = \frac{1}{1 + e^{-\beta_0}}.
 \]</span> The parameter <span class="math inline">\(\beta\)</span> defines the slope of the logit function. Note that in general it’s a vector that is as long as the number of features you are using for each data point. The vector <span class="math inline">\(\beta\)</span> determines the extent to which certain features are markers for increased or decreased likelihood of <span class="math inline">\(G_1\)</span>.</p>
 <div id="estimating-beta_0-and-beta" class="section level4">
@@ -170,7 +170,10 @@ P(\mathbf{X}_i = \mathbf{x}_i\, |\, \theta) = p_i^{y_i} (1 - p_i)^{1 - y_i}.
 <p>How do we maximize the likelihood?</p>
 <p>If you take derivatives with respect to <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta\)</span> and set the results to zero, the result is not in closed form. Maximizing the likelihood is equivalent to maximizing the log likelihood or equivalently minimizing the negative log likelihood.</p>
 <p>Which optimization algorithm do we use? Newton’s method and stochastic gradient descent both converge to a global maximum if they converge. This will occur if the variables are not linearly dependent, i.e., <em>Hessian matrix</em> is positive definite.</p>
-<p>This method follows from Newton’s method from calculus, i.e., that a function can be approximated by the first few terms of its Taylor series.</p>
+</div>
+<div id="newtons-method" class="section level4">
+<h4>Newton’s Method</h4>
+<p>Newton’s method follows from calculus, i.e., a function can be approximated by the first few terms of its Taylor series.</p>
 <p>Given a step size <span class="math inline">\(\gamma\)</span>, we must compute the local gradient <span class="math inline">\(\nabla \Theta\)</span>, which corresponds to the first derivative, and the Hessian matrix <span class="math inline">\(H\)</span>, which corresponds to the second derivative. Each step of the algorithm looks like: <span class="math display">\[
 \theta_{m + 1} = \theta_m - \gamma H^{-1} \cdot \nabla \theta.
 \]</span> Newton’s method uses curvature of the log likelihood to choose a step direction. This involves inverting a <span class="math inline">\((p + 1) \times (p + 1)\)</span> matrix, which is difficult if there are a lot of features. Actually you can solve a linear system of equation, but this is still difficult for large <span class="math inline">\(p\)</span>.</p>
@@ -221,8 +224,7 @@ P(\mathbf{X}_i = \mathbf{x}_i\, |\, \theta) = p_i^{y_i} (1 - p_i)^{1 - y_i}.
 <h4>Performance metrics</h4>
 <p>We use different evaluation metrics for different kinds of models, and in different contexts. For logistic regression we typically:</p>
 <ol style="list-style-type: decimal">
-<li>estimate probabilities and then rank-order the items related to the probabilities in decreasing order of likelihood. If you wanted to know how good your model was at discovering <em>relative rank</em>, you’d look to one of:<br />
-</li>
+<li>estimate probabilities and then rank-order the items relative to their probabilities in decreasing order of likelihood. If you wanted to know how good your model was at discovering <em>relative rank</em>, you’d look to one of:</li>
 </ol>
 <ul>
 <li><strong>Area under the receiver operating curve (AUC)</strong>: A <em>receiver operating characteristic curve</em>, or <em>ROC</em> curve, is defined as a plot of the true positive rate against the false positive rate for a binary classification problem as you change a threshold. The area under that curve, referred to as the <em>AUC</em>, is a way to measure the success of a classifier or to compare two classifiers.<br />
@@ -230,8 +232,7 @@ P(\mathbf{X}_i = \mathbf{x}_i\, |\, \theta) = p_i^{y_i} (1 - p_i)^{1 - y_i}.
 <li><strong>Area under the cumulative lift curve</strong>: The area under the <em>cumulative lift curve</em>, which is frequently used in direct marketing and captures how many times it is better to use a model versus not using the model (i.e., just selecting at random).</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
-<li>for the purposes of classification. In order to use this for classification purposes, for any given unlabeled item, you would get its predicted probability. Then to minimize the misclassification rate, if the predicted probability is <span class="math inline">\(&gt; 0.5\)</span> that the label is 1, you would label the item a 1, and otherwise 0. You have several options for how you’d then evaluate the quality of the model:<br />
-</li>
+<li>compute the predicted probability for any given unlabeled item to use this for classification. Then to minimize the misclassification rate, if the predicted probability is <span class="math inline">\(&gt; 0.5\)</span> that the label is 1, you would label the item a 1, and otherwise 0. You have several options for how you’d then evaluate the quality of the model:</li>
 </ol>
 <ul>
 <li><strong>Lift</strong>: How much more people are responding because of a model.<br />
@@ -246,17 +247,16 @@ P(\mathbf{X}_i = \mathbf{x}_i\, |\, \theta) = p_i^{y_i} (1 - p_i)^{1 - y_i}.
   f1 = \frac{2 \times \mbox{precision} \times \mbox{recall}}{\mbox{precision} + \mbox{recall}}.
 \]</span> Generalizations of <span class="math inline">\(f1\)</span> are based on changing weights for precision and recall.</li>
 </ul>
-<p>It’s hard to compare lift curves, but you can compare AUC (area under the receiver operator curve)—they are “base rate invariant.” That is, if you bring the response rate from 1% to 2%, that’s 100% lift; but if you bring it from 4% to 7%, that’s less lift but more effect. AUC does a better job in such a situation when you want to compare.</p>
+<p>It’s hard to compare lift curves, but you can compare AUC (area under the receiver operator curve)—they are “base rate invariant.” That is, if you bring the response rate from 1% to 2%, that’s 100% lift; but if you bring it from 4% to 7%, that’s less lift but more effect. AUC does a better job in such a situation when you want to make comparisons.</p>
 </div>
 </div>
 <div id="binomial-wine-quality-example" class="section level3">
-<h3>7.4.2 Binomial Wine Quality Example</h3>
+<h3>6.4.2 Binomial Wine Quality Example</h3>
 <p>We illustrate logistic regression modeling using the Wine Quality Data Set from the <a href="https://archive.ics.uci.edu/ml/datasets/wine+quality">UCI Machine Learning Repository</a>. The two datasets: the red and white variants of the Portuguese “Vinho Verde” wine, but we will restrict analysis to the red wine dataset.</p>
 <p>The features (or predictors) are all numeric, whereas the labels (or the predictand) is a score ranging from 0 to 10 representing the wine quality. Technically, this is an ordered categorical model, but we will binarize the outcome variable at a threshold value of 5.0.</p>
 <p>We can use <code>read.csv()</code> to read the <code>winequality-red.csv</code> file into local memory.</p>
-<pre class="r"><code>wine_red_df &lt;-read.csv(
-  &quot;/home/rstudio/rspark-tutorial/data/wine/winequality-red.csv&quot;,
-  header = TRUE, sep = &quot;;&quot;) %&gt;%
+<pre class="r"><code>wine_red_df &lt;-read_csv2(
+  &quot;/home/rstudio/rspark-tutorial/data/wine/winequality-red.csv&quot;) %&gt;%
   mutate(quality_bin = ifelse(quality &gt; 5.0, 1, 0)) %&gt;%
   resample_partition(p = c(training = 0.7, test = 0.3))
 wine_red_train_df &lt;- wine_red_df$training$data</code></pre>
@@ -372,7 +372,7 @@ wine_red_logistic_step &lt;- step(wine_red_logistic_fit_full,
   ml_predict(wine_red_partition$training) %&gt;%
   sdf_separate_column(&quot;probability&quot;, list(&quot;P[quality_bin=1]&quot; = 2))
 wine_red_logistic_predict</code></pre>
-<pre><code>## # Source:   table&lt;sparklyr_tmp_89630d52c7d&gt; [?? x 22]
+<pre><code>## # Source:   table&lt;sparklyr_tmp_3bb548bd120&gt; [?? x 22]
 ## # Database: spark_connection
 ##    fixed_acidity volatile_acidity citric_acid residual_sugar chlorides
 ##            &lt;dbl&gt;            &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;
@@ -402,7 +402,6 @@ wine_red_logistic_predict</code></pre>
                                    raw_prediction_col = &quot;probability_1_0&quot;,
                                    metric_name =&quot;areaUnderPR&quot;)</code></pre>
 <pre><code>## [1] 0.842538</code></pre>
-<p>We will use the AUC metric when we do regularized logistic regression in Chapter 10.</p>
 <p>Now let’s switch to the generalized linear model for examining feature importance.</p>
 <pre class="r"><code>wine_red_br_full_glmfit &lt;- wine_red_train_tbl %&gt;%
   ml_generalized_linear_regression(quality_bin ~ fixed_acidity +

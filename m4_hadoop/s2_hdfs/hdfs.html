@@ -133,11 +133,11 @@ $(document).ready(function () {
 <pre><code>## 
 ## Be sure to run hdfs.init()</code></pre>
 <div id="hdfs" class="section level2">
-<h2>4.3 HDFS</h2>
+<h2>4.2 HDFS</h2>
 <p>When data sets exceed the storage capacity of a single physical machine, we can spread them across a number of machines. Filesystems that manage the storage across a network of machines are called <em>distributed filesystems</em>. Since they are network based, the complications of network programming arise, e.g., experiencing node failures without data loss. Thus, distributed filesystems are more complex than regular disk filesystems.</p>
 <p>HDFS is Hadoop’s main filesystem, but Hadoop has a general-purpose filesystem abstraction. Thus, Hadoop integrates with other storage systems, e.g., the local filesystem and Amazon S3.</p>
 <div id="hdfs-design" class="section level3">
-<h3>4.3.1 HDFS Design</h3>
+<h3>4.2.1 HDFS Design</h3>
 <p>HDFS is a filesystem designed for storing very large files with streaming data access patterns, running on clusters of commodity hardware.</p>
 <ul>
 <li>Very large files: Many <a href="https://en.wikipedia.org/wiki/Data_lake">data lakes</a> are in the gigabytes, terabytes, or even petabytes in size.<br />
@@ -163,7 +163,7 @@ $(document).ready(function () {
 <p>The namenode manages the filesystem namespace. Datanodes store and retrieve blocks when they are told to (by clients or the namenode), and they report back to the namenode periodically with lists of blocks that they are storing. A client accesses the filesystem on behalf of the user by communicating with the namenode and datanodes.</p>
 </div>
 <div id="hdfs-inputoutput" class="section level3">
-<h3>4.3.2 HDFS Input/Output</h3>
+<h3>4.2.2 HDFS Input/Output</h3>
 <p>As a user you must interact with both the <em>local filesystem</em> and <em>hdfs</em>. Locally, you use standard Linux commands, e.g., <code>cd</code>, <code>rm</code>, etc. Many regular filesystems commands have similar functionality in hdfs, but the syntax is different and certain limitations exist since hdfs is <em>stateless</em>, e.g., there is no <code>cd</code> command.</p>
 <p>You can experiment in the shell with the following scripts to show the <code>hdfs</code> commands.</p>
 <pre class="bash"><code># show the hdfs commands
@@ -271,11 +271,12 @@ echo &quot;&quot;  # or $?</code></pre>
 <p>We can list the files and directories with a <code>-ls</code> option, make a directory with the <code>-mkdir</code> option, etc. These can be run as bash commands.</p>
 <pre class="bash"><code>hdfs dfs -mkdir temp
 hdfs dfs -ls</code></pre>
-<pre><code>## Found 5 items
+<pre><code>## Found 6 items
+## drwxr-xr-x   - rstudio rstudio          0 2019-01-04 17:37 airlines_parquet
 ## drwxr-xr-x   - rstudio rstudio          0 2018-09-18 04:38 data
 ## drwxr-xr-x   - rstudio rstudio          0 2018-11-22 03:16 ex1
 ## drwxr-xr-x   - rstudio rstudio          0 2018-11-22 03:21 ex2
-## drwxr-xr-x   - rstudio rstudio          0 2019-01-04 02:47 temp
+## drwxr-xr-x   - rstudio rstudio          0 2019-01-07 06:34 temp
 ## drwxr-xr-x   - rstudio rstudio          0 2018-11-22 03:13 wcjava</code></pre>
 <p>Import a file into hdfs and list.</p>
 <pre class="bash"><code># set the local working directory to s2_hdfs
@@ -285,7 +286,8 @@ hdfs dfs -ls temp/
 hdfs dfs -du</code></pre>
 <pre><code>## bash: line 1: cd: /home/rstudio/rspark-notes/c4_hadoop/s2_hdfs: No such file or directory
 ## Found 1 items
-## -rw-r--r--   3 rstudio rstudio      34809 2019-01-04 02:47 temp/cdat.csv
+## -rw-r--r--   3 rstudio rstudio      34809 2019-01-07 06:34 temp/cdat.csv
+## 956    airlines_parquet
 ## 4425   data
 ## 6642   ex1
 ## 5233   ex2
@@ -294,30 +296,38 @@ hdfs dfs -du</code></pre>
 <p>Remove the file and directory</p>
 <pre class="bash"><code>hdfs dfs -rm -f temp/cdat.csv
 hdfs dfs -rmdir temp</code></pre>
-<pre><code>## 19/01/04 02:47:22 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
+<pre><code>## 19/01/07 06:34:24 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
 ## Deleted temp/cdat.csv</code></pre>
 <p>These commands illustrate how data can be loaded from the local filesystem into hdfs. In the next chapter we will illustrate how to load data into hdfs from within R. However, in a production system data would typically be loaded into hdfs using Sqoop as an interface to a database or Flume for real-time data.</p>
 <p>HDFS has a permissions model for files and directories that is much like the POSIX model.</p>
 <p>The <code>rhdfs</code> package in RHadoop provides basic connectivity to the Hadoop Distributed File System. R programmers can browse, read, write, and modify files stored in HDFS from within R. The results are best seen by stepping through the code line-by-line using: <code>Run -&gt; Run Selected Line(s)</code>.</p>
-<p>These R statements are essentially identical to the bash commands above. First, load the <code>rhdfs</code> library and initilize hdfs.</p>
+<p>These R statements are essentially identical to the bash commands above. First, load the <code>rhdfs</code> library and initialize hdfs.</p>
 <pre class="r"><code>library(rhdfs)
 hdfs.init()</code></pre>
 <p>Make a new directory and list the files for the user <code>rstudio</code>.</p>
 <pre class="r"><code>hdfs.mkdir(&quot;temp&quot;)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>hdfs.ls(&quot;/user/rstudio&quot;)</code></pre>
-<pre><code>##   permission   owner   group size          modtime                 file
-## 1 drwxr-xr-x rstudio rstudio    0 2018-09-18 04:38   /user/rstudio/data
-## 2 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:16    /user/rstudio/ex1
-## 3 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:21    /user/rstudio/ex2
-## 4 drwxr-xr-x rstudio rstudio    0 2019-01-04 02:47   /user/rstudio/temp
-## 5 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:13 /user/rstudio/wcjava</code></pre>
+<pre><code>##   permission   owner   group size          modtime
+## 1 drwxr-xr-x rstudio rstudio    0 2019-01-04 17:37
+## 2 drwxr-xr-x rstudio rstudio    0 2018-09-18 04:38
+## 3 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:16
+## 4 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:21
+## 5 drwxr-xr-x rstudio rstudio    0 2019-01-07 06:34
+## 6 drwxr-xr-x rstudio rstudio    0 2018-11-22 03:13
+##                             file
+## 1 /user/rstudio/airlines_parquet
+## 2             /user/rstudio/data
+## 3              /user/rstudio/ex1
+## 4              /user/rstudio/ex2
+## 5             /user/rstudio/temp
+## 6           /user/rstudio/wcjava</code></pre>
 <p>Import a file and list:</p>
 <pre class="r"><code>hdfs.put(&quot;cdat.csv&quot;, &quot;temp&quot;)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>hdfs.ls(&quot;temp&quot;)</code></pre>
 <pre><code>##   permission   owner   group  size          modtime
-## 1 -rw-r--r-- rstudio rstudio 34809 2019-01-04 02:47
+## 1 -rw-r--r-- rstudio rstudio 34809 2019-01-07 06:34
 ##                          file
 ## 1 /user/rstudio/temp/cdat.csv</code></pre>
 <p>Note: this does not work in interactive mode. Notice <code>hdfs.ls</code> has relative addressing.</p>
@@ -328,7 +338,7 @@ hdfs.init()</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="yarn" class="section level3">
-<h3>4.3.3 YARN</h3>
+<h3>4.2.3 YARN</h3>
 <p>YARN (Yet Another Resource Negotiator) is Hadoop’s cluster resource management system. YARN provides APIs for requesting and working with cluster resources.</p>
 <p>YARN provides its core services via two types of long-running daemons:</p>
 <ul>
