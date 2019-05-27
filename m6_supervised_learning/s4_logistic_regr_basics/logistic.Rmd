@@ -3,9 +3,9 @@ title: "Logistic Regression"
 author: "Jim Harner"
 date: "1/5/2019"
 output:
-  pdf_document: default
-  html_notebook: default
   html_document: default
+  html_notebook: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -189,17 +189,18 @@ It would be possible to copy this local training data frame to Spark using `copy
 wine_red_sdf <- spark_read_csv(sc, "wine_red_sdf",
     path = "file:///home/rstudio/rspark-tutorial/data/wine/winequality-red.csv",
     delimiter = ";" )
-wine_red_tbl <- sdf_register(wine_red_sdf, name = "wine_red_tbl")
+wine_red_sdf
+# wine_red_tbl <- sdf_register(wine_red_sdf, name = "wine_red_tbl")
 ```
 We register the Spark DataFrame so that the Scala Spark DataFrame API is used directly rather than the `dplyr` interface. Registering forces the SQL to completion without using `collect`, which is necessary for the pipeline in the next chunk.
 
 We split `wine_red_sdf` into a training and a test Spark DataFrame. First, we need to cast `quality` as numeric in order to binarize it with a threshold.
 ```{r}
-wine_red_partition <- wine_red_tbl %>%
+wine_red_partition <- wine_red_sdf %>%
   mutate(quality = as.numeric(quality)) %>%
   ft_binarizer(input.col = "quality", output.col = "quality_bin",
                threshold = 5.0) %>%
-  sdf_partition(training = 0.7, test = 0.3, seed = 2)
+  sdf_random_split(training = 0.7, test = 0.3, seed = 2)
 # Create table references
 wine_red_train_tbl <- wine_red_partition$training
 wine_red_test_tbl <- wine_red_partition$test

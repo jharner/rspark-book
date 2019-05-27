@@ -3,14 +3,15 @@ title: "HDFS"
 author: "Jim Harner"
 date: "1/1/2019"
 output:
-  pdf_document: default
-  html_notebook: default
   html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 user <- "rstudio"
+
+Sys.setenv(PATH="/opt/hive/bin:/opt/hadoop/bin/:/usr/lib/rstudio-server/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin")
 ```
 The `rhdfs` package provides an R interface to Hadoop.
 ```{r}
@@ -55,7 +56,7 @@ The namenode manages the filesystem namespace. Datanodes store and retrieve bloc
 
 As a user you must interact with both the *local filesystem* and *hdfs*. Locally, you use standard Linux commands, e.g., `cd`, `rm`, etc. Many regular filesystems commands have similar functionality in hdfs, but the syntax is different and certain limitations exist since hdfs is *stateless*, e.g., there is no `cd` command. 
 
-You can experiment in the shell with the following scripts to show the `hdfs` commands.
+You can experiment in the shell with the following scripts to show the `hdfs` commands. (Note: the `hdfs` commands executed in the section are run for illustrative purposes, i.e., they are run in the `rstudio` container---not the `hadoop` container.)
 ```{bash}
 # show the hdfs commands
 hdfs

@@ -32,7 +32,7 @@ head(slump_sdf)
 First we need to split `slump_sdf` into a training and a test Spark DataFrame.
 ```{r}
 slump_partition <- tbl(sc, "slump_sdf") %>%
-  sdf_partition(training = 0.7, test = 0.3, seed = 2)
+  sdf_random_split(training = 0.7, test = 0.3, seed = 2)
 slump_train_sdf <- slump_partition$training
 slump_test_sdf <- slump_partition$test
 ```
@@ -79,9 +79,27 @@ slump_lr_model <- function(l) {
   slump_train_sdf %>%
     ml_linear_regression(compressive_strength ~ cement + slag + fly_ash +
                          water + sp + coarse_aggr + fine_aggr,
-                         alpha = 1, lambda = l)
+                         elastic_net_param = 1, reg_param = l)
 }
 ```
+
+```
+slump_lr_model <- function(l) {
+  slump_train_sdf %>%
+    ml_linear_regression(compressive_strength ~ cement + slag + fly_ash +
+                         water + sp + coarse_aggr + fine_aggr,
+                         elastic_net_param = 1, reg_param = l) %>%
+    ml_predict(slump_train_sdf) %>%
+    ml_regression_evaluator(label_col = "compressive_strength",
+                            metric_name = "rmse")
+}
+sdf_copy_to(sc, data.frame(lambda = c(0.005, 0.01, 0.02, 0.04, 0.06, 0.08, 0.1)),
+                           slump_lr_metrics)
+slump_lr_metrics
+
+spark_apply(slump_lr_model)
+```
+
 
 We now calculate the `rmse` and `mae` for each of the models.
 ```{r}
