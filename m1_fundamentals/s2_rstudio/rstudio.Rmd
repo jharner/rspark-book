@@ -1,11 +1,10 @@
 ---
 title: "RStudio Server"
 author: "Jim Harner"
-date: "1/1/2019"
+date: "6/6/2019"
 output:
-  pdf_document: default
-  html_notebook: default
   html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
@@ -29,9 +28,9 @@ We run RStudio Server in a Docker container within a virtual computing environme
 * installing Vagrant/ VirtualBox on your own computer (https://github.com/jharner/rspark-vagrant);  
 * running Docker on an AWS instance.  
 
-The first option for `rspark` is for development purposes. It can be used, but it changes often. Instead, you should use `rspark-docker` (see Subsection 1.3.3) or `rspark-vagrant` (see Subsection 1.3.4). The AWS solution involves an Amazon account, which is cheap, but not free. It is more complex to set-up, but trivial to launch (see the ansible scripts in `rspark`).
+The first option for `rspark` is for development purposes. It can be used, but it changes often. Instead, you should use `rspark-docker` (see Subsection 1.3.3) or `rspark-vagrant` (see Subsection 1.3.4). The AWS solution involves an Amazon account, which is inexpensive, but not free. It is more complex to set-up, but trivial to launch (see the ansible scripts in `rspark`).
 
-The Docker containers run on a stripped down version of Linux, in our case Debian. At this point `rspark` has the following containers: rstudio, postgres, hadoop, hive, spark, and two workers. I plan to add Hbase and perhaps other containers for other components of the Hadoop and Spark ecosystems. Ultimately, I would like to build a complete system for both static and streaming data.
+The Docker containers run on a stripped down version of Linux, in our case Debianl or Ubuntu. At this point `rspark` has the following containers: rstudio, postgres, hadoop, hive, spark, and two workers. I plan to add Hbase and perhaps other containers for other components of the Hadoop and Spark ecosystems. Ultimately, I would like to build a complete system for both static and streaming data.
 
 Running RStudio Server on your local machine using Docker or Vagrant requires a terminal and some knowledge of Linux. The steps for doing this are described in Section 1.3 after Linux is introduced.
 
@@ -44,7 +43,7 @@ Prerequisites:
 * Amazon Web Services Account  
 * Modern Browser (Safari, Chrome, or Firefox)
 
-Detailed instructions for running `rspark` an AWS are available here: [rspark on AWS](https://github.com/jharner/rspark/tree/master/AWS)
+Detailed instructions for running `rspark` on AWS are available here: [AWS rspark](https://github.com/jharner/rspark/tree/master/AWS)
 
 The pre-built image on AWS is called `rsparkbox` and it contains this tutorial. Once you follow the steps in the directions, connect to your `rspark` server through a web browser.
 
@@ -53,13 +52,13 @@ The pre-built image on AWS is called `rsparkbox` and it contains this tutorial. 
 		username: rstudio
 		password: rstudio
 
-**IMPORTANT:** When you have finished using `rspark`, you need to stop or terminate your EC2 instance. If you neglect to do this, you will be charged by Amazon for the duration it is left running.
+**IMPORTANT:** When you have finished using `rspark`, you need to stop or terminate your EC2 instance. If you neglect to do this, you will be charged by Amazon for the duration your instance is left running.
 
 #### Shutting Down
 
 You have two primary options when shutting down an AWS instance of `rspark`. The difference between the two options is determined by your need to preserve your workspace. 
 
-#### Preserve the `rspark` Workspace
+#### Preserving the `rspark` Workspace
 
 In order to preserve your workspace and leave your files on the instance itself:
 
@@ -78,7 +77,7 @@ When you are ready to work again:
 
 Note: the IP address of your instance will have changed after being restarted. This new IP address is needed for connecting to RStudio so be sure to copy it down.
 
-#### Dispose of the `rspark` Workspace
+#### Disposing of the `rspark` Workspace
 
 _IMPORTANT: Be sure to download all important files to your local computer using RStudio's `Export...` command from the `More` submenu of the Files menu before terminating your AWS instance._
 
