@@ -1,7 +1,7 @@
 ---
 title: "Spark DataFrame SQL"
 author: "Jim Harner"
-date: "1/1/2019"
+date: "6/7/2019"
 output:
   html_document: default
   html_notebook: default
@@ -30,8 +30,8 @@ Currently, `sparklyr` is more limited than `sparkR` in its ability to import dat
 We will be using the `nycflights13` data again. The `flights` and `airlines` R data frames are copied into Spark.
 ```{r}
 library(nycflights13)
-flights_sdf <- sdf_copy_to(sc, flights, "flights",  overwrite = TRUE)
-airlines_sdf <- sdf_copy_to(sc, airlines, "airlines", overwrite = TRUE)
+flights_sdf <- copy_to(sc, flights, "flights",  overwrite = TRUE)
+airlines_sdf <- copy_to(sc, airlines, "airlines", overwrite = TRUE)
 ```
 
 ### 5.3.1 Joining Spark Data Tables
@@ -91,12 +91,12 @@ We can save the results of our analysis or the tables that you have generated in
 
 As an example, we can write the `airlines_sdf` Spark DataFrame out to a Parquet file using the `spark_write_parquet` function.
 ```{r}
-library(rhdfs)
-hdfs.init()
+# library(rhdfs)
+# hdfs.init()
 spark_write_parquet(airlines_sdf,
                   path = "hdfs://hadoop:9000/user/rstudio/airlines_parquet",
                   mode = "overwrite")
-hdfs.ls("/user/rstudio")
+# hdfs.ls("/user/rstudio")
 ```
 This writes the Spark DataFrame to the given HDFS path and names the Parquet file `airlines_parquet`.
 

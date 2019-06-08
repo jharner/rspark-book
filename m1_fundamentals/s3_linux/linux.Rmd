@@ -188,7 +188,7 @@ Since you local repo has been changed, you will need to specify the `build` opti
 
 You can enter containers from the local command line using `ssh` (secure shell). For example, to `ssh` into the `rstudio` container, run the following in your local (host) terminal:
 ```
-docker exec -ti rspark-docker_rstudio_1 bash
+docker exec -ti rspark_rstudio_1 bash
 cd home/rstudio
 ```
 where "rspark-docker_rstudio_1" is the container `NAME`, the `-ti` option requests an interactive terminal,  and `bash` is the process we wish to run  . You can `ssh` into any container by specifying its name, which can be found by issuing the following Docker command in the terminal of you host machine.
