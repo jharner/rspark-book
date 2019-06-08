@@ -1,11 +1,10 @@
 ---
 title: "Databases"
 author: "Jim Harner"
-date: "1/1/2019"
+date: "6/7/2019"
 output:
-  pdf_document: default
-  html_notebook: default
   html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include = FALSE}

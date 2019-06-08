@@ -1,11 +1,10 @@
 ---
 title: "Linux"
 author: "Jim Harner"
-date: "1/1/2019"
+date: "6/7/2019"
 output:
-  pdf_document: default
-  html_notebook: default
   html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
@@ -185,7 +184,7 @@ git pull origin master
 ```
 Since you local repo has been changed, you will need to specify the `build` option the first time you execute `start.sh`.
 
-#### Running containers from the command line
+#### Running Docker commands from the command line
 
 You can enter containers from the local command line using `ssh` (secure shell). For example, to `ssh` into the `rstudio` container, run the following in your local (host) terminal:
 ```
@@ -200,7 +199,7 @@ The output gives details concerning the currently running containers. To see all
 
 At this point you are in the `bash` shell within the `rstudio` container. You can now run a command-line version of R by simply typing `R`, a binary executable, at the `#` or `$` prompt. This will give you an R console in your terminal with `>` as its prompt. However, `ssh`ing into a container is generally done for debugging in creating the container's Dockerfile---not for running application programs.
 
-Note that the `Terminal` tab within RStudio's `Console` panel is running bash within the `rstudio` container. Ironically, you can run a separate R process within the Terminal.
+Note that the `Terminal` tab within RStudio's `Console` panel is running bash within the `rstudio` container. The terminal prompt is `rstudio@<CONTAINER ID>:<PATH to working directory>`. Ironically, you can run a separate R process within the Terminal.
 
 You can get a list of running containers by typing `docker ps` into your local terminal or `docker ps -a` to list both the running and stopped containers. The bash script `dockill.sh` in the `rspark` GitHub repo has a series of `docker` commands to control your images, containers, and volumes. For example, to stop running containers, issue:
 ```
