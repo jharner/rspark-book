@@ -33,7 +33,7 @@ Besides providing functions for manipulating data frames in R, `dplyr` forms an 
 * sampling (by window functions);  
 * performing joins;  
 
-As we saw in section 6.1, `dplyr` can be used to:  
+As we will see in Sections 5.2.1 and 5.2.2 below, `dplyr` can be used to:  
 
 * convert R data frames to Spark DataFrames using the `copy_to` function, or  
 * convert Spark DataFames to R data frames using the `collect` function.
@@ -53,8 +53,8 @@ Perhaps the most powerful feature of `dplyr` is its support for building data-sc
 We use the `flights` data from the `nycflights13` packages to illustrate some of the `dplyr` verbs. First, we copy the `flights` and the airlines data frames to Spark.
 ```{r}
 library(nycflights13)
-flights_sdf <- sdf_copy_to(sc, flights, "flights_sdf", overwrite = TRUE)
-airlines_sdf <- sdf_copy_to(sc, airlines, "airlines_sdf", overwrite = TRUE)
+flights_sdf <- copy_to(sc, flights, "flights_sdf", overwrite = TRUE)
+airlines_sdf <- copy_to(sc, airlines, "airlines_sdf", overwrite = TRUE)
 src_tbls(sc)
 ```
 By default these Spark DataFrames are cached into memory, but they are not partitioned across nodes. Note that we have used `sdf` as a suffix for Spark DataFrames to distinguish them from R data frames, which either have no suffix or use `df`.

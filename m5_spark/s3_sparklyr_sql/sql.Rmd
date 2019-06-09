@@ -25,7 +25,7 @@ sc <- spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
 
 ## 5.3 Spark DataFrame SQL
 
-Currently, `sparklyr` is more limited than `sparkR` in its ability to import data directly into Spark from an external data source. However, several sources, e.g., json, can be imported. In addition, it is possible to query Spark DataFrames.
+`sparklyr` can import a wide range of data directly into Spark from an external data source, e.g., json. In addition, it is possible to query Spark DataFrames directly.
 
 We will be using the `nycflights13` data again. The `flights` and `airlines` R data frames are copied into Spark.
 ```{r}
