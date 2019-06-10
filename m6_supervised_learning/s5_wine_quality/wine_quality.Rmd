@@ -1,11 +1,10 @@
 ---
 title: "Wine Quality Regularized Logistic Regression"
 author: "Jim Harner"
-date: "1/5/2019"
+date: "6/7/5/2019"
 output:
-  pdf_document: default
-  html_notebook: default
   html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
@@ -41,7 +40,7 @@ We split `wine_red_sdf` into a training and a test Spark DataFrame as before and
 ```{r}
 wine_red_partition <- wine_red_tbl %>%
   mutate(quality = as.numeric(quality)) %>%
-  ft_binarizer(input.col = "quality", output.col = "quality_bin",
+  ft_binarizer(input_col = "quality", output_col = "quality_bin",
                threshold = 5.0) %>%
   sdf_partition(training = 0.7, test = 0.3, seed = 2)
 wine_red_train_sdf <- wine_red_partition$training

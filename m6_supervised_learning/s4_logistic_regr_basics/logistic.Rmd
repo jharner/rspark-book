@@ -1,11 +1,10 @@
 ---
 title: "Logistic Regression"
 author: "Jim Harner"
-date: "1/5/2019"
+date: "6/7/2019"
 output:
   html_document: default
   html_notebook: default
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -198,7 +197,7 @@ We split `wine_red_sdf` into a training and a test Spark DataFrame. First, we ne
 ```{r}
 wine_red_partition <- wine_red_sdf %>%
   mutate(quality = as.numeric(quality)) %>%
-  ft_binarizer(input.col = "quality", output.col = "quality_bin",
+  ft_binarizer(input_col = "quality", output_col = "quality_bin",
                threshold = 5.0) %>%
   sdf_random_split(training = 0.7, test = 0.3, seed = 2)
 # Create table references
@@ -236,14 +235,14 @@ wine_red_logistic_predict
 The area under the ROC (AUC) for this model is:
 ```{r}
 ml_binary_classification_evaluator(wine_red_logistic_predict, label_col = "quality_bin",
-                                   raw_prediction_col = "probability_1_0",
+                                   raw_prediction_col = "rawPrediction",
                                    metric_name ="areaUnderROC")
 ```
 
 The area under the precision-recall (PR) curve is:
 ```{r}
 ml_binary_classification_evaluator(wine_red_logistic_predict, label_col = "quality_bin",
-                                   raw_prediction_col = "probability_1_0",
+                                   raw_prediction_col = "rawPrediction",
                                    metric_name ="areaUnderPR")
 ```
 
@@ -256,7 +255,7 @@ wine_red_br_full_glmfit <- wine_red_train_tbl %>%
                                    free_sulfur_dioxide + total_sulfur_dioxide +
                                    density + pH + sulphates + alcohol,
                                    family = binomial(link = "logit"))
-glance(wine_red_br_full_glmfit)
+tidy(wine_red_br_full_glmfit)
 ```
 
 To save time let's remove both `pH` and `density` (based on the stepwise results above). Notice that we don't really know which variables to remove without dropping all variables one at a time. Spark takes the approach that you will use regularization for variable selection---not a stepwise approach.
@@ -268,7 +267,7 @@ wine_red_br_full_glmfit <- wine_red_train_tbl %>%
                                      free_sulfur_dioxide + total_sulfur_dioxide +
                                      sulphates + alcohol,
                                    family = binomial(link = "logit"))
-glance(wine_red_br_full_glmfit)
+tidy(wine_red_br_full_glmfit)
 ```
 Next we remove `residual_sugar`.
 ```{r}
@@ -278,8 +277,19 @@ wine_red_br_full_glmfit <- wine_red_train_tbl %>%
                                    free_sulfur_dioxide + total_sulfur_dioxide +
                                    sulphates + alcohol,
                                    family = binomial(link = "logit"))
-glance(wine_red_br_full_glmfit)
+tidy(wine_red_br_full_glmfit)
 ```
+Next we remove `chlorides`.
+```{r}
+wine_red_br_full_glmfit <- wine_red_train_tbl %>%
+  ml_generalized_linear_regression(quality_bin ~ fixed_acidity +
+                                   volatile_acidity + citric_acid +
+                                   free_sulfur_dioxide + total_sulfur_dioxide +
+                                   sulphates + alcohol,
+                                   family = binomial(link = "logit"))
+tidy(wine_red_br_full_glmfit)
+```
+
 At this point all features are important in the sense that the AIC is increased if additional features are removed. Also, note that the residual deviance is not appreciably reduced relative to the null deviance.
 
 ```{r}
