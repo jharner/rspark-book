@@ -96,19 +96,21 @@ The crime rates per 100,000 are extracted and scaled for each state.
 state_crime_std_sdf <- state_crime_sdf %>%
   select(-State, -Abbr, -Division, -Region, -Unemploy, -Police, -InSchool) %>%
   spark_apply(function(e) scale(e))
-state_crime_std_sdf
+class(state_crime_std_sdf)
 ```
 The Spark K-means clustering is performed. The $k$-means centers are computed in the original feature space.
 ```{r}
 state_crime_kmeans_model <- state_crime_std_sdf %>%
   ml_kmeans(~ Murder + Rape + Robbery + Assault + Burglary + Larceny + Auto,
             k = 4L)
+class(state_crime_kmeans_model)
 state_crime_kmeans_model$center
 ```
 
 The predicted group memberships are computed.
 ```{r}
-state_crime_kmeans_predict_sdf <- sdf_predict(state_crime_kmeans_model) %>%
+state_crime_kmeans_predict_sdf <- state_crime_std_sdf %>%
+  sdf_predict(state_crime_kmeans_model) %>%
   select(prediction)
 state_crime_kmeans_predict_df <- state_crime_kmeans_predict_sdf %>%
   collect()
