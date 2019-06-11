@@ -41,8 +41,6 @@ Spark 2.2 and `sparklyr` have many algorithms for classification. We have been e
 
 * Neural Net (MLP): is a feedforward artificial neural network. An MLP has at least three layers of variables (nodes). Except for the input variables, each node uses a nonlinear activation function. MLP utilizes a supervised learning technique called backpropagation for training.
 
-Note: Support Vector Machines (SVM) are not yet supported.
-
 ### 7.6.2 Model Comparison Wine Quality Example
 
 We illustrate logistic regression modeling using the Wine Quality Data Set from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/wine+quality). The two datasets: the red and white variants of the Portuguese "Vinho Verde" wine, but we will restrict analysis to the red wine dataset.
