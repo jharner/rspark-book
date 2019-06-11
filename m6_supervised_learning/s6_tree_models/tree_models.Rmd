@@ -54,7 +54,7 @@ Read the `winequality-red.csv` file directory into a Spark DataFrame using `spar
 wine_red_sdf <- spark_read_csv(sc, "wine_red_sdf",
                                path = "file:///home/rstudio/rspark-tutorial/data/wine/winequality-red.csv",
                                delimiter = ";" )
-# wine_red_tbl <- sdf_register(wine_red_sdf, name = "wine_red_tbl")
+wine_red_tbl <- sdf_register(wine_red_sdf, name = "wine_red_tbl")
 ```
 We register the Spark DataFrame so that the Scala Spark DataFrame API is used directly rather than the `dplyr` interface. Registering forces the SQL to completion without using `collect`, which is necessary for the pipeline in the next chunk.
 
@@ -109,8 +109,8 @@ ml_models <- list(
 
 # Create a function for scoring
 score_test_data <- function(model, data = wine_red_test_tbl){
-  pred <- sdf_predict(model, data)
-  select(pred, quality_bin, prediction)
+  ml_predict(model, data) %>%
+  select(quality_bin, prediction)
 }
 
 # Score all the models
@@ -151,7 +151,7 @@ ggplot(ml_gains, aes(x = bin, y = prop, colour = model)) +
   ggtitle("Lift Chart for Predicting Survival - Test Data Set") + 
   xlab("") + ylab("")
 ```
-#### AUC and accurary
+#### AUC and accuracy
 
 Spark does not provide output for computing the ROC curve, but the Area under the ROC curve (AUC) is provided. The higher the AUC the better.
 ```{r}
@@ -184,29 +184,29 @@ The tree-based methods perform the best followed by logistic regression, at leas
 #### Feature importance
 
 We now compare the features that were identified by each model as being important predictors for red wine quality. The logistic regression and tree models implement feature importance metrics, but only the tree models will be used here.
-```
+```{r}
 # Initialize results
 feature_importance <- data.frame()
 
 # Calculate feature importance
 for(i in c("Decision Tree", "Random Forest", "Gradient Boosted Trees")){
-  feature_importance <- ml_tree_feature_importance(sc, ml_models[[i]]) %>%
+  feature_importance <- ml_tree_feature_importance(ml_models[[i]]) %>%
     mutate(Model = i) %>%
-    mutate(importance = as.numeric(levels(importance))[importance]) %>%
+#   mutate(importance = as.numeric(levels(importance))[importance])
     mutate(feature = as.character(feature)) %>%
     rbind(feature_importance, .)
 }
 
-# Plot results
+# Plot feature importance
 feature_importance %>%
   ggplot(aes(reorder(feature, importance), importance, fill = Model)) + 
-  facet_wrap(~Model) +
+  facet_wrap(~ Model) +
   geom_bar(stat = "identity") + 
   coord_flip() +
   xlab("") +
   ggtitle("Feature Importance")
 ```
-`alcohol` is the most important feature. Other features have varying degrees of predictive importance. The features in Gradient Boosted Trees are more even in terms of importance.
+`alcohol` is the most important feature and `sulphates` is the second most important feature for the decision tree and random forest models, whereas the order is reversed for the gradient boosted model.  Other features have varying degrees of predictive importance. The features in Gradient Boosted Trees are more even in terms of importance.
 
 
 ```{r}
