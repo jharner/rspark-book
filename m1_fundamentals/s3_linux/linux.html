@@ -427,6 +427,7 @@ ls</code></pre>
 ## docker-k8s
 ## kitematic
 ## rspark-tutorial
+## RXLisp
 ## sparklyr-tests
 ## sparkr-tests</code></pre>
 <p><code>pwd</code> prints the working directory, which is the directory containing the file we opened, i.e., <code>linux.Rmd</code>. We then change directory (<code>cd</code>) to the home (login) directory using the <code>HOME</code> environmental variable, also denoted by <code>~</code>. You should now be in the directory <code>/home/rstudio</code>, where <code>rstudio</code> is your login name. The directory contents is given by <code>ls</code>, which lists the files and sub-directories in your home directory.</p>
@@ -438,24 +439,25 @@ ls -al $HOME</code></pre>
 <pre><code>## total 1368
 ## drwxr-xr-x 2 rstudio rstudio   4096 Jun  8 15:12 .
 ## drwxr-xr-x 6 rstudio rstudio   4096 May 20 16:36 ..
-## -rw-r--r-- 1 rstudio rstudio 651971 Jun  8 15:08 linux.html
+## -rw-r--r-- 1 rstudio rstudio 651971 Jun  8 15:12 linux.html
 ## -rw-r--r-- 1 rstudio rstudio 713193 Jun  8 15:12 linux.nb.html
 ## -rw-r--r-- 1 rstudio rstudio  17056 Jun  8 15:12 linux.Rmd
 ## 
 ## list the files in your home directory from your working directory
-## total 56
-## drwxr-xr-x 10 rstudio rstudio 4096 Jun  8 14:30 .
+## total 60
+## drwxr-xr-x 11 rstudio rstudio 4096 Jun  8 19:00 .
 ## drwxr-xr-x  1 root    root    4096 May  9 21:25 ..
-## -rw-------  1 rstudio rstudio   90 May 27 04:26 .bash_history
+## -rw-------  1 rstudio rstudio  116 Jun  8 15:24 .bash_history
 ## drwxr-xr-x  3 rstudio rstudio 4096 May 20 17:54 .config
 ## drwxr-xr-x  5 rstudio rstudio 4096 Jun  7 03:08 docker-k8s
 ## -rw-r--r--  1 rstudio rstudio   53 May 27 04:25 .gitconfig
-## drwx------  2 rstudio rstudio 4096 Jun  8 14:41 .git-credential-cache
+## drwx------  2 rstudio rstudio 4096 Jun 11 03:52 .git-credential-cache
 ## -rw-r--r--  1 rstudio rstudio   58 Oct 28  2018 .gitignore
 ## drwxr-xr-x  2 root    root    4096 May  9 22:44 kitematic
 ## -rw-------  1 rstudio rstudio   20 Jun  8 14:30 .psql_history
-## drwxr-xr-x 12 rstudio rstudio 4096 Jun  8 13:52 rspark-tutorial
-## drwxr-xr-x 15 rstudio rstudio 4096 Jun  7 18:39 .rstudio
+## drwxr-xr-x 12 rstudio rstudio 4096 Jun 10 02:27 rspark-tutorial
+## drwxr-xr-x 15 rstudio rstudio 4096 Jun  9 22:22 .rstudio
+## drwxr-xr-x  4 rstudio rstudio 4096 Jun  9 18:39 RXLisp
 ## drwxr-xr-x  2 rstudio rstudio 4096 May 20 15:56 sparklyr-tests
 ## drwxr-xr-x  2 rstudio rstudio 4096 May 20 15:56 sparkr-tests</code></pre>
 <p>The option <code>-a</code> causes <code>ls</code> to list all files and directories, including those that are normally hidden, whereas <code>-l</code> invokes the long format (<code>l</code>), which gives the permissions and other information about the owner, group, size, modification date, time, etc. The file and directory names are given in the last column of the output.</p>
@@ -474,22 +476,22 @@ ls -al $HOME</code></pre>
 <pre class="bash"><code>mkdir temp
 ls -al</code></pre>
 <pre><code>## total 1372
-## drwxr-xr-x 3 rstudio rstudio   4096 Jun  8 15:12 .
+## drwxr-xr-x 3 rstudio rstudio   4096 Jun 11 04:26 .
 ## drwxr-xr-x 6 rstudio rstudio   4096 May 20 16:36 ..
-## -rw-r--r-- 1 rstudio rstudio 651971 Jun  8 15:08 linux.html
+## -rw-r--r-- 1 rstudio rstudio 651971 Jun  8 15:12 linux.html
 ## -rw-r--r-- 1 rstudio rstudio 713193 Jun  8 15:12 linux.nb.html
 ## -rw-r--r-- 1 rstudio rstudio  17056 Jun  8 15:12 linux.Rmd
-## drwxr-xr-x 2 rstudio rstudio   4096 Jun  8 15:12 temp</code></pre>
+## drwxr-xr-x 2 rstudio rstudio   4096 Jun 11 04:26 temp</code></pre>
 <p>We use <code>chmod</code> (change mode) to change the permissions of <code>temp</code> from the default <code>755</code> to <code>700</code>.</p>
 <pre class="bash"><code>chmod 700 temp
 ls -al</code></pre>
 <pre><code>## total 1372
-## drwxr-xr-x 3 rstudio rstudio   4096 Jun  8 15:12 .
+## drwxr-xr-x 3 rstudio rstudio   4096 Jun 11 04:26 .
 ## drwxr-xr-x 6 rstudio rstudio   4096 May 20 16:36 ..
-## -rw-r--r-- 1 rstudio rstudio 651971 Jun  8 15:08 linux.html
+## -rw-r--r-- 1 rstudio rstudio 651971 Jun  8 15:12 linux.html
 ## -rw-r--r-- 1 rstudio rstudio 713193 Jun  8 15:12 linux.nb.html
 ## -rw-r--r-- 1 rstudio rstudio  17056 Jun  8 15:12 linux.Rmd
-## drwx------ 2 rstudio rstudio   4096 Jun  8 15:12 temp</code></pre>
+## drwx------ 2 rstudio rstudio   4096 Jun 11 04:26 temp</code></pre>
 <p>We then remove the directory, which must be empty, by <code>rmdir</code>.</p>
 <pre class="bash"><code>rmdir temp</code></pre>
 <p>To remove a file, use <code>rm</code> followed by the file name. To remove a directory containing files and other directories, use <code>rm -R</code> followed by the directory name. The <code>-R</code> option recursively removes files and directories, and thus should be used with extreme caution!</p>

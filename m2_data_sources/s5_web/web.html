@@ -489,10 +489,10 @@ curl http://httpbin.org/user-agent</code></pre>
 <p>This gives you a response object. Printing a response object gives you useful information: the actual <code>url</code> used, the <code>http</code> status, the file (content) type, the size, and if it’s a text file, the first few lines of output.</p>
 <pre class="r"><code>r</code></pre>
 <pre><code>## Response [http://httpbin.org/get]
-##   Date: 2019-06-08 14:37
+##   Date: 2019-06-11 04:25
 ##   Status: 200
 ##   Content-Type: application/json
-##   Size: 311 B
+##   Size: 313 B
 ## {
 ##   &quot;args&quot;: {}, 
 ##   &quot;headers&quot;: {
@@ -501,7 +501,7 @@ curl http://httpbin.org/user-agent</code></pre>
 ##     &quot;Host&quot;: &quot;httpbin.org&quot;, 
 ##     &quot;User-Agent&quot;: &quot;libcurl/7.52.1 r-curl/3.3 httr/1.4.0&quot;
 ##   }, 
-##   &quot;origin&quot;: &quot;107.77.76.59, 107.77.76.59&quot;, 
+##   &quot;origin&quot;: &quot;107.77.106.87, 107.77.106.87&quot;, 
 ##   &quot;url&quot;: &quot;https://httpbin.org/get&quot;
 ## ...</code></pre>
 <p>The R output is similar to <code>curl</code> output, but more complete. You can pull out important parts of the response with helper methods (see below).</p>
@@ -529,7 +529,7 @@ status_code(r)</code></pre>
 <p>There are three ways to access the body of the request (<code>text</code>, <code>raw</code>, and <code>parsed</code>), all using <code>content()</code>. <code>content(r, as = &quot;text&quot;)</code> returns the body as a character vector:</p>
 <pre class="r"><code>content(r, as = &quot;text&quot;)</code></pre>
 <pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre><code>## [1] &quot;{\n  \&quot;args\&quot;: {}, \n  \&quot;headers\&quot;: {\n    \&quot;Accept\&quot;: \&quot;application/json, text/xml, application/xml, */*\&quot;, \n    \&quot;Accept-Encoding\&quot;: \&quot;gzip, deflate\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;, \n    \&quot;User-Agent\&quot;: \&quot;libcurl/7.52.1 r-curl/3.3 httr/1.4.0\&quot;\n  }, \n  \&quot;origin\&quot;: \&quot;107.77.76.59, 107.77.76.59\&quot;, \n  \&quot;url\&quot;: \&quot;https://httpbin.org/get\&quot;\n}\n&quot;</code></pre>
+<pre><code>## [1] &quot;{\n  \&quot;args\&quot;: {}, \n  \&quot;headers\&quot;: {\n    \&quot;Accept\&quot;: \&quot;application/json, text/xml, application/xml, */*\&quot;, \n    \&quot;Accept-Encoding\&quot;: \&quot;gzip, deflate\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;, \n    \&quot;User-Agent\&quot;: \&quot;libcurl/7.52.1 r-curl/3.3 httr/1.4.0\&quot;\n  }, \n  \&quot;origin\&quot;: \&quot;107.77.106.87, 107.77.106.87\&quot;, \n  \&quot;url\&quot;: \&quot;https://httpbin.org/get\&quot;\n}\n&quot;</code></pre>
 <p><code>httr</code> will automatically decode content from the server using the encoding supplied in the content-type HTTP header. The output type that is most readable is <code>parsed</code>.</p>
 <pre class="r"><code>str(content(r, as = &quot;parsed&quot;))</code></pre>
 <pre><code>## List of 4
@@ -539,7 +539,7 @@ status_code(r)</code></pre>
 ##   ..$ Accept-Encoding: chr &quot;gzip, deflate&quot;
 ##   ..$ Host           : chr &quot;httpbin.org&quot;
 ##   ..$ User-Agent     : chr &quot;libcurl/7.52.1 r-curl/3.3 httr/1.4.0&quot;
-##  $ origin : chr &quot;107.77.76.59, 107.77.76.59&quot;
+##  $ origin : chr &quot;107.77.106.87, 107.77.106.87&quot;
 ##  $ url    : chr &quot;https://httpbin.org/get&quot;</code></pre>
 <p>A common way of sending simple key-value pairs to the server is the query string: e.g. <code>http://httpbin.org/get?key=val</code>. <code>httr</code> allows you to provide these arguments as a named list with the query argument. For example, if you wanted to pass <code>key1=value1</code> and <code>key2=value2</code> to <code>http://httpbin.org/get</code> you could do:</p>
 <pre class="r"><code>r &lt;- GET(&quot;http://httpbin.org/get&quot;, 
@@ -564,10 +564,10 @@ body &lt;- list(a = 1, b = 2, c = 3)
 r &lt;- POST(url, body = body, encode = &quot;form&quot;)
 r</code></pre>
 <pre><code>## Response [http://httpbin.org/post]
-##   Date: 2019-06-08 14:37
+##   Date: 2019-06-11 04:25
 ##   Status: 200
 ##   Content-Type: application/json
-##   Size: 508 B
+##   Size: 510 B
 ## {
 ##   &quot;args&quot;: {}, 
 ##   &quot;data&quot;: &quot;&quot;, 
@@ -584,10 +584,10 @@ r</code></pre>
 <pre class="r"><code>r &lt;- POST(url, body = body, encode = &quot;json&quot;)
 r</code></pre>
 <pre><code>## Response [http://httpbin.org/post]
-##   Date: 2019-06-08 14:37
+##   Date: 2019-06-11 04:25
 ##   Status: 200
 ##   Content-Type: application/json
-##   Size: 508 B
+##   Size: 510 B
 ## {
 ##   &quot;args&quot;: {}, 
 ##   &quot;data&quot;: &quot;{\&quot;a\&quot;:1,\&quot;b\&quot;:2,\&quot;c\&quot;:3}&quot;, 
