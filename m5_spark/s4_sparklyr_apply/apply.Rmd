@@ -43,7 +43,7 @@ A common task is to apply your R function to specific groups in your data, e.g.,
 
 The following example initially counts the number of rows in the `iris` data frame for each species.
 ```{r}
-iris_tbl <- sdf_copy_to(sc, iris)
+iris_tbl <- copy_to(sc, iris)
 iris_tbl %>%
   spark_apply(nrow, group_by = "Species")
 ```

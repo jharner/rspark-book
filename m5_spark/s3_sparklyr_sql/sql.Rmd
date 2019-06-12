@@ -57,7 +57,7 @@ It is also possible to use Spark DataFrames as tables in a "database" using the 
 The `spark_connect` object implements a DBI interface for Spark, which allows you to use `dbGetQuery` to execute SQL commands. The returned result is an R data frame.
 
 We now show that the above workflow can be done in R except that R data frames are used.
-```
+```{r}
 library(DBI)
 flights_df <- dbGetQuery(sc, "SELECT * FROM flights")
 airlines_df <- dbGetQuery(sc, "SELECT * FROM airlines")

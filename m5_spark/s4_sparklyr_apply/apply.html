@@ -412,7 +412,7 @@ sc &lt;- spark_connect(master, spark_home = Sys.getenv(&quot;SPARK_HOME&quot;),
 <h3>5.4.2 Group By</h3>
 <p>A common task is to apply your R function to specific groups in your data, e.g., computing a regression model for each group. This is done by specifying a <code>group_by</code> argument.</p>
 <p>The following example initially counts the number of rows in the <code>iris</code> data frame for each species.</p>
-<pre class="r"><code>iris_tbl &lt;- sdf_copy_to(sc, iris)
+<pre class="r"><code>iris_tbl &lt;- copy_to(sc, iris)
 iris_tbl %&gt;%
   spark_apply(nrow, group_by = &quot;Species&quot;)</code></pre>
 <pre><code>## # Source: spark&lt;?&gt; [?? x 2]
