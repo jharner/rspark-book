@@ -164,7 +164,7 @@ Cross-validation of these performance metrics was discussed in Section 1.6.
 
 ### 6.1.3 Concrete Slump Test Data
 
-The `slump.csv` file was loaded into Hadoop. Assuming you have not removed it with the `hdfs.rm` function, you can load the data into Spark from Hadoop using the `sparklyr`'s `spark_read_csv` function, which creates a Spark DataFrame.
+The `slump.csv` file was loaded into Hadoop. Assuming you have not removed it with the `hdfs.rm` function, you can load the data into Spark from Hadoop using `sparklyr`'s `spark_read_csv` function, which creates a Spark DataFrame.
 
 Alternately, you can load `slump.csv` into Spark directly with `spark_read_csv` from the local filesystem.
 ```{r}
@@ -179,7 +179,7 @@ slump_sdf
 First we need to split `slump_sdf` into a training and a test Spark DataFrame.
 ```{r}
 slump_partition <- tbl(sc, "slump_sdf") %>%
-  sdf_partition(training = 0.7, test = 0.3, seed = 2)
+  sdf_random_split(training = 0.7, test = 0.3, seed = 2)
 ```
 
 Initially, we fit a model with just `fly_ash`, which is thought to be the best single predictor of `compressive_strength`. This is difficult to check since their is no automatic selection method in Spark other than regularization.

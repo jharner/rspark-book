@@ -531,8 +531,8 @@ echo &quot;&quot;  # or $?</code></pre>
 <pre class="bash"><code>hdfs dfs -mkdir temp
 hdfs dfs -ls</code></pre>
 <pre><code>## Found 2 items
-## drwxr-xr-x   - rstudio rstudio          0 2019-06-11 04:14 airlines_parquet
-## drwxr-xr-x   - rstudio rstudio          0 2019-06-12 05:50 temp</code></pre>
+## drwxr-xr-x   - rstudio rstudio          0 2019-06-12 05:53 airlines_parquet
+## drwxr-xr-x   - rstudio rstudio          0 2019-06-12 15:21 temp</code></pre>
 <p>Import a file into hdfs and list.</p>
 <pre class="bash"><code># set the local working directory to s2_hdfs
 cd /home/rstudio/rspark-notes/c4_hadoop/s2_hdfs
@@ -541,7 +541,7 @@ hdfs dfs -ls temp/
 hdfs dfs -du</code></pre>
 <pre><code>## bash: line 1: cd: /home/rstudio/rspark-notes/c4_hadoop/s2_hdfs: No such file or directory
 ## Found 1 items
-## -rw-r--r--   3 rstudio rstudio      34809 2019-06-12 05:51 temp/cdat.csv
+## -rw-r--r--   3 rstudio rstudio      34809 2019-06-12 15:21 temp/cdat.csv
 ## 965    airlines_parquet
 ## 34809  temp</code></pre>
 <p>Remove the file and directory</p>
@@ -559,8 +559,8 @@ hdfs.init()</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>hdfs.ls(&quot;/user/rstudio&quot;)</code></pre>
 <pre><code>##   permission   owner   group size          modtime
-## 1 drwxr-xr-x rstudio rstudio    0 2019-06-11 04:14
-## 2 drwxr-xr-x rstudio rstudio    0 2019-06-12 05:51
+## 1 drwxr-xr-x rstudio rstudio    0 2019-06-12 05:53
+## 2 drwxr-xr-x rstudio rstudio    0 2019-06-12 15:21
 ##                             file
 ## 1 /user/rstudio/airlines_parquet
 ## 2             /user/rstudio/temp</code></pre>
@@ -569,7 +569,7 @@ hdfs.init()</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>hdfs.ls(&quot;temp&quot;)</code></pre>
 <pre><code>##   permission   owner   group  size          modtime
-## 1 -rw-r--r-- rstudio rstudio 34809 2019-06-12 05:51
+## 1 -rw-r--r-- rstudio rstudio 34809 2019-06-12 15:21
 ##                          file
 ## 1 /user/rstudio/temp/cdat.csv</code></pre>
 <p>Note: this does not work in interactive mode. Notice <code>hdfs.ls</code> has relative addressing.</p>

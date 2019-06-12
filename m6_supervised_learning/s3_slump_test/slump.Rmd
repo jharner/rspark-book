@@ -43,7 +43,7 @@ slump_lr_full_model <- slump_partition$training %>%
                        + sp + coarse_aggr + fine_aggr)
 summary(slump_lr_full_model)
 ```
-Notice that the model summary does not provide much useful information. We can p-values by by getting a `tidy` summary.
+Notice that the model summary does not provide much useful information. We can get p-values from a `tidy` summary.
 ```{r}
 tidy(slump_lr_full_model)
 ```
@@ -82,30 +82,12 @@ slump_lr_model <- function(l) {
 }
 ```
 
-```
-slump_lr_model <- function(l) {
-  slump_train_sdf %>%
-    ml_linear_regression(compressive_strength ~ cement + slag + fly_ash +
-                         water + sp + coarse_aggr + fine_aggr,
-                         elastic_net_param = 1, reg_param = l) %>%
-    ml_predict(slump_train_sdf) %>%
-    ml_regression_evaluator(label_col = "compressive_strength",
-                            metric_name = "rmse")
-}
-sdf_copy_to(sc, data.frame(lambda = c(0.005, 0.01, 0.02, 0.04, 0.06, 0.08, 0.1)),
-                           slump_lr_metrics)
-slump_lr_metrics
-
-spark_apply(slump_lr_model)
-```
-
-
 We now calculate the `rmse` and `mae` for each of the models.
 ```{r}
 reg_parm <- c(0.005, 0.01, 0.02, 0.04, 0.06, 0.08, 0.1)
 for(l in reg_parm) {
-  slump_lr_fit <- slump_lr_model(l) 
-  slump_lr_predict <- ml_predict(slump_lr_fit, slump_train_sdf)
+  slump_lr_predict <- slump_lr_model(l) %>%
+    ml_predict(slump_train_sdf)
   slump_lr_metrics <- 
     data.frame(lambda = l,
                rmse = ml_regression_evaluator(slump_lr_predict,

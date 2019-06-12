@@ -99,7 +99,7 @@ slump_sdf <- spark_read_csv(sc, "slump_sdf",
 head(slump_sdf)
 # partition into a training and test Spark DataFrames
 slump_partition <- tbl(sc, "slump_sdf") %>%
-  sdf_partition(training = 0.7, test = 0.3, seed = 2)
+  sdf_random_split(training = 0.7, test = 0.3, seed = 2)
 slump_train_sdf <- slump_partition$training
 slump_test_sdf <- slump_partition$test
 ```
@@ -118,7 +118,7 @@ slump_glmfit <- glmnet(x = slump.x, y = slump.y, alpha=0, lambda=0,
                        standardize = TRUE, intercept = TRUE)
 coef(slump_glmfit)
 ```
-The regression coefficient estimates from `glmnet` are similar to, but equal to the coefficient estimates from `sparklyr`'s `ml_linear_regression`. This is due to differences in the package algorithms underlying linear regression.
+The regression coefficient estimates from `glmnet` are similar to, but slightly unequal to the coefficient estimates from `sparklyr`'s `ml_linear_regression`. This is due to differences in the package algorithms underlying linear regression.
 
 Note that the predictors (features) are standardized. This is essential for classifiers, but good practice in regression. Convergence is faster for most algorithms.
 ```{r}
