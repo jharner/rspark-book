@@ -42,7 +42,7 @@ wine_red_partition <- wine_red_tbl %>%
   mutate(quality = as.numeric(quality)) %>%
   ft_binarizer(input_col = "quality", output_col = "quality_bin",
                threshold = 5.0) %>%
-  sdf_partition(training = 0.7, test = 0.3, seed = 2)
+  sdf_random_split(training = 0.7, test = 0.3, seed = 2)
 wine_red_train_sdf <- wine_red_partition$training
 wine_red_test_sdf <- wine_red_partition$test
 ```
