@@ -86,6 +86,7 @@ The average speed is 394.27 miles/hour.
 
 * does not pull data into R until you ask for it;  
 * delays doing work until required.  
+
 We pull data into R using the `collect` function. 
 
 The average delay computed above keeps the computation in Spark whether or not we explicitly assign the result to a Spark DataFrame. Consider:
@@ -116,7 +117,7 @@ carrier_dep_delay_sdf <- flights_sdf %>%
   arrange(carrier)
 carrier_dep_delay_sdf
 ```
-The last statement is not advised since it causes Spark shuffling, but is given here to illustrate the verb. At this point we have only subsetted the Spark DataFrame by filtering rows and selecting columns.
+The `arrange` statement in the above workflow is not advised since it causes Spark shuffling, but is given here to illustrate the verb. At this point we have only subsetted the Spark DataFrame by filtering rows and selecting columns.
 
 Next we group-by carrier and summarise the results.
 ```{r}

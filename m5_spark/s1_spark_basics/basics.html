@@ -405,7 +405,7 @@ sc &lt;- spark_connect(master = master)</code></pre>
 <p><a href="https://spark.apache.org/docs/latest/sparkr.html">SparkR</a> is part of the officially supported Spark distribution. However, we will focus on the <a href="https://spark.rstudio.com">sparklyr</a> package.</p>
 <div id="sparklyr-basics" class="section level2">
 <h2>5.1 Sparklyr Basics</h2>
-<p>The <code>sparklyr</code> package is being developed by RStudio. It is ongoing rapid expansion. See <a href="https://spark.rstudio.com">RStudio’s sparklyr</a> for information.</p>
+<p>The <code>sparklyr</code> package is being developed by RStudio. It is undergoing rapid expansion. See <a href="https://spark.rstudio.com">RStudio’s sparklyr</a> for information.</p>
 <p>The <code>sparklyr</code> R package provides a <code>dplyr</code> backend to Spark. Using <code>sparklyr</code>, you can:</p>
 <ul>
 <li>filter and aggregate Spark DataFrames and bring them into R for analysis and visualization;<br />
@@ -416,11 +416,11 @@ sc &lt;- spark_connect(master = master)</code></pre>
 </li>
 <li>create Spark extensions.</li>
 </ul>
-<p>From <code>sparklyr</code>, connections can be made to local instances or to remote Spark clusters. In our case the connection is to a local connection bundled in the <code>rstudio</code> container.</p>
-<p>The <code>sparklyr</code> library is loaded in the setup and a Spark connection is established. The Spark connection <code>sc</code> provides a <code>dplyr</code> interface to the Spark.</p>
+<p>Using <code>sparklyr</code>, connections can be made to local instances or to remote Spark clusters. In our case the connection is to a local connection bundled in the <code>rstudio</code> container.</p>
+<p>The <code>sparklyr</code> library is loaded in the setup above and a Spark connection is established. The Spark connection <code>sc</code> provides a <code>dplyr</code> interface to Spark.</p>
 <div id="dplyr" class="section level3">
 <h3>5.1.1 dplyr</h3>
-<p>The <code>dpyr</code> verbs, e.g., <code>mutate</code>, <code>filter</code>, can be used on Spark DataFrames. A more complete discussion is given in Section 6.2.</p>
+<p>The <code>dpyr</code> verbs, e.g., <code>mutate</code>, <code>filter</code>, can be used on Spark DataFrames. A more complete discussion is given in Section 5.2.</p>
 <p>We will use the <code>flights</code> data in the <code>nycflights13</code> package as an example. If its size becomes an issue, execute each chunk in sequence in notebook mode.</p>
 <pre class="r"><code>library(nycflights13)
 str(flights)</code></pre>
@@ -468,7 +468,7 @@ flights_tbl</code></pre>
 <pre class="r"><code>src_tbls(sc)</code></pre>
 <pre><code>## [1] &quot;flights&quot;</code></pre>
 <p>By default, the <code>flights</code> Spark table is cached in memory (<code>memory = TRUE</code>), which speeds up computations, but by default the table is not partitioned (<code>repartition = 0L</code>) since we are not running an actual cluster. See the <code>copy_to</code> function in the <code>sparklyr</code> package for more details.</p>
-<p>As always the Spark connection should be disconnected at the end of a task.</p>
+<p>The Spark connection should be disconnected at the end of a task.</p>
 <pre class="r"><code>spark_disconnect(sc)</code></pre>
 <pre><code>## NULL</code></pre>
 </div>

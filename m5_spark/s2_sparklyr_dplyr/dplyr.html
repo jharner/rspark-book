@@ -468,9 +468,9 @@ src_tbls(sc)</code></pre>
 <ul>
 <li>does not pull data into R until you ask for it;<br />
 </li>
-<li>delays doing work until required.<br />
-We pull data into R using the <code>collect</code> function.</li>
+<li>delays doing work until required.</li>
 </ul>
+<p>We pull data into R using the <code>collect</code> function.</p>
 <p>The average delay computed above keeps the computation in Spark whether or not we explicitly assign the result to a Spark DataFrame. Consider:</p>
 <pre class="r"><code>mean_dep_delay_sdf &lt;- summarise(flights_sdf, mean(dep_delay))
 mean_dep_delay_sdf # this statement causes Spark to evaluate the above expression</code></pre>
@@ -516,7 +516,7 @@ carrier_dep_delay_sdf</code></pre>
 ##  9 AA             -2
 ## 10 AA             -7
 ## # … with more rows</code></pre>
-<p>The last statement is not advised since it causes Spark shuffling, but is given here to illustrate the verb. At this point we have only subsetted the Spark DataFrame by filtering rows and selecting columns.</p>
+<p>The <code>arrange</code> statement in the above workflow is not advised since it causes Spark shuffling, but is given here to illustrate the verb. At this point we have only subsetted the Spark DataFrame by filtering rows and selecting columns.</p>
 <p>Next we group-by carrier and summarise the results.</p>
 <pre class="r"><code>carrier_dep_delay_sdf %&gt;%
   group_by(carrier) %&gt;%

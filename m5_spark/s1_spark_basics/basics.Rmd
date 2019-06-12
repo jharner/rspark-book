@@ -41,7 +41,7 @@ Spark supports a rich set of higher-level tools including:
 
 ## 5.1 Sparklyr Basics
 
-The `sparklyr` package is being developed by RStudio. It is ongoing rapid expansion. See [RStudio's sparklyr](https://spark.rstudio.com) for information.
+The `sparklyr` package is being developed by RStudio. It is undergoing rapid expansion. See [RStudio's sparklyr](https://spark.rstudio.com) for information.
 
 The `sparklyr` R package provides a `dplyr` backend to Spark. Using `sparklyr`, you can: 
 
@@ -50,13 +50,13 @@ The `sparklyr` R package provides a `dplyr` backend to Spark. Using `sparklyr`, 
 * write R code to access Spark's machine learning library, [MLlib](http://spark.apache.org/docs/latest/mllib-guide.html);  
 * create Spark extensions.  
 
-From `sparklyr`, connections can be made to local instances or to remote Spark clusters. In our case the connection is to a local connection bundled in the `rstudio` container. 
+Using `sparklyr`, connections can be made to local instances or to remote Spark clusters. In our case the connection is to a local connection bundled in the `rstudio` container. 
 
-The `sparklyr` library is loaded in the setup and a Spark connection is established. The Spark connection `sc` provides a `dplyr` interface to the Spark.
+The `sparklyr` library is loaded in the setup above and a Spark connection is established. The Spark connection `sc` provides a `dplyr` interface to Spark.
 
 ### 5.1.1 dplyr
 
-The `dpyr` verbs, e.g., `mutate`, `filter`, can be used on Spark DataFrames. A more complete discussion is given in Section 6.2.
+The `dpyr` verbs, e.g., `mutate`, `filter`, can be used on Spark DataFrames. A more complete discussion is given in Section 5.2.
 
 We will use the `flights` data in the `nycflights13` package as an example. If its size becomes an issue, execute each chunk in sequence in notebook mode.
 ```{r}
@@ -73,7 +73,7 @@ src_tbls(sc)
 ```
 By default, the `flights` Spark table is cached in memory (`memory = TRUE`), which speeds up computations, but by default the table is not partitioned (`repartition = 0L`) since we are not running an actual cluster. See the `copy_to` function in the `sparklyr` package for more details.
 
-As always the Spark connection should be disconnected at the end of a task.
+The Spark connection should be disconnected at the end of a task.
 ```{r}
 spark_disconnect(sc)
 ```
