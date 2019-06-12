@@ -464,16 +464,16 @@ flights_df %&gt;%
 <pre><code>## # Source: spark&lt;?&gt; [?? x 19]
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     1     1      542            540         2      923
-##  2  2013     1     1      723            725        -2     1013
-##  3  2013     1     1      929            929         0     1028
-##  4  2013     1     1     1047           1050        -3     1401
-##  5  2013     1     1     1120            944        96     1331
-##  6  2013     1     1     1147           1155        -8     1335
-##  7  2013     1     1     1315           1317        -2     1413
-##  8  2013     1     1     1353           1357        -4     1549
-##  9  2013     1     1     1725           1720         5     2045
-## 10  2013     1     1     1730           1730         0     2013
+##  1  2013     1     1      903            820        43     1045
+##  2  2013     1     1     1037           1030         7     1221
+##  3  2013     1     1     1042           1040         2     1325
+##  4  2013     1     1     1604           1510        54     1817
+##  5  2013     1     1     1848           1745        63     2238
+##  6  2013     1     1     2013           2015        -2     2120
+##  7  2013     1     2       42           2359        43      518
+##  8  2013     1     2      707            715        -8     1022
+##  9  2013     1     2      715            715         0     1047
+## 10  2013     1     2      846            844         2     1157
 ## # … with more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
 ## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
@@ -496,7 +496,7 @@ spark_write_parquet(airlines_sdf,
                   mode = &quot;overwrite&quot;)
 hdfs.ls(&quot;/user/rstudio&quot;)</code></pre>
 <pre><code>##   permission   owner   group size          modtime
-## 1 drwxr-xr-x rstudio rstudio    0 2019-06-09 19:04
+## 1 drwxr-xr-x rstudio rstudio    0 2019-06-12 05:53
 ##                             file
 ## 1 /user/rstudio/airlines_parquet</code></pre>
 <p>This writes the Spark DataFrame to the given HDFS path and names the Parquet file <code>airlines_parquet</code>.</p>
