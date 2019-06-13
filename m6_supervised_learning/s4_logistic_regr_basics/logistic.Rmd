@@ -58,11 +58,11 @@ $$
 
 The log of the *odds ratio* is:
 $$
-\mbox{logit}(P(Y_i = 1\, |\, \mathbf{x}_i)) = log(\frac{P(y_i = 1\, |\, \mathbf{x}_i)}{1 - P(y_i = 1\, |\, \mathbf{x}_i)}) = \beta_0 + \beta^t \mathbf{x}_i.
+\mbox{logit}(P(Y_i = 1\, |\, \mathbf{x}_i)) = log(\frac{P(y_i = 1\, |\, \mathbf{x}_i)}{1 - P(y_i = 1\, |\, \mathbf{x}_i)}) = \beta_0 + \beta^t \mathbf{x}_i,
 $$
-the logit of the probability that outcome $i$ is $G_1$ is being modeled as a linear function of the features This model is called the *logistic regression model*.
+the logit of the probability that outcome $i$ is $G_1$ is being modeled as a linear function of the features. This model is called the *logistic regression model*.
 
-The parameter $\beta_0$ is the *base rate*, or the unconditional probability of “1” knowing nothing more about the feature vector $\mathbf{x}$.
+The parameter $\beta_0$ is the *base rate*, or the unconditional probability of “1” knowing nothing about the feature vector $\mathbf{x}$.
 
 If you had no information about your specific situation except the base rate, the average prediction would be given by just $\beta_0$:
 $$
@@ -223,7 +223,7 @@ We now fit a logistic model using the `ml_logistic_regression`.
 wine_red_logistic_fit <- wine_red_train_tbl %>%
   ml_logistic_regression(quality_bin ~ fixed_acidity + volatile_acidity + citric_acid + residual_sugar + chlorides + free_sulfur_dioxide + total_sulfur_dioxide + density + pH + sulphates + alcohol)
 ```
-Unfortunately, the AIC for `ml_logistic_regression` is not available. However, the AIC is available using the R function `ml_generalized_linear_regression` with the `family = binomial` argument. However, this latter function does not support regulation, whereas `ml_logistic_regression` does. Therefore, a thorough analysis involves running both modeling functions.
+Unfortunately, the AIC for `ml_logistic_regression` is not available. However, the AIC is available using the R function `ml_generalized_linear_regression` with the `family = binomial` argument. However, this latter function does not support regularization, whereas `ml_logistic_regression` does. Therefore, a thorough analysis involves running both modeling functions.
 
 ```{r}
 wine_red_logistic_predict <- wine_red_logistic_fit %>%

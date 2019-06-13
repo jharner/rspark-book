@@ -20,11 +20,11 @@ library(sparklyr)
 sc <- spark_connect(master = "local")
 ```
 
-## 7.5 Wine Quality Logistic Regression
+## 6.5 Wine Quality Logistic Regression
 
 This section explores feature selection based on regularization.
 
-### 7.5.1 Regularized Logistic Regression with Spark
+### 6.5.1 Regularized Logistic Regression with Spark
 
 We now revisit the Wine Quality Data Set analyzed in Section 6.4.2. Our goal is to continue with advanced analyses.
 
@@ -142,7 +142,7 @@ wine_red_train_df <- collect(wine_red_partition$training)
 wine_red_test_df <- collect(wine_red_partition$test)
 ```
 
-### 7.5.2 Regularized Logistic Regression with glmnet
+### 6.5.2 Regularized Logistic Regression with glmnet
 
 We can now use `glmnet` to model the wine quality.
 ```{r}
@@ -170,7 +170,7 @@ wine_red_glm_lasso_cv$lambda.min
 ```
 `glmnet` confirms that no regularization is needed and thus no variable selection is done. At this point it is not clear how to proceed since the standard errors of the coefficient estimates are not available and thus testing is not possible. 
 
-Since we do not have a well-determined final model, we will not compute predictins or performance metrics on the test data set. Of course `glm` in base R was used in Section 6.4.2. `pH`, `density`, and `residual_sugars` were removed using AIC as a criterion, but further analysis is needed. `ml_generalized_linear_regression` does provide information on the AIC and thus could also be used for variable selection as was done in Section 6.4.2.
+Since we do not have a well-determined final model, we will not compute predictions or performance metrics on the test data set. Of course `glm` in base R was used in Section 6.4.2. `pH`, `density`, and `residual_sugars` were removed using AIC as a criterion, but further analysis is needed. `ml_generalized_linear_regression` does provide information on the AIC and thus could also be used for variable selection as was done in Section 6.4.2.
 
 ```{r}
 spark_disconnect(sc)

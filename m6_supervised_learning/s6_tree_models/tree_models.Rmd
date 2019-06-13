@@ -23,11 +23,11 @@ library(sparklyr)
 sc <- spark_connect(master = "local")
 ```
 
-## 7.6 Other ML Algorithms
+## 6.6 Other ML Algorithms
 
-### 7.6.1 Basics
+### 6.6.1 Basics
 
-Spark 2.2 and `sparklyr` have many algorithms for classification. We have been exposed to logistic regression in Section 7.3. We will compare 6 classification algorithms in this chapter.
+Spark 2.4.3 and `sparklyr` have many algorithms for classification. We have been exposed to logistic regression in Sections 6.4 and 6.5. We will compare 6 classification algorithms in this chapter.
 
 * Logistic Regression: models the posterior conditional probabilities of the $k$ classes by a linear functions in $X$, while ensuring that they sum to one and remain in [0,1]. The model is specified in terms of $k-1$ logit transformations with the last class as the denominator in the odds-ratios.
 
@@ -41,7 +41,7 @@ Spark 2.2 and `sparklyr` have many algorithms for classification. We have been e
 
 * Neural Net (MLP): is a feedforward artificial neural network. An MLP has at least three layers of variables (nodes). Except for the input variables, each node uses a nonlinear activation function. MLP utilizes a supervised learning technique called backpropagation for training.
 
-### 7.6.2 Model Comparison Wine Quality Example
+### 6.6.2 Model Comparison Wine Quality Example
 
 We illustrate logistic regression modeling using the Wine Quality Data Set from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/wine+quality). The two datasets: the red and white variants of the Portuguese "Vinho Verde" wine, but we will restrict analysis to the red wine dataset.
 

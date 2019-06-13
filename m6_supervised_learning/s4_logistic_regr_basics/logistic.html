@@ -404,9 +404,9 @@ P(Y_i = 1\, |\, \mathbf{x}_i) = \mbox{logit}^{-1}(\beta_0 + \beta^t\mathbf{x}_i)
 P(Y_i = 0\, |\, \mathbf{x}_i) = 1 - \mbox{logit}^{-1}(\beta_0 + \beta^t\mathbf{x}_i)= \frac{e^{-(\beta_0 + \beta^t\mathbf{x}_i)}}{1 + e^{-(\beta_0 + \beta^t\mathbf{x}_i)}}.
 \]</span></p>
 <p>The log of the <em>odds ratio</em> is: <span class="math display">\[
-\mbox{logit}(P(Y_i = 1\, |\, \mathbf{x}_i)) = log(\frac{P(y_i = 1\, |\, \mathbf{x}_i)}{1 - P(y_i = 1\, |\, \mathbf{x}_i)}) = \beta_0 + \beta^t \mathbf{x}_i.
-\]</span> the logit of the probability that outcome <span class="math inline">\(i\)</span> is <span class="math inline">\(G_1\)</span> is being modeled as a linear function of the features This model is called the <em>logistic regression model</em>.</p>
-<p>The parameter <span class="math inline">\(\beta_0\)</span> is the <em>base rate</em>, or the unconditional probability of “1” knowing nothing more about the feature vector <span class="math inline">\(\mathbf{x}\)</span>.</p>
+\mbox{logit}(P(Y_i = 1\, |\, \mathbf{x}_i)) = log(\frac{P(y_i = 1\, |\, \mathbf{x}_i)}{1 - P(y_i = 1\, |\, \mathbf{x}_i)}) = \beta_0 + \beta^t \mathbf{x}_i,
+\]</span> the logit of the probability that outcome <span class="math inline">\(i\)</span> is <span class="math inline">\(G_1\)</span> is being modeled as a linear function of the features. This model is called the <em>logistic regression model</em>.</p>
+<p>The parameter <span class="math inline">\(\beta_0\)</span> is the <em>base rate</em>, or the unconditional probability of “1” knowing nothing about the feature vector <span class="math inline">\(\mathbf{x}\)</span>.</p>
 <p>If you had no information about your specific situation except the base rate, the average prediction would be given by just <span class="math inline">\(\beta_0\)</span>: <span class="math display">\[
 P(y_i = 1) = \frac{1}{1 + e^{-\beta_0}}.
 \]</span> The parameter <span class="math inline">\(\beta\)</span> defines the slope of the logit function. Note that in general it’s a vector that is as long as the number of features you are using for each data point. The vector <span class="math inline">\(\beta\)</span> determines the extent to which certain features are markers for increased or decreased likelihood of <span class="math inline">\(G_1\)</span>.</p>
@@ -640,7 +640,7 @@ wine_red_logistic_step &lt;- step(wine_red_logistic_fit_full,
 <p>We now fit a logistic model using the <code>ml_logistic_regression</code>.</p>
 <pre class="r"><code>wine_red_logistic_fit &lt;- wine_red_train_tbl %&gt;%
   ml_logistic_regression(quality_bin ~ fixed_acidity + volatile_acidity + citric_acid + residual_sugar + chlorides + free_sulfur_dioxide + total_sulfur_dioxide + density + pH + sulphates + alcohol)</code></pre>
-<p>Unfortunately, the AIC for <code>ml_logistic_regression</code> is not available. However, the AIC is available using the R function <code>ml_generalized_linear_regression</code> with the <code>family = binomial</code> argument. However, this latter function does not support regulation, whereas <code>ml_logistic_regression</code> does. Therefore, a thorough analysis involves running both modeling functions.</p>
+<p>Unfortunately, the AIC for <code>ml_logistic_regression</code> is not available. However, the AIC is available using the R function <code>ml_generalized_linear_regression</code> with the <code>family = binomial</code> argument. However, this latter function does not support regularization, whereas <code>ml_logistic_regression</code> does. Therefore, a thorough analysis involves running both modeling functions.</p>
 <pre class="r"><code>wine_red_logistic_predict &lt;- wine_red_logistic_fit %&gt;%
   ml_predict(wine_red_partition$training) %&gt;%
   sdf_separate_column(&quot;probability&quot;, list(&quot;P[quality_bin=1]&quot; = 2))
