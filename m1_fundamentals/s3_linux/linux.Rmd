@@ -144,7 +144,7 @@ It will take awhile the first time or after a pull from GitHub. Eventually, you 
 Now open a browser in Chrome (or Firefox or Safari) and type the url as: `localhost:8787` and sign into RStudio:  
 
 Username: rstudio  
-Password: rstudio
+Password: rstudiojh
 
 When finished, quit the current R session (red button). Then return to your local terminal and type: Control-C to stop the containers, which will return the prompt.
 
@@ -244,7 +244,7 @@ The last command runs the `start.sh` shell script. It will take awhile the first
 Now open a browser and type the url as: `localhost:8787` and sign into RStudio:  
 
 Username: rstudio  
-Password: rstudio
+Password: rstudiojh
 
 Leave the terminal running. When finished, quit the current R session (red button). Then return to the terminal and type: Control-C, which will return the prompt.
 

@@ -113,7 +113,7 @@ where $d_1 \geq d_2 \geq \cdots \geq d_p \geq 0$ are the singular values, and
 the columns of ${\bf V}$and ${\bf A}$ are the left and right singular
 vectors, respectively.
 $$
-   {\bf S} = {\bf Y}_c^\prime{\bf Y}_c
+   {\bf S} = {\bf X}_c^\prime{\bf X}_c
            = {\bf A}{\bf D}_{d_j^2}{\bf A}^\prime
            = {\bf A}{\bf D}_{l_j}{\bf A}^\prime,
 $$
