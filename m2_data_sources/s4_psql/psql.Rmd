@@ -247,7 +247,8 @@ The CAP theorem, or Brewer's theorem, states that it is impossible for a distrib
 * Availability: every request receives a response, without guarantee that it contains the most recent version of the information;  
 * Partition tolerance: the system continues to operate despite arbitrary partitioning due to network failures. 
 
-Basically, you can choose any two, but cannot have all three. See the following figure: ![CAP](CAP.png)
+Basically, you can choose any two, but cannot have all three. See the following figure:  
+![CAP](CAP.png)  
 
 Note: consistency in CAP is not the same as consistence in ACID.
 

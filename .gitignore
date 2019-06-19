@@ -4,7 +4,6 @@
 *.html
 *.log
 *.nb.html
-*.pdf
 *.doc
 *.docx
 *output
