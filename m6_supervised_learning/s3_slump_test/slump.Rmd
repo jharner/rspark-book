@@ -27,7 +27,7 @@ sc <- spark_connect(master)
 Load `slump.csv` into Spark with `spark_read_csv` from the local filesystem.
 ```{r}
 slump_sdf <- spark_read_csv(sc, "slump_sdf",
-                path =  "file:///home/rstudio/rspark-notes/data/slump.csv")
+                path =  "file:///home/rstudio/rspark-tutorial/data/slump.csv")
 head(slump_sdf)
 ```
 
