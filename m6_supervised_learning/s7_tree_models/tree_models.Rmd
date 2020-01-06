@@ -1,7 +1,7 @@
 ---
 title: "Tree Models"
 author: "Jim Harner"
-date: "6/7/2019"
+date: "1/6/2020"
 output:
   html_document: default
   html_notebook: default
@@ -23,9 +23,9 @@ library(sparklyr)
 sc <- spark_connect(master = "local")
 ```
 
-## 6.6 Other ML Algorithms
+## 6.7 Other ML Algorithms
 
-### 6.6.1 Basics
+### 6.7.1 Basics
 
 Spark 2.4.3 and `sparklyr` have many algorithms for classification. We have been exposed to logistic regression in Sections 6.4 and 6.5. We will compare 6 classification algorithms in this chapter.
 

@@ -1,7 +1,7 @@
 ---
 title: "SparkR Machine Learning"
 author: "Jim Harner"
-date: "11/20/2019"
+date: "1/6/2020"
 output: 
   html_document: default
   html_notebook: default
@@ -18,7 +18,7 @@ sparkR.session(appName = "StructuredNetworkWordCount",
                sparkConfig = list(spark.driver.memory = '4g'))
 ```
 
-## 5.4 Spark Streaming
+## 8.1 Spark Streaming
 
 The analysis of streaming data is becoming essential with the increasing prevalence of real-time data. It is not just Twitter! The Internet of Things (IoT) generates generates huge amounts of data, as do wearables. Sensors are becoming ubiquitous and they collect climate data, health data, ecological data and increasingly, almost anything that supports sensors being embedded. The web generates a continues stream of log data, but far more in terms of browsing habits, financial transactions, etc. 
 
@@ -26,13 +26,13 @@ A powerful, robust engine is needed to analyze this data as it arrives. It would
 
 The material in this section is based on Spark's 2.2.0 [Structured Streaming Programming Guide](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#programming-model).
 
-### 5.4.1 Basics
+### 8.1.1 Basics
 
 Spark supports structured streaming using the a fault-tolerant streaming engine built on the Spark SQL engine. It is highly scalable and has very low latency. The computations for streaming data are done as in batch computations for static data. The Spark SQL engine runs analyses incrementally and continuously and updates the final result as streaming data continues to arrive.
 
 The Spark DataFrame API supports R for getting streaming aggregations, event-time windows, stream-to-batch joins, among others. The streaming engine ensures end-to-end, exactly-once fault-tolerance guarantees through checkpointing and Write Ahead Logs.
 
-### 5.4.2 Streaming Example
+### 8.1.2 Streaming Example
 
 The Structured Streaming Programming Guide has a simple example to illustrate the concept.
 
@@ -62,7 +62,7 @@ We need a source for streaming data. The UNIX utility Netcat (`nc`) can be used 
 nc -lk 9999
 ```
 
-### 5.4.3 Programming Model
+### 8.1.3 Programming Model
 
 Spark's Structured Steaming model treats real-time data as a continuously-appended table. Thus, the stream-processing model is very similar to Spark's batch processing model. The standard batch-processing query runs automatically as an incremental query on an unbounded input table.
 
@@ -80,7 +80,7 @@ Event-time is very naturally expressed in this model, i.e, each event from the d
 
 Spark streaming is designed such that the Structured Streaming sources, the sinks and the execution engine reliably track the exact progress of the processing so that it can handle any kind of failure by restarting and/or reprocessing. Every streaming source is assumed to have offsets (similar to Kafka offsets) to track the read position in the stream. The engine uses checkpointing and write ahead logs to record the offset range of the data being processed in each trigger. 
 
-### 5.4.4 Input Sources
+### 8.1.4 Input Sources
 
 Spark has the following built-in data sources:  
 
