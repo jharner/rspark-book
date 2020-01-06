@@ -1,20 +1,23 @@
 ---
 title: "Linear Regression"
 author: "Jim Harner"
-date: "6/7/2019"
-output:
+date: "1/6/2020"
+output: 
   html_document: default
-  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
-
+`sparklyr` requires a `dplyr` compatible back-end to Spark. 
 ```{r}
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
+
 library(sparklyr)
-sc <- spark_connect(master = "local")
+# start the sparklyr session
+master <- "local"
+# master <- "spark://master:7077"
+sc <- spark_connect(master)
 ```
 
 ## 6.1 Linear Regression
@@ -27,19 +30,19 @@ The simple linear regression can be expressed as:
 $$
   y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p + \epsilon.
 $$
-where $\epsilon$ is the *error term* or *noise* variable and the $x_j$ are the predictors or features. For the standard regression model, $\epsilon \sim N(0, \sigma^2)$, i.e., the variability is assumed to be constant over the range of the $x$'s.
+where $\epsilon$ is the *error term* or *noise* variable and the $x_j$ are the predictors or features. For the standard regression model, $\epsilon \sim N(0, \sigma^2)$, i.e., the variability is assumed to be constant over the range of $x$.
 
 The strategy is to minimize:
 $$
   RSS(\beta_0, \beta_1, \ldots, \beta_p) = \sum_{i = 1}^n (y_i - \beta_0 -    \beta_1 x_{i1} - \cdots - \beta_p x_{ip})^2
 $$
-with respect to the $\beta$'s. RSS is the basic loss function for regression. Later this loss will be generalized by constraining (regularizing) the coefficients, i.e., shrinking the coefficients towards 0. This often reduces the coefficient variances without appreciably increasing the bias.
+with respect to the $\beta$'s. RSS is the basic loss function for regression. Later this loss will be generalized by constraining (regularizing) the coefficients, i.e., shrinking the coefficients towards 0. This often reduce the coefficient variances without appreciably increasing the bias.
 
 The observed errors or *residuals* are given by:  
 $$
   e_i = y_i - \hat{y}_i,
 $$
-where $\hat{y}_i = \hat\beta_0 + \hat\beta_1 x_{i1} + \cdots + \hat\beta_p x_{ip}$ is the predicted value for observation $i$.
+where $\hat{y}_i = \hat\beta_0 + \hat\beta_1 x_{i1} + \cdots + \hat\beta_p x_{ip}$ is the predicted value for the $i^\mbox{th}$ observation.
 
 The residual sum of squares is given by
 $$
@@ -57,19 +60,19 @@ which estimates $\sigma$.
 
 $R^2$, is called the *coefficient of determination*--- the proportion of the variability explained by the model. It is given by:
 $$
-  R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)}{\sum (y_i - \bar{y}_i)}.
+  R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y}_i)^2}.
 $$
-The term on the far right is the proportion of unexplained variability, i.e., the residual sum of squares divided by the total error.
+The term on the right is the proportion of unexplained variability, i.e., the residual sum of squares divided by the total error.
 
 The principal hypothesis of interest is:
 $$
   H_o: \beta_j = 0 \mbox{ vs. } H_a: \beta_j \ne 0,
 $$
-i.e., the coefficient for predictor $j$ is 0. In order to test this hypothesis, we compute a $t$-test as follows:
+i.e., the coefficient for the $j^\mbox{th}$ predictor is 0. In order to test this hypothesis, we compute a $t$-test as follows:
 $$
   t = \frac{\hat \beta_j}{\mbox{s.e.} (\hat \beta_j)},
 $$
-where $\mbox{s.e.} (\hat \beta_j)$ is the estimated standard error of $\hat \beta_j$. The estimated variances of the coefficient estimators are given by the diagonal elements of:
+where $\mbox{s.e.} (\hat \beta_j)$ is the estimated standard error of $\hat \beta_j$. The estimated variances of the estimators are given by the diagonal elements of:
 $$
   \hat{\mbox{Var}}(\hat\beta) = \hat\sigma^2 (X^t X)^{-1}
 $$
@@ -91,14 +94,14 @@ The algorithm is simple:
 2. For $k = 0, 1, \ldots, p-1$ augment the predictors in $M_k$ with one additional predictor and then pick the one with the highest $R^2$ or lowest RSS. Call this $M_{k+1}$.  
 3. Select the best model from $M_0, M_1, \ldots, M_p$ using cross validation prediction error, $C_p$, AIC, BIC, or the adjusted $R^2$.  
 
-The method has far fewer models ($1 + p(p+1)/2$) than best subset selection ($2^p$ possible models). Also, this method can be used for the high-dimensional cases, e.g.,  when $p > n$.
+The method has far fewer models ($1 + p(p+1)/2$) than best subset selection ($2^p$). Also, this method can be used for the high-dimensional cases when $p > n$.
 
 **Backward stepwise selection** begins with the full least squares model containing all $p$ predictors, and then iteratively removes the least useful predictor, one-at-a-time.
 
 The algorithm follows:  
 
 1. Start with $M_p$, the model with all predictors.  
-2. For $k = p, p-1, \ldots, 1$ consider all $k$ models that contain all but one of the predictors in $M_k$, i.e., each containing $k-1$ predictors, and then pick the one with the highest $R^2$ or lowest RSS. Call this $M_{k-1}$.  
+2. For $k = p, p-1, \ldots, 1$ consider all $k$ models that contain all but one of the predictors in $M_k$, i.e., each containing $k − 1$ predictors, and then pick the one with the highest $R^2$ or lowest RSS. Call this $M_{k-1}$.  
 3. Select the best model from $M_0, M_1, \ldots, M_p$ using cross validation prediction error, $C_p$, AIC, BIC, or the adjusted $R^2$.  
 
 The backward selection approach searches $1 + p(p+1)/2$ models. In this case, $n$ must be larger than $p$.
@@ -144,35 +147,34 @@ A large value of the adjusted $R^2$ indicates a model with a small test error or
 
 #### Performance Metrics
 
-We use different performance metrics for different kinds of models, and in different contexts. For linear regression we typically compute the following on the $m$ observations of the test data set:  
-
+We use different performance metrics for different kinds of models, and in different contexts. For linear regression we typically use:  
 * **Mean squared error (MSE)**: This is the average squared distance between the predicted and actual values.  
 $$
-  \mbox{MSE} = \frac{\sum (y_i - \hat{y}_i)^2}{m}
+  \mbox{MSE} = \frac{\sum (y_i - \hat{y}_i)^2}{n}
 $$
 * **Root mean squared error (RMSE)**: The square root of the mean squared error.    
 $$
-  \mbox{RMSE} = \sqrt \frac{\sum (y_i - \hat{y}_i)^2}{m}
+  \mbox{RMSE} = \sqrt \frac{\sum (y_i - \hat{y}_i)^2}{n}
 $$
 * **Mean absolute error (MAE)**: The average of the absolute value of the difference between the predicted and actual values.  
 $$
-\mbox{MAE} = \frac{\sum |y_i - \hat{y}_i|}{m}
+\mbox{MAE} = \frac{\sum |y_i - \hat{y}_i|}{n}
 $$
 The latter two are most often used since they are in the same scale as the response variable.  
 
 Cross-validation of these performance metrics was discussed in Section 1.6.
 
-### 6.1.3 Concrete Slump Test Data
+### 6.1.2 Concrete Slump Test Data
 
-The `slump.csv` file was loaded into Hadoop. Assuming you have not removed it with the `hdfs.rm` function, you can load the data into Spark from Hadoop using `sparklyr`'s `spark_read_csv` function, which creates a Spark DataFrame.
+The `slump.csv` file was loaded into Hadoop. Assuming you have not removed it with the `hdfs.rm` function, you can load the data into Spark from Hadoop using the `sparklyr`'s `spark_read_csv` function, which creates a Spark DataFrame.
 
 Alternately, you can load `slump.csv` into Spark directly with `spark_read_csv` from the local filesystem.
 ```{r}
 # slump_sdf <- spark_read_csv(sc, "slump_sdf",
 #                   path = "hdfs://hadoop:9000/user/rstudio/data/slump.csv")
 slump_sdf <- spark_read_csv(sc, "slump_sdf",
-                    path = "file:///home/rstudio/rspark-tutorial/data/slump.csv")
-slump_sdf
+                    path =  "file:///home/rstudio/rspark-notes/data/slump.csv")
+head(slump_sdf)
 ```
 `header = TRUE` is the default for `spark_read_csv`.
 
@@ -221,7 +223,7 @@ tidy(slump_lr_p5_fit)
 ```
 The $R^2 = 0.895$ is still very high.
 
-We next remove `fine_aggr` since its $t$ statistic is the smallest in absolute value and its $p$-value slightly exceeds 0.05.
+We next remove `fine_aggr` since its statistic is the smallest.
 ```{r}
 slump_lr_p4_fit <- slump_partition$training %>%
   ml_linear_regression(compressive_strength ~ cement + fly_ash + water + coarse_aggr)
@@ -230,7 +232,7 @@ tidy(slump_lr_p4_fit)
 ```
 The $R^2 = 0.889$ barely drops.
 
-All predictors are now significant, but for comparison purposes we remove `coarse_aggr`, which has the smallest $t$ statistic in absolute value.
+We next remove `coarse_aggr` for completeness.
 ```{r}
 slump_lr_p3_fit <- slump_partition$training %>%
   ml_linear_regression(compressive_strength ~  cement + fly_ash + water)
@@ -239,16 +241,15 @@ tidy(slump_lr_p3_fit)
 ```
 The $R^2 = 0.834$ now drops about 5%.
 
-Now `water` has the smallest $|t|$ statistic and is removed for completing the graph below.
+Now `water` has the largest $p$-value.
 ```{r}
 slump_lr_p2_fit <- slump_partition$training %>%
   ml_linear_regression(compressive_strength ~  cement + fly_ash)
 summary(slump_lr_p2_fit)
 tidy(slump_lr_p2_fit)
 ```
-Note that `fly_ash` does have a slightly larger $t$ statistic than cement.
 
-Judging the efficacy of models based on the $R^2$ and the $p$-value for the training data is not what we should do. We need to compute performance metrics, for regression the Root Mean Square Error (RMSE) and the Mean Absolute Error (MAE), on the test data. Both of these measures are on the same scale as `compressive_strength`.
+Judging the efficacy of models based on the $R^2$ and RMSE for the training data is not what we should do. We need to compute performance metrics, for regression the Root Mean Square Error (RMSE) and the Mean Absolute Error (MAE), on the test data. Both of these measures are on the same scale as `compressive_strength`.
 
 We will compute these metrics for the test data on all models and then plot them. This will provide information for selecting the "best" model. Best is in quotes because we have not looked at all possible models
 
@@ -257,7 +258,7 @@ First, we form a named list of the models and compute a list of Spark DataFrames
 # form a list of the fitted models above
 slump_lr_models <- list(
   "lr_p1" = slump_lr_p1_fit,
-  "lr_p2" = slump_lr_p1_fit,
+  "lr_p2" = slump_lr_p2_fit,
   "lr_p3" = slump_lr_p3_fit,
   "lr_p4" = slump_lr_p4_fit,
   "lr_p5" = slump_lr_p5_fit,
@@ -326,7 +327,7 @@ cbind(terms, slump_lr_errors) %>%
 ```
 We want a parsimonious model so it is clear that the 3-term model or the 4-term model should be chosen. The variables in the final model are `cement`, `fly_ash`, and `water`. Arguably, `coarse_aggr` could also be in the model.
 
-The above approach is not guaranteed to be optimal since only a subset of the possible models are examined. Further, Spark depends on regularization for feature selection and does not support automatic variable selection based on optimality criteria. This example will be redone using regularization in Section 3.
+The above approach is not guaranteed to be optimal since only a subset of the possible models are examined. Further, Spark depends on regularization for feature selection and does not support automatic variable selection based on optimality criteria. This example will be redone using regularization in Chapter 10.
 
 ```{r}
 spark_disconnect(sc)
