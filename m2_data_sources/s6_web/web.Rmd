@@ -1,10 +1,10 @@
 ---
 title: "Web Services"
 author: "Jim Harner"
-date: "6/7/2019"
+date: "1/6/2020"
 output:
-  html_notebook: default
   html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
@@ -17,7 +17,7 @@ library(httr)
 library(jsonlite)
 ```
 
-## 2.5 Web Services
+## 2.6 Web Services
 
 *Web Services* is a recently introduced phrase. The *Web* and the *HyperText Transfer Protocol (HTTP)* that underlies the communication of data on the Web have become a vital part of our information network and day-to-day environment. Thus, being able to access various forms of data using HTTP is an important facility in a general programming language. We want to be able to:  
 
@@ -109,7 +109,7 @@ The later uses the `get` verb directly using `curl` from the command line. The o
 
 The `curl` command-line tool is easy enough to use, but we often want to extract text, parse it, and then use various text manipulation functions or machine learning algorithms to get meaning from the text. This is why our focus will be on R packages that use the `libcurl` library. We can build workflows to extract, parse, manipulate, etc. directly in R.
 
-### 2.5.1 `curl` R Package
+### 2.6.1 `curl` R Package
 
 The `curl` package is a modern interface to the `cURL` library. It implements R's connection interface with support for encryption (https:// and ftps://), `gzip` compression, authentication, and other `libcurl` features. `curl` is meant to be a replacement of the aging `Rcurl` package.
 
@@ -117,7 +117,7 @@ The best introduction is given by its CRAN [vignette](https://cran.r-project.org
 
 The `curl` package has been made more accessible by the `httr` package.
 
-### 2.5.2 httr R Package
+### 2.6.2 httr R Package
 
 The `httr` package provides a wrapper for the `curl` package.
 

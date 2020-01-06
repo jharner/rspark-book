@@ -1,10 +1,10 @@
 ---
 title: "JSON"
 author: "Jim Harner"
-date: "6/7/2019"
+date: "1/6/2020"
 output:
-  html_notebook: default
   html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
