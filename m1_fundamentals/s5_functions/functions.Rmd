@@ -17,7 +17,7 @@ To understand computations in R, two slogans are helpful:
 "Everything that exists is an object. Everything that happens is a function call."  
 — John Chambers
 
-Material in this section is based partially on Hadley's Wickham's [Advanced R Functions](http://adv-r.had.co.nz/Functions.html).
+Material in this section is based partially on Hadley's Wickham's [Advanced R Functions chapter](http://adv-r.had.co.nz/Functions.html).
 
 ### 1.5.1 Function Definition
 
@@ -62,13 +62,13 @@ Now define the function `g`:
 ```{r}
 g <- function(a) f(2)
 ```
-What is the value of `g(20)`? `f` is called with the variable `a`, so you might think `g(20) = 22`. This is called *dynamic scoping*, i.e., `f` fines the values of the free variable (`a`) in the environment in which it is called.  On the other hand, if `f` looks up `a` in the environment in which it is defined, then `g(20) = 12`. This is lexical scoping.
+What is the value of `g(20)`? `g` is called with the variable `a`, so you might think `g(20) = 22`. This is called *dynamic scoping*, i.e., `f` fines the values of the free variable (`a`) in the environment in which it is called.  On the other hand, if `f` looks up `a` in the environment in which it is defined, then `g(20) = 12`. This is lexical scoping.
 ```{r}
 g(20)
 ```
 As can be seen, `g(20) = 12`, i.e., R uses lexical scoping. Generally, dynamic scoping is used in interactive environments.
 
-The rules for scoping can become complicated as the this simple example illustrates. To understand scoping, it is important to understand environments in R. Hadley Wickham has an in depth discussion in [Advanced R Environments](http://adv-r.had.co.nz/Environments.html).
+The rules for scoping can become complicated as the this simple example illustrates. To understand scoping, it is important to understand environments in R. Hadley Wickham has an in depth discussion in the [Advanced R Environments chapter](http://adv-r.had.co.nz/Environments.html).
 
 ### 1.5.3 Functional Programming
 
@@ -102,7 +102,7 @@ twelve(2)
 
 The complement to a closure is a *functional*, a function that takes a function as an input and returns a vector as output. A *function operator* is a function that takes one (or more) functions as input and returns a function as output. The primary difference is that functionals extract common patterns of loop use, whereas function operators extract common patterns of anonymous function use.
 
-Hadley Wickham has an in depth discussion of closures, functionals, and function operators in [Advanced R Functional Programming](http://adv-r.had.co.nz/Functional-programming.html). The following example illustrates many of the concepts in functional programming.
+Hadley Wickham has an in depth discussion of closures, functionals, and function operators in the [Advanced R Functional Programming chapter](http://adv-r.had.co.nz/Functional-programming.html). The following example illustrates many of the concepts in functional programming.
 
 ### 1.5.4 Finding the Root of a Differentiable Function
 

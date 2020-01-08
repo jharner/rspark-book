@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1.4 Data Structures
 
-Material in this section is partially based on Hadley's Wickham's [Advanced R Data Structures](http://adv-r.had.co.nz/Data-structures.html).
+Material in this section is partially based on Hadley's Wickham's [Advanced R Data Structures chapter](http://adv-r.had.co.nz/Data-structures.html).
 
 The canonical data structure in R is the vector. Vectors are of two types:   
 

@@ -13,9 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1.2 RStudio Server
 
-RStudio is a powerful integrated development environment (IDE) primarily used for developing code for R projects, including R packages. RStudio supports the integration of R, Python, bash, and SQL code chunks into Rmarkdown documents (and notebooks), among other languages.
+RStudio is a powerful integrated development environment (IDE) primarily used for developing code for R projects, including R packages. RStudio supports the integration of R, Python, bash, and SQL code chunks within Rmarkdown documents (and notebooks), among other languages.
 
-As a frontend to R, it can be run on your local machine (Mac or Windows) natively, but this is difficult for doing data science, which requires a vast number of add-on components. As a result, we use RStudio Server, which is run on Linux and accessed with a web-based client.
+As a frontend to R, it can be run on your local machine (Mac or Windows) natively, but this is difficult for doing data science, which requires a vast number of add-on components. As a result, we use RStudio Server, which runs on Linux and is accessed with a web-based client.
 
 ### 1.2.1 Running RStudio Server in a Docker container
 
@@ -50,7 +50,7 @@ The pre-built image on AWS is called `rsparkbox` and it contains this tutorial. 
 **Note** If you are given an IP address for you instance, enter it into your browser's URL bar as 'http://0.0.0.0:8787' replacing '0.0.0.0' with the IP address of your instance. In this case you do not need an AWS account. Log into RStudio with the credentials:
 
 		username: rstudio
-		password: rstudio
+		password: rstudiojh
 
 **IMPORTANT:** When you have finished using `rspark`, you need to stop or terminate your EC2 instance. If you neglect to do this, you will be charged by Amazon for the duration your instance is left running.
 
