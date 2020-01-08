@@ -4,7 +4,6 @@ author: "Jim Harner"
 date: "1/6/2020"
 output:
   html_document: default
-  pdf_document: default
 ---
 
 
@@ -142,11 +141,11 @@ temp.avgs
 dbDisconnect(con)
 dbUnloadDriver(drv)
 ```
-I am assuming you have basic knowledge or `select` from BUDA 520. We use `dbGetQuery` in order to get a data frame directly---in this case `temp.avgs`.
+I am assuming you have basic knowledge of `select`. We use `dbGetQuery` in order to get the data frame directly---in this case `temp.avgs`.
 
 Now plot the data frame.
 ```{r}
-plot(temp.avgs,type="l",
+plot(temp.avgs, type="l",
   xlab="Base Elevation (feet)", ylab="Average Temperature(Kelvin)",
   main=" Avg Temperature by Elevation")
 ```
@@ -242,8 +241,8 @@ Selecting a NoSQL database:
 * Column family databases are useful for write-heavy operations like logging.  
 * Graph databases are optimal for social networks, spacial data, and recommendation engines. 
 
-Selecting a NoSQL database depends on the application use cases and should be tested before deployment. We will focus on HBase, a column-family, key-value data store, that runs on HDFS. HBase tables can serve as inputs and outputs for MapReduce jobs (see Section 4.8). 
+Selecting a NoSQL database depends on the application use cases and should be tested before deployment. We will focus on HBase, a column-family, key-value data store, that runs on HDFS. HBase tables can serve as inputs and outputs for MapReduce jobs (see Section 4.4). 
 
 #### Aggregate Data Models
 
-Apache Hive is a data warehouse built on top of Hadoop's HDFS (Hadoop Distributed Filesystem) for data querying and data summarization. Although Hive tables are distributed over a cluster, the data is stored in RBDMS format. Hive typically works with aggregated data grouped by units. Hive supports a SQL-like query language called HiveQL, which converts queries to MapReduce and Spark jobs. Inter-aggregate relationships are handled via MapReduce operations. Transactions are ACID compliant, but with restrictions due to Hadoop's lack of support for row-level updates. For further discussion see Section 4.7.
+Apache Hive is a data warehouse built on top of Hadoop's HDFS (Hadoop Distributed Filesystem) for data querying and data summarization. Although Hive tables are distributed over a cluster, the data is stored in RBDMS format. Hive typically works with aggregated data grouped by units. Hive supports a SQL-like query language called HiveQL, which converts queries to MapReduce and Spark jobs. Inter-aggregate relationships are handled via MapReduce operations. Transactions are ACID compliant, but with restrictions due to Hadoop's lack of support for row-level updates. For further discussion see Section 4.4.

@@ -4,6 +4,7 @@ author: "Jim Harner"
 date: "1/6/2020"
 output:
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
