@@ -13,10 +13,6 @@ user <- "rstudio"
 
 Sys.setenv(PATH="/opt/hive/bin:/opt/hadoop/bin/:/usr/lib/rstudio-server/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin")
 ```
-The `rhdfs` package provides an R interface to Hadoop.
-```{r}
-library(rhdfs, warn.conflicts = FALSE)
-```
 
 ## 4.3 HDFS
 
@@ -83,7 +79,7 @@ hdfs dfs -ls
 Import a file into hdfs and list.
 ```{bash}
 # set the local working directory to s2_hdfs
-cd /home/rstudio/rspark-notes/c4_hadoop/s2_hdfs
+cd /home/rstudio/rspark-tutorial/m4_hadoop/s3_hdfs
 hdfs dfs -copyFromLocal cdat.csv temp/
 hdfs dfs -ls temp/
 hdfs dfs -du

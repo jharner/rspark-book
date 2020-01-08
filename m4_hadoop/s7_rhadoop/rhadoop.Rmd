@@ -16,6 +16,7 @@ Load the libraries for the RHadoop interface to Hadoop.
 ```{r}
 library(rhdfs)
 library(rmr2)
+hdfs.init()
 ```
 
 ## 4.7 RHadoop
@@ -31,10 +32,6 @@ RHadoop provides an R package called rmr2, whose goals are:
 Together with its companion packages `rhdfs` and `rhbase` (for working with HDFS and HBase datastores, respectively, in R) the `rmr2` package provides a way for data analysts to access massive, fault-tolerant parallelism without needing to master distributed programming. By providing an abstraction layer on top of all of the Hadoop implementation details, the `rmr2` package lets the R programmer focus on the data analysis of very large data sets.
 
 Initially, we must put data into HDFS (or HBase) for analysis. This can be done in R (rather than the UNIX command line with `hadoop` or `hbase`) using the RHadoop package `rhdfs`. Once the library is loaded, it must be initiated.
-
-```{r}
-hdfs.init()
-```
 
 You must have an account on our installed HDFS. The directories and files in my home directory are listed by the `hdfs.ls` function.
 ```{r}

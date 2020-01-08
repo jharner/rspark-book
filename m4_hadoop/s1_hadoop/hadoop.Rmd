@@ -17,7 +17,7 @@ Hadoop is an open-source framework for large-scale data storage and distributed 
 
 It is a general framework, applicable to a variety of domains and programming languages. One use case is to drive large R jobs.
 
-An overview of the Hadoop ecosystem as implemented in the Hortonworks Data Platform (HDP) is given here: [Hortonworks Data Platform](http://hortonworks.com/products/data-center/hdp/). It is based on a centralized architecture (YARN). Hadoop supports many technologies built on YARN, including MapReduce and Spark.
+An overview of the Hadoop ecosystem as implemented in the Hortonworks Data Platform (HDP) is given here: [Hortonworks Data Platform](https://www.cloudera.com/products/hdp.html). It is based on a centralized architecture (YARN). Hadoop supports many technologies built on YARN, including MapReduce and Spark.
 
 Batch data is collected and ingested into HDFS using Flume or Sqoop. Analysis jobs, written in Hadoop MapReduce, Spark, or other tools, are submitted to the Resource Manager for YARN, which decomposes each job into tasks that are run on the worker nodes, managed by a Node Manager. Even for interactive tools like Hive and Spark SQL, the same job submission process is used when the actual queries are executed as jobs. See O'Reilly's [Fast Data Architectures for Streaming Applications](http://www.oreilly.com/data/free/fast-data-architectures-for-streaming-applications.csp), which contrasts batch processing with stream processing.
 
@@ -27,7 +27,7 @@ Our Docker containers approximate this batch architecture, but lacks certain com
 
 Hadoop's primary use is for big-data tasks involving extract-transform-load (ETL), image processing, data modeling, machine learning, etc.
 
-The Hadoop ecosystem is generally used for data-at-rest, but it also supports data-in-motion, e.g., [Hortonworks DataFlow (HDF)](http://hortonworks.com/products/). This allows real-time data to be collected and analyzed, e.g., sensor data and log files. This is becoming increasingly important due to the rise of the Internet of Things (IoT). Streaming data is collected and ingested into HDFS or sent directly to a stream processing engine using Kafka, a real-time messaging system, for analysis and rendering using tools such as Spark Streaming or Flink.
+The Hadoop ecosystem is generally used for data-at-rest, but it also supports data-in-motion. This allows real-time data to be collected and analyzed, e.g., sensor data and log files. This is becoming increasingly important due to the rise of the Internet of Things (IoT). Streaming data is collected and ingested into HDFS or sent directly to a stream processing engine using Kafka, a real-time messaging system, for analysis and rendering using tools such as Spark Streaming or Flink.
 
 ![Streaming Architecture](StreamArch.png)
 
