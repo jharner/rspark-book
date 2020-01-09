@@ -2,9 +2,10 @@
 title: "SparkR Machine Learning"
 author: "Jim Harner"
 date: "1/6/2020"
-output: 
+output:
   html_document: default
   html_notebook: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
