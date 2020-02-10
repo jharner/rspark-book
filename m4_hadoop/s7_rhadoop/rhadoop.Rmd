@@ -153,6 +153,29 @@ Therefore, we simply pass along the input and output of the `wordcount` function
 
 This discussion should make it clear that RHadoop is very flexible in the data structures is can take as input, pass from map to reduce, and return as output. In this sense, RHadoop greatly generalizes Hadoop Streaming.
 
+### 4.7.4 Writing Data
+
+We can save the results of our analysis or the tables that you have generated in Spark into persistent storage. Parquet is a commonly used persistent store for various data processing systems in the Hadoop ecosystem. It has a columnar storage format which Spark SQL supports for both reading and writing, including the schema of the original data.
+
+As an example, we can write the `airlines_sdf` Spark DataFrame out to a Parquet file using the `spark_write_parquet` function.
+```{r}
+library(rhdfs)
+hdfs.init()
+spark_write_parquet(airlines_sdf,
+                  path = "hdfs://hadoop:9000/user/rstudio/airlines_parquet",
+                  mode = "overwrite")
+hdfs.ls("/user/rstudio")
+```
+This writes the Spark DataFrame to the given HDFS path and names the Parquet file `airlines_parquet`.
+
+You can use the `spark_read_parquet` function to read the same table back into a subsequent Spark session:
+```{r}
+spark_read_parquet(sc, "airlines2_sdf",
+                   "hdfs://hadoop:9000/user/rstudio/airlines_parquet")
+```
+
+Use the `spark_write_csv` and `spark_write_json` functions to write data as csv or json files, respectively. 
+
 ```{r}
 options(warn=0)
 ```

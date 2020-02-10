@@ -16,3 +16,4 @@
 Spark_cache
 Spark_files
 *.Rproj
+*warehouse
