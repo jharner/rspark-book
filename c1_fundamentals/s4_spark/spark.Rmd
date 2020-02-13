@@ -9,5 +9,55 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 1.3 Spark
+The `sparklyr` R frontend to Spark is based on a `dplyr` interface to Spark SQL. Once these required packages are loaded, a Spark connection is established.
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+library(sparklyr)
+# start the sparklyr session locally or to the master container
+if(system("test \"/bin/spark-class/\" && echo 1 || echo 0") == 1){
+  master <- "spark://master:7077"
+} else{
+  master <- "local"
+}
+sc <- spark_connect(master = master)
+```
+The rspark` project runs Spark in local mode or as a standalone cluster. This is determined by the `master` argument in the `spark_connect` function. More detailed information on these two processing modes, e.g., the virtual in-memory distributed filesystem for Spark Standalone, is given in Section 5.2.
+
+This section provides a brief introduction to Spark
+
+## 1.4 Spark
+
+[Spark](http://spark.apache.org/docs/latest/programming-guide.html#overview) is a general-purpose cluster computing system, which:
+
+* has high-level APIs in Java, Scala, Python and R;  
+* uses directed acyclic graphs (DAGs) to support multi-step data pipelines;
+* allows different jobs to work with the same data.
+
+Spark provides a unified framework to manage big data processing with a variety of data sets that are diverse in nature, e.g., rectangular data, text data, graph data, etc., as well as the source of data (batch vs. real-time streaming data).
+
+Spark supports a rich set of higher-level tools including:   
+
+* *Spark SQL* for running SQL-like queries on Spark data using the JDBC API or the Spark SQL CLI. Spark SQL allows users to extract data from different formats, (e.g., JSON, Parquet, or Hive), transform it, and load it for *ad-hoc* querying, i.e., ETL.
+
+* *MLlib* for machine learning, including classification, regression, clustering, collaborative filtering, dimensionality reduction, and the underlying optimization algorithms. MLlib uses the DataFrame API and thus takes advantage of the Spark SQL engine.
+
+* *Structured Streaming* for real-time data processing. Spark streaming uses a fault-tolerant stream processing engine built on the Spark SQL engine. Thus, you can express your streaming computation the same way you would express a batch computation on static data. Using the DataFrame API, the Spark SQL engine will take care of running it incrementally and continuously and updating the final result as streaming data continues to arrive. 
+  
+* *GraphX* for graph processing.
+
+[SparkR](https://spark.apache.org/docs/latest/sparkr.html) is part of the officially supported Spark distribution. However, we will focus on the [sparklyr](https://spark.rstudio.com) package.
+
+### 1.3.1 Simple Example
+
+The `faithful` data frame (in R's `datasets` package) has two variables: `eruptions` in mins and `waiting` in mins. The `copy_to` functions uploads the local `faithful` data frame into Spark's distributed memory as the Spark DataFrame `faithful_sdf`.
+```{r}
+faithful_tbl <- copy_to(sc, faithful, "faithful_sdf", overwrite = TRUE)
+faithful_tbl
+```
+`faithful_tbl` is a R object that references `faithful_sdf`.
+
+# stop the sparklyr session
+spark_disconnect(sc)
+
 

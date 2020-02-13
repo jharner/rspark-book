@@ -11,34 +11,6 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The `sparklyr` R frontend to Spark is based on a `dplyr` interface to Spark SQL. Once these required packages are loaded, a Spark connection is established.
-```{r}
-library(dplyr, warn.conflicts = FALSE)
-library(sparklyr)
-# start the sparklyr session locally or to the master container
-master <- "local"
-# master <- "spark://master:7077"
-sc <- spark_connect(master = master)
-```
-
-[Spark](http://spark.apache.org/docs/latest/programming-guide.html#overview) is a general-purpose cluster computing system, which:
-
-* has high-level APIs in Java, Scala, Python and R;  
-* supports multi-step data pipelines using directed acyclic graphs (DAGs);
-* supports in-memory data sharing across DAGs allowing different jobs to work with the same data.
-
-Spark provides a unified framework to manage big data processing with a variety of data sets that are diverse in nature, e.g., text data, graph data, etc., as well as the source of data (batch vs. real-time streaming data).
-
-Spark supports a rich set of higher-level tools including:   
-
-* *Spark SQL* for running SQL-like queries on Spark data using the JDBC API or the Spark SQL CLI. Spark SQL allows users to extract data from different formats, (e.g., JSON, Parquet, or Hive), transform it, and load it for *ad-hoc* querying, i.e., ETL.  
-
-* *MLlib* for machine learning, including classification, regression, clustering, collaborative filtering, dimensionality reduction, and the underlying optimization algorithms. MLlib uses the DataFrame API and thus takes advantage of the Spark SQL engine.
-
-* *Structured Streaming* for real-time data processing. Spark streaming uses a fault-tolerant stream processing engine built on the Spark SQL engine. Thus, you can express your streaming computation the same way you would express a batch computation on static data. Using the DataFrame API, the Spark SQL engine will take care of running it incrementally and continuously and updating the final result as streaming data continues to arrive. 
-
-[SparkR](https://spark.apache.org/docs/latest/sparkr.html) is part of the officially supported Spark distribution. However, we will focus on the [sparklyr](https://spark.rstudio.com) package.
-
 ## 5.1 Sparklyr Basics
 
 The `sparklyr` package is being developed by RStudio. It is undergoing rapid expansion. See [RStudio's sparklyr](https://spark.rstudio.com) for information.
