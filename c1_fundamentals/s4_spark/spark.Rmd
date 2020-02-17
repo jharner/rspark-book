@@ -9,10 +9,13 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The `sparklyr` R frontend to Spark is based on a `dplyr` interface to Spark SQL. Once these required packages are loaded, a Spark connection is established.
+This tutorial uses the `sparklyr` R package as a frontend to Spark. The `SparkR` package is also available, but it is only used in a test R script.
+
+`The`sparklyr` is based on a `dplyr` interface to Spark SQL upon which Spark DataFrames are built. Once this package is loaded, a Spark connection is established.
 
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
+library(ggplot2)
 library(sparklyr)
 # start the sparklyr session locally or to the master container
 if(system("test \"/bin/spark-class/\" && echo 1 || echo 0") == 1){
@@ -46,18 +49,35 @@ Spark supports a rich set of higher-level tools including:
   
 * *GraphX* for graph processing.
 
-[SparkR](https://spark.apache.org/docs/latest/sparkr.html) is part of the officially supported Spark distribution. However, we will focus on the [sparklyr](https://spark.rstudio.com) package.
+[SparkR](https://spark.apache.org/docs/latest/sparkr.html) is part of the officially supported Spark distribution. However, we will focus on the, functionalities of the [sparklyr](https://spark.rstudio.com) package.
 
-### 1.3.1 Simple Example
+### 1.4.1 Simple Example
 
 The `faithful` data frame (in R's `datasets` package) has two variables: `eruptions` in mins and `waiting` in mins. The `copy_to` functions uploads the local `faithful` data frame into Spark's distributed memory as the Spark DataFrame `faithful_sdf`.
 ```{r}
 faithful_tbl <- copy_to(sc, faithful, "faithful_sdf", overwrite = TRUE)
+class(faithful_tbl)
 faithful_tbl
 ```
-`faithful_tbl` is a R object that references `faithful_sdf`.
+`faithful_tbl` is a R object that references the created Spark DataFrame `faithful_sdf`. By convention, we use the suffix `sdf` to indicate a Spark DataFrame, whereas the suffix `tbl` indicates a Spark tibble object, which references the actual Spark DataFrame. 
 
+The actual data source,i.e., the Spark DataFrame, is listed by the `dplyr` function `src_tbls`.
+```{r}
+src_tbls(sc)
+```
+
+We can plot the data, but `faithful_tbl` cannot be used directly. The data must first be "colledted" back into R.
+```{r}
+faithful_tbl %>%
+  collect() %>%
+  ggplot(aes(waiting, eruptions)) + geom_point()
+```
+Notice that longer `waiting` times result in longer `eruptions`. The pipe operator, %>%, will be explained in sections ...
+
+We stop the R session.
+```{r}
 # stop the sparklyr session
 spark_disconnect(sc)
+```
 
 
