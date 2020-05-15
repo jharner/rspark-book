@@ -107,7 +107,7 @@ Hadley Wickham has an in depth discussion of closures, functionals, and function
 
 Newton's method for finding a root of a differentiable function $f$ takes a guess $x$ and computes hopefully an improved guess as:
 $$ x - \frac{f(x)}{Df(x)}$$
-where $Df$ denotes the derivative of $f$.
+where $Df$ denotes the derivative of $f$. The algorithm for finding the root of a differential function illustrates many principles of functional programming. The implementation used here is based on Tierney's List-Stat implementaion (Tierney, 1990).
 
 Create a function called `newton_search` with four arguments: `f`, `df`, `guess`, `conv` (the convergence criterion), where `f` is function of interest and `df` is its derivative.
 ```{r}
