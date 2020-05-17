@@ -9,6 +9,10 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(warn=0)
+
+user <- "rstudio"
+Sys.setenv(PATH="/opt/hive/bin:/opt/hadoop/bin/:/usr/lib/rstudio-server/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin")
 ```
 
 Initially, bash is used to access Hive. Then an R version is shown using Java and JDBC. The following packages are needed for the R interface to Hive:
@@ -28,12 +32,13 @@ Hive was created to make it possible for analysts with strong SQL skills (but me
 
 HiveServer1 used Hive CLI (command line interface) to send SQL commands to Hive for execution using MapReduce. Due to deficiencies in HiveServer1, e.g., lack of concurrency and security, HiveServer2 was developed. HiveServer2 has multi-client concurrency and better authentication. It also supports coonections through JDBC and ODBC. 
 
-The CLI used in HiveServer2 is `beeline`. Beeline is a JDBC client based on the [SQLLine CLI](http://sqlline.sourceforge.net), which communicates with the HiveServer using Thrift APIs. The connection to HiveServer2 is a JDBC URL. The following code can be executed line-by-line in RStudio's Shell.
+The CLI used in HiveServer2 is `beeline`. Beeline is a JDBC client based on the [SQLLine CLI](http://sqlline.sourceforge.net), which communicates with the HiveServer using Thrift APIs. The connection to HiveServer2 is a JDBC URL. The following code can be executed line-by-line in Terminal.
 ```
-/opt/hive/bin/beeline -u jdbc:hive2://hive:10000
-or
-# /opt/hive/bin/beeline
+beeline -u jdbc:hive2://hive:10000
+# or
+# beeline
 # !connect jdbc:hive2://hive:10000
+#
 # The user name is `hive` with no password (hit return)
 # The prompt becomes: jdbc:hive2://hive:10000>
 jdbc:hive2://hive:10000> show databases;
@@ -46,11 +51,11 @@ jdbc:hive2://hive:10000> !quit;
 
 We can execute an external file with the `-f` option, which in this case creates the `test1` database.
 ```{bash}
-/opt/hive/bin/beeline -u jdbc:hive2://hive:10000 -f "hive-test.sql"
+beeline -u jdbc:hive2://hive:10000 -f "hive-test.sql"
 ```
 We use the `-e` option to specify a query string. Multiple queries are separated by `;`.
 ```{bash}
-/opt/hive/bin/beeline -u jdbc:hive2://hive:10000 -e "show tables; select * from test1 LIMIT 10;"
+beeline -u jdbc:hive2://hive:10000 -e "show tables; select * from test1 LIMIT 10;"
 ```
 Notice that the output is messy and surrounds the desired results.
 
@@ -88,7 +93,47 @@ Hive has many advantages:
 3. Extend functionality through user-defined functions;  
 4. A well-documented, SQL-like interface specifically built for OLAP versus OLTP.  
 
-### 4.4.2 HBase
+The `flights` data source contains information on 123 million flights over 22 years. Here we only consider the `airlines` carrier data.
+
+````{bash}
+wget -O airlines.csv http://www.transtats.bts.gov/Download_Lookup.asp?Lookup=L_UNIQUE_CARRIERS
+hdfs dfs -mkdir airlines
+hdfs dfs -put airlines.csv airlines/
+hdfs dfs -ls airlines
+# beeline -u jdbc:hive2://hive:10000 -f "airlines.sql"
+````
+
+### 4.4.2 Parquet
+
+We can save the results of our analysis or the tables that you have generated in Spark into persistent storage. Parquet is a commonly used persistent store for various data processing systems in the Hadoop ecosystem. It has a columnar storage format which Spark SQL supports for both reading and writing, including the schema of the original data.
+
+As an example, we can write the `airlines_sdf` Spark DataFrame out to a Parquet file using the `spark_write_parquet` function.
+```
+spark_write_parquet(airlines_sdf,
+                  path = "hdfs://hadoop:9000/user/rstudio/airlines/airlines_parquet",
+                  mode = "overwrite")
+hdfs.ls("/user/rstudio/airlines/")
+```
+This writes the Spark DataFrame to the given HDFS path and names the Parquet file `airlines_parquet`.
+
+You can use the `spark_read_parquet` function to read the same table back into a subsequent Spark session:
+```{r}
+spark_read_parquet(sc, "airlines2_sdf",
+                   "hdfs://hadoop:9000/user/rstudio/airlines/airlines_parquet")
+```
+
+Use the `spark_write_csv` and `spark_write_json` functions to write data as csv or json files, respectively. 
+```{bash}
+rm -rf airlines.csv
+hdfs dfs -rm -f airlines/airlines.csv
+hdfs dfs -rmdir airlines
+```
+
+```{r}
+options(warn=0)
+```
+
+### 4.4.3 HBase
 
 A scalable, distributed database that supports structured data storage for large tables.
 

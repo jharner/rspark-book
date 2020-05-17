@@ -3,8 +3,6 @@ title: "RHadoop"
 author: "Jim Harner"
 date: "1/6/2020"
 output:
-  pdf_document: default
-  html_notebook: default
   html_document: default
 ---
 
@@ -152,29 +150,6 @@ The `input` can be an HDFS path, the return value of `to.dfs` or another job or 
 Therefore, we simply pass along the input and output of the `wordcount` function to the `mapreduce` call and return whatever its return value. That way the new function also behaves like a proper mapreduce job. The `input.format` argument allows us to specify the format of the input. The default is based on R's own serialization functions and supports all R data types. In this case we just want to read a text file, so the "text" format will create key value pairs with a `NULL` key and a line of text as value. You can easily specify your own input and output formats and even accept and produce binary formats with the functions `make.input.format` and `make.output.format`.
 
 This discussion should make it clear that RHadoop is very flexible in the data structures is can take as input, pass from map to reduce, and return as output. In this sense, RHadoop greatly generalizes Hadoop Streaming.
-
-### 4.7.4 Writing Data
-
-We can save the results of our analysis or the tables that you have generated in Spark into persistent storage. Parquet is a commonly used persistent store for various data processing systems in the Hadoop ecosystem. It has a columnar storage format which Spark SQL supports for both reading and writing, including the schema of the original data.
-
-As an example, we can write the `airlines_sdf` Spark DataFrame out to a Parquet file using the `spark_write_parquet` function.
-```{r}
-library(rhdfs)
-hdfs.init()
-spark_write_parquet(airlines_sdf,
-                  path = "hdfs://hadoop:9000/user/rstudio/airlines_parquet",
-                  mode = "overwrite")
-hdfs.ls("/user/rstudio")
-```
-This writes the Spark DataFrame to the given HDFS path and names the Parquet file `airlines_parquet`.
-
-You can use the `spark_read_parquet` function to read the same table back into a subsequent Spark session:
-```{r}
-spark_read_parquet(sc, "airlines2_sdf",
-                   "hdfs://hadoop:9000/user/rstudio/airlines_parquet")
-```
-
-Use the `spark_write_csv` and `spark_write_json` functions to write data as csv or json files, respectively. 
 
 ```{r}
 options(warn=0)

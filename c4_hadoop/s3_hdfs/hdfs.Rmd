@@ -9,8 +9,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-user <- "rstudio"
 
+user <- "rstudio"
 Sys.setenv(PATH="/opt/hive/bin:/opt/hadoop/bin/:/usr/lib/rstudio-server/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin")
 ```
 
@@ -18,13 +18,13 @@ Sys.setenv(PATH="/opt/hive/bin:/opt/hadoop/bin/:/usr/lib/rstudio-server/bin:/usr
 
 When data sets exceed the storage capacity of a single physical machine, we can spread them across a number of machines. Filesystems that manage the storage across a network of machines are called *distributed filesystems*. Since they are network based, the complications of network programming arise, e.g., experiencing node failures without data loss. Thus, distributed filesystems are more complex than regular disk filesystems.
 
-HDFS is Hadoop’s main filesystem, but Hadoop has a general-purpose filesystem abstraction. Thus, Hadoop integrates with other storage systems, e.g., the local filesystem and Amazon S3.
+Hadoop Distributed File System (HDFS) is Hadoop’s main filesystem, but Hadoop has a general-purpose filesystem abstraction. Thus, Hadoop integrates with other storage systems, e.g., the local filesystem and Amazon's S3.
 
 ### 4.3.1 HDFS Design
 
-HDFS is a filesystem designed for storing very large files with streaming data access patterns, running on clusters of commodity hardware.  
+HDFS is designed for storing very large files with streaming data access, running on clusters of commodity hardware.  
 
-* Very large files: Many [data lakes](https://en.wikipedia.org/wiki/Data_lake) are in the gigabytes, terabytes, or even petabytes in size.  
+* Very large files: Files are often stroed in a [data lake](https://en.wikipedia.org/wiki/Data_lake) in raw format or as blobs. Data lakes are often terabytes, or even petabytes, in size.  
 * Streaming data access: HDFS is built around the idea that the most efficient data processing pattern is a write-once, read-many-times pattern. A dataset is typically generated or copied from source, and then various analyses are performed on that dataset over time.  
 * Commodity hardware: Hadoop doesn’t require expensive, highly reliable hardware. It’s designed to run on clusters of commodity hardware for which the chance of node failure across the cluster is high, at least for large clusters.
 
@@ -78,8 +78,6 @@ hdfs dfs -ls
 ```
 Import a file into hdfs and list.
 ```{bash}
-# set the local working directory to s2_hdfs
-cd /home/rstudio/rspark-tutorial/m4_hadoop/s3_hdfs
 hdfs dfs -copyFromLocal cdat.csv temp/
 hdfs dfs -ls temp/
 hdfs dfs -du
