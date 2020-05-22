@@ -59,6 +59,7 @@ faithful_tbl <- copy_to(sc, faithful, "faithful_sdf", overwrite = TRUE)
 class(faithful_tbl)
 faithful_tbl
 ```
+
 `faithful_tbl` is a R object that references the created Spark DataFrame `faithful_sdf`. By convention, we use the suffix `sdf` to indicate a Spark DataFrame, whereas the suffix `tbl` indicates a Spark tibble object, which references the actual Spark DataFrame. 
 
 The actual data source,i.e., the Spark DataFrame, is listed by the `dplyr` function `src_tbls`.

@@ -100,8 +100,11 @@ wget -O airlines.csv http://www.transtats.bts.gov/Download_Lookup.asp?Lookup=L_U
 hdfs dfs -mkdir airlines
 hdfs dfs -put airlines.csv airlines/
 hdfs dfs -ls airlines
-# beeline -u jdbc:hive2://hive:10000 -f "airlines.sql"
-````
+```
+
+```
+beeline -u jdbc:hive2://hive:10000 -f "airlines.sql"
+```
 
 ### 4.4.2 Parquet
 
