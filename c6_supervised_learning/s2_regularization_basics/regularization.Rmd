@@ -1,7 +1,7 @@
 ---
 title: "Regularization Basics"
 author: "Jim Harner"
-date: "1/6/2020"
+date: "1/12/2021"
 output:
   html_document: default
   html_notebook: default
@@ -19,7 +19,13 @@ library(readr)
 library(glmnet)
 
 library(sparklyr)
-sc <- spark_connect(master = "local")
+# start the sparklyr session locally or to the master container
+if(system("test \"/bin/spark-class/\" && echo 1 || echo 0") == 1){
+  master <- "spark://master:7077"
+} else{
+  master <- "local"
+}
+sc <- spark_connect(master = master)
 ```
 
 ## 6.2 Regularization Basics
