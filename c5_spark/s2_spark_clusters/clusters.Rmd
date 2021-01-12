@@ -1,10 +1,20 @@
 ---
 title: "Spark Clusters"
-output: html_document
+author: "Jim Harner"
+date: "1/12/2021"
+output:
+  html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Spark Clusters
+## 5.2 Spark Clusters
+
+### 5.2.1 Spark Standalone Cluster
+
+### 5.2.2 Spark Kubernetes Cluster
+
+### 5.2.3 Cloud Deplayments
