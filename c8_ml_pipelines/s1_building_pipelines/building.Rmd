@@ -1,21 +1,28 @@
 ---
 title: "Building Pipelines"
-output: html_document
+author: "Jim Harner"
+date: "1/12/2021"
+output:
+  html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 8.1 Creating Pipelines
-
 Load the `dplyr` and `sparklyr` libraries and establish the Spark connection.
 ```{r}
 library(dplyr)
-library(sparklyr)
 
-spark.master <- "local"
-sc <- spark_connect(master = spark.master)
+library(sparklyr)
+# start the sparklyr session locally or to the master container
+if(system("test \"/bin/spark-class/\" && echo 1 || echo 0") == 1){
+  master <- "spark://master:7077"
+} else{
+  master <- "local"
+}
+sc <- spark_connect(master = master)
 
 # path.data <- paste("hdfs://hadoop:9000/user/", Sys.getenv("USER"), "/data/slump.csv", sep = "")
 # For data knitted on the local filesystem:
@@ -23,9 +30,11 @@ path.data <- paste0("file:///home/", Sys.getenv("USER"), "/rspark-book/data/slum
 path.data
 ```
 
-## 8.1 ML Pipelines
+## 8.1 Creating Pipelines
 
 So far we have been building machine learning (ML) workflows using an interface to Spark based on `dplyr` verbs and the R pipe operator. In order to productionize machine learning code, we need to formalize the steps comprising  ML Pipelines, i.e., use the Spark API. 
+
+## 8.1 ML Pipelines
 
 An ML pipeline consists of a sequence of transformers and estimators, each forming a pipeline stage, which define the ML workflow. The building blocks of the *pipeline* consists of:
 

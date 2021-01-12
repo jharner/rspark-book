@@ -1,10 +1,33 @@
 ---
-title: "Building Pipelines"
-output: html_document
+title: "Deploying Pipelines"
+author: "Jim Harner"
+date: "1/12/2021"
+output:
+  html_document: default
+  html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 8.1 Creating Pipelines
+Load the `dplyr` and `sparklyr` libraries and establish the Spark connection.
+```{r}
+library(dplyr)
+
+library(sparklyr)
+# start the sparklyr session locally or to the master container
+if(system("test \"/bin/spark-class/\" && echo 1 || echo 0") == 1){
+  master <- "spark://master:7077"
+} else{
+  master <- "local"
+}
+sc <- spark_connect(master = master)
+
+# path.data <- paste("hdfs://hadoop:9000/user/", Sys.getenv("USER"), "/data/slump.csv", sep = "")
+# For data knitted on the local filesystem:
+path.data <- paste0("file:///home/", Sys.getenv("USER"), "/rspark-book/data/slump.csv")
+path.data
+```
+
+## 8.2 Deploying Pipelines
