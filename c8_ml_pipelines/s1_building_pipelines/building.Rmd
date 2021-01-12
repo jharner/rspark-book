@@ -25,7 +25,7 @@ path.data
 
 ## 8.1 ML Pipelines
 
-So far we have been building machine learning (ML) workflows using an interface to Spark based on `dplyr` verbs and the R pipe operator. In order to productionize machine learning code, we need to formalize the steps conprising  ML Pipelines, i.e., use the Spark API. 
+So far we have been building machine learning (ML) workflows using an interface to Spark based on `dplyr` verbs and the R pipe operator. In order to productionize machine learning code, we need to formalize the steps comprising  ML Pipelines, i.e., use the Spark API. 
 
 An ML pipeline consists of a sequence of transformers and estimators, each forming a pipeline stage, which define the ML workflow. The building blocks of the *pipeline* consists of:
 
@@ -208,7 +208,7 @@ slump_fitted_cv_test %>%
 ```
 
 Pipelines can be serialized to disk and be accessed by other Spark APIs such as Python.
-```{r}
+```
 ml_save(slump_cv_model$best_model, path = getwd(), overwrite = TRUE)
 ```
 

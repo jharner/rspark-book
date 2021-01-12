@@ -1,7 +1,7 @@
 ---
 title: "Spark"
 author: "Jim Harner"
-date: "2/10/2020"
+date: "1/11/2021"
 output: html_document
 ---
 
@@ -25,7 +25,7 @@ if(system("test \"/bin/spark-class/\" && echo 1 || echo 0") == 1){
 }
 sc <- spark_connect(master = master)
 ```
-The rspark` project runs Spark in local mode or as a standalone cluster. This is determined by the `master` argument in the `spark_connect` function. More detailed information on these two processing modes, e.g., the virtual in-memory distributed filesystem for Spark Standalone, is given in Section 5.2.
+The `rspark` project runs Spark in local mode or as a standalone cluster. This is determined by the `master` argument in the `spark_connect` function. More detailed information on these two processing modes, e.g., the virtual in-memory distributed filesystem for Spark Standalone, is given in Section 5.2.
 
 This section provides a brief introduction to Spark
 
