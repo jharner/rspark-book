@@ -9,13 +9,22 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
 
+```{r}
 library(tibble)
 library(dplyr)
 library(readr)
 library(ggplot2)
+
 library(sparklyr)
-sc <- spark_connect(master = "local")
+# start the sparklyr session locally or to the master container
+if(system("test \"/bin/spark-class/\" && echo 1 || echo 0") == 1){
+  master <- "spark://master:7077"
+} else{
+  master <- "local"
+}
+sc <- spark_connect(master = master)
 ```
 
 ## 7.2 K-means Clustering
